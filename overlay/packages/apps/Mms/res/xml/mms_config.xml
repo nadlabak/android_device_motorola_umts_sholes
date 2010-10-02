@@ -15,27 +15,26 @@
 -->
 
 <!-- Version History
-unknown
+        version 1 - initial version.
+        version 2 - added recipientLimit.
+        version 3 - added min/max recycler values.
+        version 4 - added sms to mms text threshold.
 -->
 
-<mms_config version="2">
-	<bool name="enabledMMS">true</bool>
-	<bool name="enabledTransID">true</bool>
-	<bool name="enabledNotifyWapMMSC">true</bool>
-	<int name="maxMessageSize">1258291</int>
-	<string name="userAgent">motoa855</string>
-	<string name="uaProfTagName">Profile</string>
-	<string name="uaProfUrl">http://uaprof.vtext.com/mot/a855/a855.xml</string>
-	<int name="recipientLimit">10</int>
-	<string name="httpParams">x-up-calling-line-id: 1##LINE1##|X-VzW-MDN: 1##LINE1##</string>
-	<string name="httpParamsLine1Key">##LINE1##</string>
-	<int name="maxImageHeight">1936</int>
-	<int name="maxImageWidth">2592</int>
-	<int name="maxSMSMessagesPerThread">200</int>
-	<int name="maxMMSMessagesPerThread">10	</int>
-	<string name="emailGatewayNumber">6245</string>
-	<bool name="aliasEnabled">true</bool>
-	<int name="aliasMinChars">2</int>
-	<int name="aliasMaxChars">48</int>
-	<bool name="allowAttachAudio">true</bool>
+<mms_config version="4">
+    <!-- Maximum message size in bytes for a MMS message -->
+    <int name="maxMessageSize">302200</int>
+
+    <!-- Maximum height for an attached image -->
+    <int name="maxImageHeight">1000</int>
+
+    <!-- Maximum width for an attached image -->
+    <int name="maxImageWidth">1296</int>
+
+    <!-- UAProf URL -->
+    <string name="uaProfUrl">http://uaprof.motorola.com/phoneconfig/MotoA853/profile/MotoA853.rdf</string>
+
+    <!-- User-Agent parameter used in MMS http request -->
+    <!-- this is default to "Android-Mms/0.1". Override if necessary. Optional -->
+    <string name="userAgent">A853</string>
 </mms_config>
