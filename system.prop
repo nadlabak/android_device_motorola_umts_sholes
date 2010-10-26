@@ -29,3 +29,6 @@ mot.proximity.delay=450
 
 #proximit sensor disable touch distance 
 mot.proximity.distance=60
+
+#set to 0 if you don't use a dock but a case with a magentic closure
+ro.config.dockobserver=1

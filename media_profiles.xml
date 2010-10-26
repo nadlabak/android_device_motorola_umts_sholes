@@ -74,30 +74,30 @@
 <!--
      This file is used to declare the multimedia profiles and capabilities
      on an android-powered device.
--->
+--> 
 <MediaSettings>
     <!-- Each camcorder profile defines a set of predefined configuration parameters -->
     <CamcorderProfiles>
 
         <EncoderProfile quality="high" fileFormat="mp4" duration="60">
-            <Video codec="h264"
-                   bitRate="3000000"
+            <Video codec="m4v"
+                   bitRate="4000000"
                    width="720"
                    height="480"
-                   frameRate="25" />
+                   frameRate="30" />
 
-            <Audio codec="aac"
-                   bitRate="96000"
-                   sampleRate="16000"
+            <Audio codec="amrnb"
+                   bitRate="12200"
+                   sampleRate="8000"
                    channels="1" />
         </EncoderProfile>
 
-        <EncoderProfile quality="low" fileFormat="mp4" duration="60">
+        <EncoderProfile quality="low" fileFormat="mp4" duration="30">
             <Video codec="m4v"
-                   bitRate="96000"
-                   width="176"
-                   height="144"
-                   frameRate="20" />
+                   bitRate="200000"
+                   width="320"
+                   height="240"
+                   frameRate="15" />
 
             <Audio codec="amrnb"
                    bitRate="12200"
