@@ -33,5 +33,8 @@ mot.proximity.distance=100
 #set to 0 if you don't use a dock but a case with a magentic closure
 ro.config.dockobserver=1
 
+#swap volume keys in landscape mode
+ro.config.volume_keys_rotation=1
+
 windowsmgr.max_events_per_sec=60
 
