@@ -82,8 +82,27 @@ PRODUCT_TAGS += dalvik.gc.type-precise
 PRODUCT_LOCALES += hdpi
 
 PRODUCT_COPY_FILES += \
-    device/motorola/umts_sholes/vold.fstab:system/etc/vold.fstab
-
+    device/motorola/umts_sholes/vold.fstab:system/etc/vold.fstab \
+    device/motorola/umts_sholes/prebuilt/default.prop:system/default.prop \
+    device/motorola/umts_sholes/prebuilt/etc/apns-conf.xml:system/etc/apns-conf.xml \
+    device/motorola/umts_sholes/prebuilt/etc/init.d/10overclock:/system/etc/init.d/10overclock \
+    device/motorola/umts_sholes/prebuilt/etc/init.d/00adb_during_boot:/system/etc/init.d/00adb_during_boot \
+    device/motorola/umts_sholes/prebuilt/etc/location.cfg:/system/etc/location.cfg \
+    device/motorola/umts_sholes/prebuilt/etc/rootfs/default.prop:/system/etc/rootfs/default.prop \
+    device/motorola/umts_sholes/prebuilt/etc/rootfs/init.rc:/system/etc/rootfs/init.rc \
+    device/motorola/umts_sholes/prebuilt/etc/rootfs/init.mapphone_umts.rc:/system/etc/rootfs/init.mapphone_umts.rc \
+    device/motorola/umts_sholes/prebuilt/etc/wifi/tiwlan.ini:/system/etc/wifi/tiwlan.ini \
+    device/motorola/umts_sholes/prebuilt/bin/2nd-init:/system/bin/2nd-init \
+    device/motorola/umts_sholes/prebuilt/bin/init_prep_keypad.sh:/system/bin/init_prep_keypad.sh \
+    device/motorola/umts_sholes/prebuilt/bin/sh.sh:/system/bin/sh.sh \
+    device/motorola/umts_sholes/prebuilt/sbin/holder:/system/sbin/holder \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad.kcm.bin:/system/usr/keychars/sholesp2a-keypad.kcm.bin \
+    device/motorola/umts_sholes/prebuilt/app/Usb.apk:/system/app/Usb.apk \
+    device/motorola/umts_sholes/prebuilt/app/Toggle2G.apk:/system/app/Toggle2G.apk \
+    device/motorola/umts_sholes/prebuilt/app/Toggle_2G_Notification_Plugin.apk:/system/app/Toggle_2G_Notification_Plugin.apk \
+    device/motorola/umts_sholes/prebuilt/lib/modules/cpufreq_interactive.ko:/system/lib/modules/cpufreq_interactive.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/cpufreq_conservative.ko:/system/lib/modules/cpufreq_conservative.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/overclock.ko:/system/lib/modules/overclock.ko \
 
 $(call inherit-product-if-exists, vendor/motorola/umts_sholes/umts_sholes-vendor.mk)
 

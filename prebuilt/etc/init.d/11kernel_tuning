@@ -1,0 +1,31 @@
+#!/system/bin/sh
+#
+# contributed by kholk & xslntx & 89luca89
+#
+# Disable normalized sleeper
+#
+mount -t debugfs none /sys/kernel/debug
+echo NO_NORMALIZED_SLEEPER > /sys/kernel/debug/sched_features
+#
+#  Memory management
+#
+echo 2048 > /proc/sys/kernel/msgmni
+echo 64000 > /proc/sys/kernel/msgmax
+echo 268435456 > /proc/sys/kernel/shmmax
+echo 500 512000 64 2048 > /proc/sys/kernel/sem
+sysctl -w kernel.sched_latency_ns=600000
+sysctl -w kernel.sched_min_granularity_ns=400000
+sysctl -w kernel.sched_wakeup_granularity_ns=400000
+/system/xbin/sysctl -w kernel.sched_compat_yield=1
+/system/xbin/sysctl -w kernel.sched_shares_ratelimit=256000
+/system/xbin/sysctl -w kernel.sched_child_runs_first=0
+/system/xbin/sysctl -w kernel.hung_task_timeout_secs=0
+/system/xbin/sysctl -w kernel.threads-max=5000
+
+# Network tweaks
+#sysctl -w net.core.wmem_max=524288
+#sysctl -w net.core.rmem_max=524288
+#sysctl -w net.ipv4.tcp_tw_recycle=1
+#sysctl -w net.ipv4.tcp_rmem='6144 87380 524288'
+#sysctl -w net.ipv4.tcp_wmem='6144 87380 524288'
+

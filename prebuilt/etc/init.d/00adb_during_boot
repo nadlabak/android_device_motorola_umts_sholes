@@ -1,0 +1,8 @@
+#!/system/bin/sh
+
+# if you enable adb during boot, you will have to disconnect
+# and reconnect the usb cable before you will be able to mount
+# your SD card to a computer
+
+/system/xbin/killall usbd
+echo "msc_adb" > /dev/usb_device_mode

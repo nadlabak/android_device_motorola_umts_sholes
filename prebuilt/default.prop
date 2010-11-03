@@ -1,0 +1,11 @@
+ro.build.config.version.app=GAS_EMEA_UCAMS1FRYOQWRTEU_A001
+ro.build.config.date=Mon Oct 11 11:20:23 -0500 2010
+ro.keyboard.type=euro_qwerty
+persist.sys.timezone=Europe/Brussels
+ro.fota.enable=0
+sms.convert.char.for.latam=0
+ro.build.config.version=GAS_EMEA_UCAMS1FRYOQWRTEU_P005
+net.dns1=8.8.8.8
+net.dns2=8.8.4.4
+net.rmnet0.dns1=8.8.8.8
+net.rmnet0.dns2=8.8.4.4
