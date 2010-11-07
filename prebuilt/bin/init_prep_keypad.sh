@@ -1,6 +1,7 @@
 #!/system/bin/sh
 export PATH=/system/xbin:$PATH
 ln -s /system/usr/keychars/qwerty.kcm.bin /system/usr/keychars/qtouch-touchscreen.kcm.bin
+ln -s /system/usr/keylayout/qwerty.kl /system/usr/keylayout/qtouch-touchscreen.kl
 
 if [ -e /system/usr/keylayout/sholes-keypad.kl ]; then
 	return

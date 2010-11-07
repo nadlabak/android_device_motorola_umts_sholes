@@ -1,8 +1,5 @@
-#!/system/bin/sh.bin
+#!/system/bin/sh
 
-   /system/xbin/mount -t tmpfs -o size=4k tmpfs /system/sbin
-   /system/xbin/ln -s /system/bin/sh.bin /system/sbin/shlink
-   /system/xbin/mount -o remount,rw rootfs /
    /system/xbin/rmdir /config
    /system/xbin/rmdir /sdcard
    /system/xbin/cp -fr /etc/rootfs/* /
