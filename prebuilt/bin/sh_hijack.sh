@@ -1,5 +1,5 @@
 #!/system/bin/sh
-
+   /system/xbin/mount -o remount,rw rootfs /
    /system/xbin/rmdir /config
    /system/xbin/rmdir /sdcard
    /system/xbin/cp -fr /etc/rootfs/* /
