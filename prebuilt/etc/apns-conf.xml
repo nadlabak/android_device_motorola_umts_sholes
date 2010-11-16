@@ -79,7 +79,7 @@
   <apn carrier="MMS Bouygues" mcc="208" mnc="88" apn="mmsbouygtel.com" mmsc="http://mms.bouyguestelecom.fr/mms/wapenc" mmsproxy="62.201.129.226" mmsport="8080" type="mms" />
   <apn carrier="Vodafone ES-Internet" mcc="214" mnc="01" apn="ac.vodafone.es" user="vodafone" password="vodafone" type="default,dun" />
   <apn carrier="Vodafone" mcc="214" mnc="01" apn="airtelwap.es" user="wap@wap" password="wap125" type="default,dun" />
-  <apn carrier="Vodafone ES" mcc="214" mnc="01" apn="airtelwap.es" user="wap@wap" password="wap125" type="supl" />
+  <apn carrier="Vodafone ES" mcc="214" mnc="01" apn="airtelwap.es" user="wap@wap" password="wap125" type="dun" />
   <apn carrier="Vodafone ES MMS" mcc="214" mnc="01" apn="mms.vodafone.net" user="wap@wap" password="wap125" mmsc="http://mmsc.vodafone.es/servlets/mms" mmsproxy="212.73.32.10" mmsport="80" type="mms" />
   <apn carrier="Orange Internet ES" mcc="214" mnc="03" apn="internet" user="orange" password="orange" type="default,dun" />
   <apn carrier="Orange ES MMS" mcc="214" mnc="03" apn="orangemms" user="orange" password="orange" mmsc="http://mms.orange.es" mmsproxy="172.22.188.25" mmsport="8080" type="mms" />
@@ -105,12 +105,12 @@
   <apn carrier="Vodafone HU" mcc="216" mnc="70" apn="internet.vodafone.net" type="default,dun" />
   <apn carrier="Vodafone HU MMS" mcc="216" mnc="70" apn="mms.vodafone.net" mmsc="http://mms.vodafone.hu/servlets/mms" mmsproxy="80.244.97.2" mmsport="8080" type="mms" />
   <apn carrier="ERONET START" mcc="218" mnc="03" apn="gprs.eronet.ba" user="" server="" password="" proxy="" port="" mmsc="" type="default,dun"/>
-  <apn carrier="ERONET MI 50" mcc="218" mnc="03" apn="web.eronet.ba" user="" server="" password="" proxy="" port="" mmsc="" type="supl"/>
-  <apn carrier="ERONET MI 200" mcc="218" mnc="03" apn="web.eronet.ba" user="" server="" password="" proxy="" port="" mmsc="" type="supl"/>
-  <apn carrier="ERONET 512" mcc="218" mnc="03" apn="data1.eronet.ba" user="" server="" password="" proxy="" port="" mmsc="" type="supl"/>
-  <apn carrier="ERONET 1GB" mcc="218" mnc="03" apn="data4.eronet.ba" user="" server="" password="" proxy="" port="" mmsc="" type="supl"/>
-  <apn carrier="ERONET 4GB" mcc="218" mnc="03" apn="data2.eronet.ba" user="" server="" password="" proxy="" port="" mmsc="" type="supl"/>
-  <apn carrier="ERONET FLAT" mcc="218" mnc="03" apn="data3.eronet.ba" user="" server="" password="" proxy="" port="" mmsc="" type="supl"/>
+  <apn carrier="ERONET MI 50" mcc="218" mnc="03" apn="web.eronet.ba" user="" server="" password="" proxy="" port="" mmsc="" type="dun"/>
+  <apn carrier="ERONET MI 200" mcc="218" mnc="03" apn="web.eronet.ba" user="" server="" password="" proxy="" port="" mmsc="" type="dun"/>
+  <apn carrier="ERONET 512" mcc="218" mnc="03" apn="data1.eronet.ba" user="" server="" password="" proxy="" port="" mmsc="" type="dun"/>
+  <apn carrier="ERONET 1GB" mcc="218" mnc="03" apn="data4.eronet.ba" user="" server="" password="" proxy="" port="" mmsc="" type="dun"/>
+  <apn carrier="ERONET 4GB" mcc="218" mnc="03" apn="data2.eronet.ba" user="" server="" password="" proxy="" port="" mmsc="" type="dun"/>
+  <apn carrier="ERONET FLAT" mcc="218" mnc="03" apn="data3.eronet.ba" user="" server="" password="" proxy="" port="" mmsc="" type="dun"/>
   <apn carrier="ERONET MMS" mcc="218" mnc="03" apn="mms.eronet.ba" user="" server="" password="" mmsc="http://mms.gprs.eronet.ba/mms/wapenc" mmsproxy="010.012.003.001" mmsport="8080" type="mms"/> 
   <apn carrier="BH Mobile" mcc="218" mnc="90" apn="active.bhmobile.ba" type="default,dun" />
   <apn carrier="BH Mobile MMS" mcc="218" mnc="90" apn="mms.bhmobile.ba" mmsc="http://mms.bhmobile.ba/cmmsc/post" mmsproxy="195.222.056.041" mmsport="8080" type="mms" />
@@ -435,7 +435,6 @@
   <apn carrier="Vodafone DE-MMS" mcc="262" mnc="09" apn="event.vodafone.de" mmsc="http://139.7.24.1/servlets/mms" mmsproxy="139.7.29.17" mmsport="80" type="mms" />
   <apn carrier="Vodafone DE" mcc="262" mnc="09" apn="web.vodafone.de" type="default,dun" />
   <apn carrier="o2" mcc="262" mnc="11" apn="internet" mmsc="http://10.81.0.7:8002" mmsproxy="82.113.100.5" mmsport="8080" type="default,dun,mms" />
-  <apn carrier="Vodafone PT-MMS" mcc="268" mnc="01" apn="mms.vodafone.net" user="vas" password="vas" mmsc="http://mms/servlets/mms" mmsproxy="213.30.27.63" mmsport="8799" type="mms" />
   <apn carrier="Vodafone PT" mcc="268" mnc="01" apn="net2.vodafone.pt" server="*" type="default,dun" />
   <apn carrier="Vodafone PT MMS" mcc="268" mnc="01" apn="vas.vodafone.pt" user="vas" password="vas" server="*" mmsc="http://mms/servlets/mms" mmsproxy="213.30.27.63" mmsport="8799" type="mms" />
   <apn carrier="Optimus MMS" mcc="268" mnc="03" apn="mms" server="*" mmsc="http://mmsc:10021/mmsc" mmsproxy="62.169.66.1" mmsport="8799" type="mms" />
@@ -999,8 +998,8 @@
   <apn carrier="Vodafone QA MMS" mcc="427" mnc="02" apn="vodafone.com.qa" mmsc="http://mms.vodafone.com.qa/mmsc" mmsproxy="10.101.97.102" mmsport="80" type="mms" />
   <apn carrier="Vodafone QA" mcc="427" mnc="02" apn="web.vodafone.com.qa" type="default,dun" />
   <apn carrier="MTS UZ" mcc="434" mnc="07" apn="net.mts.uz" user="mts" password="mts" type="default,dun" />
-  <apn carrier="mopera" mcc="440" mnc="10" apn="mopera.net" type="default,dun,mms" />
-  <apn carrier="NTT Docomo" mcc="440" mnc="10" apn="mpr2.bizho.net" type="default,dun,mms" />
+  <apn carrier="NTT Docomo(bizho)" mcc="440" mnc="10" apn="mpr2.bizho.net" type="default,dun,mms" />
+  <apn carrier="NTT Docomo(mopera)" mcc="440" mnc="10" apn="mopera.net" type="default,dun,mms" />
   <apn carrier="Softbank(open)" mcc="440" mnc="20" apn="open.softbank.ne.jp" user="opensoftbank" password="ebMNuX1FIHg9d3DA" mmsc="http://mms/" mmsproxy="mmsopen.softbank.ne.jp" mmsport="8080" type="default,dun,mms" />
   <apn carrier="Softbank(smile.world)" mcc="440" mnc="20" apn="smile.world" user="dna1trop" password="so2t3k3m2a" mmsc="http://mms/" mmsproxy="smilemms.softbank.ne.jp" mmsport="8080" type="default,dun,mms" />
   <apn carrier="SKT3G" mcc="450" mnc="05" apn="web.sktelecom.com" mmsc="http://omms.nate.com:9082/oma_mms" mmsproxy="smart.nate.com" mmsport="9093" type="default,dun,mms" />
@@ -1047,7 +1046,7 @@
   <apn carrier="CTM MMS" mcc="455" mnc="04" apn="ctmmms" mmsc="http://mms.wap.ctm.net:8002" mmsproxy="192.168.99.3" mmsport="8080" type="mms" />
   <apn carrier="Mobitel KH" mcc="456" mnc="01" apn="postpaid" user="mobitel" password="mobitel" type="default,dun" />
   <apn carrier="China Mobile" mcc="460" mnc="00" apn="cmnet" type="default,dun" />
-  <apn carrier="CHina Mobile MMS" mcc="460" mnc="00" apn="cmwap" proxy="10.0.0.172" port="80" mmsc="http://mmsc.monternet.com" mmsproxy="10.0.0.172" mmsport="80" type="mms" />
+  <apn carrier="China Mobile MMS" mcc="460" mnc="00" apn="cmwap" proxy="10.0.0.172" port="80" mmsc="http://mmsc.monternet.com" mmsproxy="10.0.0.172" mmsport="80" type="mms" />
   <apn carrier="China Unicom 3G" mcc="460" mnc="01" apn="3gnet" port="80" type="default,dun" />
   <apn carrier="中国联通 3g 彩信 (China Unicom)" mcc="460" mnc="01" apn="3gwap" mmsc="http://mmsc.myuni.com.cn" mmsproxy="10.0.0.172" mmsport="80" type="mms" />
   <apn carrier="China Unicom MMS" mcc="460" mnc="01" apn="uniwap" mmsc="http://mmsc.myuni.com.cn" mmsproxy="10.0.0.172" mmsport="80" type="mms" />
