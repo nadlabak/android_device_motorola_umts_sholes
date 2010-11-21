@@ -18,11 +18,11 @@ kallsyms_on_each_symbol(int (*fn)(void *, const char *, struct module *,
 			    void *data);
 
 /* Calling a C function if I know the address
- * a) declare it exactly as it was, add the naked attribute (and static too)
+ * a) declare it exactly as it was, add the naked attribute
  * b) body:
  *
- * asm volatile("ldr r4,=function_address\n\t"
- *              "ldr pc,[r4,#0]");
+ * asm volatile("ldr r12,=function_address\n\t"
+ *              "ldr pc,[r12,#0]");
  *
  * c) function_address is a variable storing the address
  * 
