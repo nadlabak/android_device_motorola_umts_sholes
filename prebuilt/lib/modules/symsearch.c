@@ -64,7 +64,11 @@ symsearch_init(void)
 {
 	//kallsyms export the kallsyms_on_each_symbol so use that
 	kallsyms_on_each_symbol(&find_kallsyms_lookup_name, NULL);
-	return kallsyms_lookup_name_address == 0;
+	if(!kallsyms_lookup_name_address) {
+		printk(KERN_INFO "symsearch: could not find kallsyms_lookup_name.\n");
+		return -EBUSY;
+	}
+	return 0;
 }
 
 module_init(symsearch_init);
