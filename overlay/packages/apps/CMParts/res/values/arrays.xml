@@ -338,6 +338,7 @@
         <item>Auto/Dim/40%/100%</item>
         <item>Auto/Dim/25%/75%/100%</item>
         <item>Auto/25%/100%</item>
+        <item>Auto/Dim</item>
         <item>Dim/100%</item>
     </string-array>
 
@@ -345,6 +346,7 @@
         <item>0</item>
         <item>1</item>
         <item>2</item>
+        <item>4</item>
         <item>3</item>
     </string-array>
 
