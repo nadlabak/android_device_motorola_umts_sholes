@@ -51,7 +51,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	dalvik.vm.lockprof.threshold=500 \
 	dalvik.vm.dexopt-flags=m=y \
         ro.product.multi_touch_enabled=true \
-        ro.product.max_num_touch=2 \
+        ro.product.max_num_touch=4 \
         ro.com.google.gmsversion=2.2_r6 
 
 DEVICE_PACKAGE_OVERLAYS += device/motorola/umts_sholes/overlay
