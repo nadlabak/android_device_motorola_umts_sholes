@@ -1,6 +1,9 @@
 #!/system/bin/sh
 insmod /system/lib/modules/symsearch.ko
 insmod /system/lib/modules/overclock.ko
+insmod /system/lib/modules/cpufreq_interactive.ko
+insmod /system/lib/modules/cpufreq_smartass.ko
+insmod /system/lib/modules/cpufreq_conservative.ko
 
 echo 60 > /proc/overclock/max_vsel
 echo 900000 > /proc/overclock/max_rate
@@ -16,10 +19,9 @@ echo 900000 > /proc/overclock/max_rate
  echo "2 500000" > /proc/overclock/freq_table
  echo "3 250000" > /proc/overclock/freq_table
 
-insmod /system/lib/modules/cpufreq_interactive.ko
 echo interactive > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 
-insmod /system/lib/modules/cpufreq_conservative.ko
 #echo conservative > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 #echo 125000 > /sys/devices/system/cpu/cpu0/cpufreq/conservative/sampling_rate
 #echo 25 > /sys/devices/system/cpu/cpu0/cpufreq/conservative/freq_step
+
