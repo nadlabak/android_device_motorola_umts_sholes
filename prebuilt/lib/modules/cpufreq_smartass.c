@@ -98,7 +98,7 @@ static unsigned int sleep_wakeup_freq;
  * go below this frequency.
  * Set awake_min_freq=0 to disable this behavior.
  */
-#define DEFAULT_AWAKE_MIN_FREQ 250000
+#define DEFAULT_AWAKE_MIN_FREQ 0
 static unsigned int awake_min_freq;
 
 /*
@@ -117,13 +117,13 @@ static unsigned int ramp_up_step;
 /*
  * Max freqeuncy delta when ramping down. zero disables.
  */
-#define DEFAULT_MAX_RAMP_DOWN 250000
+#define DEFAULT_MAX_RAMP_DOWN 0
 static unsigned int max_ramp_down;
 
 /*
  * CPU freq will be increased if measured load > max_cpu_load;
  */
-#define DEFAULT_MAX_CPU_LOAD 50
+#define DEFAULT_MAX_CPU_LOAD 80
 static unsigned long max_cpu_load;
 
 /*

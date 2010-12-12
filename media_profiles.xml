@@ -22,7 +22,7 @@
                          AudioDecoderCap)>
 <!ELEMENT CamcorderProfiles (EncoderProfile+, ImageEncoding+, ImageDecoding, Camera)>
 <!ELEMENT EncoderProfile (Video, Audio)>
-<!ATTLIST EncoderProfile quality (high|low) #REQUIRED>
+<!ATTLIST EncoderProfile quality (high|mid|low) #REQUIRED>
 <!ATTLIST EncoderProfile fileFormat (mp4|3gp) #REQUIRED>
 <!ATTLIST EncoderProfile duration (30|60) #REQUIRED>
 <!ELEMENT Video EMPTY>
@@ -80,19 +80,32 @@
     <CamcorderProfiles>
 
         <EncoderProfile quality="high" fileFormat="mp4" duration="60">
-            <Video codec="m4v"
-                   bitRate="4000000"
+            <Video codec="h264"
+                   bitRate="8000000"
                    width="720"
                    height="480"
-                   frameRate="30" />
+                   frameRate="25" />
 
-            <Audio codec="amrnb"
-                   bitRate="12200"
-                   sampleRate="8000"
+            <Audio codec="aac"
+                   bitRate="96000"
+                   sampleRate="16000"
                    channels="1" />
         </EncoderProfile>
 
-        <EncoderProfile quality="low" fileFormat="mp4" duration="30">
+        <EncoderProfile quality="mid" fileFormat="mp4" duration="60">
+            <Video codec="h264"
+                   bitRate="4000000"
+                   width="720"
+                   height="480"
+                   frameRate="25" />
+
+            <Audio codec="aac"
+                   bitRate="48000"
+                   sampleRate="16000"
+                   channels="1" />
+        </EncoderProfile>
+
+        <EncoderProfile quality="low" fileFormat="3gp" duration="30">
             <Video codec="m4v"
                    bitRate="200000"
                    width="320"
@@ -150,6 +163,11 @@
     <AudioEncoderCap name="amrnb" enabled="true"
         minBitRate="5525" maxBitRate="12200"
         minSampleRate="8000" maxSampleRate="8000"
+        minChannels="1" maxChannels="1" />
+
+    <AudioEncoderCap name="amrwb" enabled="true"
+        minBitRate="6600" maxBitRate="23850"
+        minSampleRate="16000" maxSampleRate="16000"
         minChannels="1" maxChannels="1" />
 
     <!--
