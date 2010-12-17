@@ -81,7 +81,7 @@
 
         <EncoderProfile quality="high" fileFormat="mp4" duration="60">
             <Video codec="h264"
-                   bitRate="8000000"
+                   bitRate="6000000"
                    width="720"
                    height="480"
                    frameRate="25" />
@@ -94,7 +94,7 @@
 
         <EncoderProfile quality="mid" fileFormat="mp4" duration="60">
             <Video codec="h264"
-                   bitRate="4000000"
+                   bitRate="3000000"
                    width="720"
                    height="480"
                    frameRate="25" />
