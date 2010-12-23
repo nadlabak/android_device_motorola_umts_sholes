@@ -23,7 +23,7 @@
 # WARNING: This line must come *before* including the proprietary
 # variant, so that it gets overwritten by the parent (which goes
 # against the traditional rules of inheritance).
-USE_CAMERA_STUB := true
+USE_CAMERA_STUB := false
 
 # inherit from the proprietary version
 -include vendor/motorola/umts_sholes/BoardConfigVendor.mk
@@ -55,7 +55,11 @@ WIFI_DRIVER_MODULE_NAME     := "tiwlan_drv"
 WIFI_FIRMWARE_LOADER        := "wlan_loader"
 
 BOARD_USES_GENERIC_AUDIO := false
-#BOARD_USES_ECLAIR_LIBCAMERA := true
+
+# use pre-kernel.35 vold usb mounting
+BOARD_USE_USB_MASS_STORAGE_SWITCH := true
+
+BOARD_USE_FROYO_LIBCAMERA := true
 #BOARD_USES_ECLAIR_LIBAUDIO := true
 
 #HARDWARE_OMX := true
@@ -73,9 +77,9 @@ BOARD_FLASH_BLOCK_SIZE := 131072
 
 BOARD_HAS_SMALL_RECOVERY := true
 
-TARGET_RECOVERY_UI_LIB := librecovery_ui_sholes librecovery_ui_generic
+#TARGET_RECOVERY_UI_LIB := librecovery_ui_sholes librecovery_ui_generic
 
-TARGET_RECOVERY_UPDATER_LIBS += librecovery_updater_generic
+#TARGET_RECOVERY_UPDATER_LIBS += librecovery_updater_generic
 
 USE_SHOLES_PROPERTY := true
 
