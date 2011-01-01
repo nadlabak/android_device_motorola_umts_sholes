@@ -1,3 +1,5 @@
+#on early-init
+#    start ueventd
 
 on init
 
@@ -16,7 +18,8 @@ loglevel 3
     export EXTERNAL_STORAGE /mnt/sdcard
     export ASEC_MOUNTPOINT /mnt/asec
     export SD_EXT_DIRECTORY /sd-ext
-    export BOOTCLASSPATH /system/framework/core.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/android.policy.jar:/system/framework/services.jar
+    export LOOP_MOUNTPOINT /mnt/obb
+    export BOOTCLASSPATH /system/framework/core.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/core-junit.jar
     export TERMINFO /system/etc/terminfo
 
 # Backward compatibility
@@ -55,6 +58,10 @@ loglevel 3
     mount tmpfs tmpfs /mnt/asec mode=0755,gid=1000
 
     mkdir /sd-ext 0771 system system
+
+    # Filesystem image public mount points.
+    mkdir /mnt/obb 0700 root system
+    mount tmpfs tmpfs /mnt/obb mode=0755,gid=1000
 
     mount rootfs rootfs / ro remount
 
@@ -196,32 +203,35 @@ on boot
 # killed by the kernel.  These are used in ActivityManagerService.
     setprop ro.FOREGROUND_APP_ADJ 0
     setprop ro.VISIBLE_APP_ADJ 1
-    setprop ro.SECONDARY_SERVER_ADJ 2
-    setprop ro.BACKUP_APP_ADJ 2
-    setprop ro.HOME_APP_ADJ 4
+    setprop ro.PERCEPTIBLE_APP_ADJ 2
+    setprop ro.HEAVY_WEIGHT_APP_ADJ 3
+    setprop ro.SECONDARY_SERVER_ADJ 4
+    setprop ro.BACKUP_APP_ADJ 5
+    setprop ro.HOME_APP_ADJ 6
     setprop ro.HIDDEN_APP_MIN_ADJ 7
-    setprop ro.CONTENT_PROVIDER_ADJ 14
     setprop ro.EMPTY_APP_ADJ 15
 
 # Define the memory thresholds at which the above process classes will
 # be killed.  These numbers are in pages (4k).
-    setprop ro.FOREGROUND_APP_MEM 1536
-    setprop ro.VISIBLE_APP_MEM 2048
-    setprop ro.SECONDARY_SERVER_MEM 4096
-    setprop ro.BACKUP_APP_MEM 4096
-    setprop ro.HOME_APP_MEM 4096
-    setprop ro.HIDDEN_APP_MEM 5120
-    setprop ro.CONTENT_PROVIDER_MEM 5632
-    setprop ro.EMPTY_APP_MEM 6144
+    setprop ro.FOREGROUND_APP_MEM 2048
+    setprop ro.VISIBLE_APP_MEM 3072
+    setprop ro.PERCEPTIBLE_APP_MEM 4096
+    setprop ro.HEAVY_WEIGHT_APP_MEM 4096
+    setprop ro.SECONDARY_SERVER_MEM 6144
+    setprop ro.BACKUP_APP_MEM 6144
+    setprop ro.HOME_APP_MEM 6144
+    setprop ro.HIDDEN_APP_MEM 7168
+    setprop ro.EMPTY_APP_MEM 8192
 
 # Write value must be consistent with the above properties.
-# Note that the driver only supports 6 slots, so we have HOME_APP at the
-# same memory level as services.
-    write /sys/module/lowmemorykiller/parameters/adj 0,1,2,7,14,15
+# Note that the driver only supports 6 slots, so we have combined some of
+# the classes into the same memory level; the associated processes of higher
+# classes will still be killed first.
+    write /sys/module/lowmemorykiller/parameters/adj 0,1,2,4,7,15
 
     write /proc/sys/vm/overcommit_memory 1
     write /proc/sys/vm/min_free_order_shift 4
-    write /sys/module/lowmemorykiller/parameters/minfree 1536,2048,4096,5120,5632,6144
+    write /sys/module/lowmemorykiller/parameters/minfree 2048,3072,4096,6144,7168,8192
 
     # Set init its forked children's oom_adj.
     write /proc/1/oom_adj -16
@@ -299,9 +309,18 @@ on boot
 
 ## Daemon processes to be run by init.
 ##
+#service ueventd /sbin/ueventd
+#    critical
+
 service console /system/bin/sh
     class pre-zygote_services
     console
+    disabled
+    user shell
+    group log
+
+on property:ro.secure=0
+    start console
 
 # adbd is controlled by the persist.service.adb.enable system property
 service adbd /sbin/adbd
@@ -342,7 +361,7 @@ service ril-daemon /system/bin/rild
     socket rild stream 660 root radio
     socket rild-debug stream 660 radio system
     user root
-    group radio cache inet misc system audio
+    group radio cache inet misc system audio sdcard_rw net_admin net_raw
 
 service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-system-server
     class zygote_services
@@ -350,6 +369,7 @@ service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-sys
     onrestart write /sys/android_power/request_state wake
     onrestart write /sys/power/state on
     onrestart restart media
+    onrestart restart netd
 
 service media /system/bin/mediaserver
     class zygote_services
