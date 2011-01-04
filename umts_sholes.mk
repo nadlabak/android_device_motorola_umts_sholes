@@ -14,13 +14,6 @@
 # limitations under the License.
 #
 
-#
-# This is the product configuration for a generic GSM passion,
-# not specialized for any geography.
-#
-
-$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
-
 # The gps config appropriate for this device
 $(call inherit-product, device/common/gps/gps_eu_supl.mk)
 
@@ -52,7 +45,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	dalvik.vm.dexopt-flags=m=y \
         ro.product.multi_touch_enabled=true \
         ro.product.max_num_touch=4 \
-        ro.com.google.gmsversion=2.2_r6 
+        ro.com.google.gmsversion=2.2_r8 
 
 DEVICE_PACKAGE_OVERLAYS += device/motorola/umts_sholes/overlay
 
@@ -82,7 +75,20 @@ PRODUCT_PACKAGES += \
     wlan_cu \
     libtiOsLib \
     wlan_loader \
-    libCustomWifi
+    libCustomWifi \
+    wpa_supplicant.conf \
+    dhcpcd.conf \
+    libOMX.TI.AAC.encode \
+    libOMX.TI.AMR.encode \
+    libOMX.TI.WBAMR.encode \
+    libOMX.TI.JPEG.Encoder \
+    libLCML \
+    libOMX_Core \
+    libOMX.TI.Video.Decoder \
+    libOMX.TI.Video.encoder \
+    libVendor_ti_omx \
+    gps.sholes \
+    sensors.sholes
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
@@ -121,7 +127,7 @@ $(call inherit-product-if-exists, vendor/motorola/umts_sholes/umts_sholes-vendor
 # stuff common to all HTC phones
 #$(call inherit-product, device/htc/common/common.mk)
 
-$(call inherit-product, build/target/product/full.mk)
+$(call inherit-product, build/target/product/full_base.mk)
 
 
 PRODUCT_NAME := umts_sholes
