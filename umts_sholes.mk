@@ -78,15 +78,6 @@ PRODUCT_PACKAGES += \
     libCustomWifi \
     wpa_supplicant.conf \
     dhcpcd.conf \
-    libOMX.TI.AAC.encode \
-    libOMX.TI.AMR.encode \
-    libOMX.TI.WBAMR.encode \
-    libOMX.TI.JPEG.Encoder \
-    libLCML \
-    libOMX_Core \
-    libOMX.TI.Video.Decoder \
-    libOMX.TI.Video.encoder \
-    libVendor_ti_omx \
     gps.sholes \
     sensors.sholes
 
@@ -108,6 +99,7 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/bin/2nd-init:/system/bin/2nd-init \
     device/motorola/umts_sholes/prebuilt/bin/init_prep_keypad.sh:/system/bin/init_prep_keypad.sh \
     device/motorola/umts_sholes/prebuilt/bin/sh_hijack.sh:/system/bin/sh_hijack.sh \
+    device/motorola/umts_sholes/prebuilt/bin/tcmd:/system/bin/tcmd \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad.kcm.bin:/system/usr/keychars/sholesp2a-keypad.kcm.bin \
     device/motorola/umts_sholes/prebuilt/app/Usb.apk:/system/app/Usb.apk \
     device/motorola/umts_sholes/prebuilt/app/Toggle2G.apk:/system/app/Toggle2G.apk \
