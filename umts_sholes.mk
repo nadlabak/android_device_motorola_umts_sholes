@@ -78,6 +78,20 @@ PRODUCT_PACKAGES += \
     libCustomWifi \
     wpa_supplicant.conf \
     dhcpcd.conf \
+    libOMX.TI.AAC.decode \
+    libOMX.TI.AAC.encode \
+    libOMX.TI.AMR.decode \
+    libOMX.TI.AMR.encode \
+    libOMX.TI.MP3.decode \
+    libOMX.TI.WBAMR.decode \
+    libOMX.TI.WBAMR.encode \
+    libOMX.TI.WMA.decode \
+    libOMX.TI.JPEG.Encoder \
+    libLCML \
+    libOMX_Core \
+    libOMX.TI.Video.Decoder \
+    libOMX.TI.Video.encoder \
+    libVendor_ti_omx \
     gps.sholes \
     sensors.sholes
 
