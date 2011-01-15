@@ -34,11 +34,27 @@ mot.proximity.delay=450
 #proximit sensor disable touch distance 
 mot.proximity.distance=100
 
-#set to 0 if you don't use a dock but a case with a magentic closure
+
+## Specific properties available only in CM6 for Milestone
+
+# set to 0 if you don't use a dock but a case with a magentic closure
 ro.config.dockobserver=1
 
-#swap volume keys in landscape mode
+# swap volume keys in landscape mode
 ro.config.volume_keys_rotation=1
+
+# By default, the dalvik-cache of apps in /system is stored in /cache,
+# of apps in /data and sdcard in /data. When set to 1, dalvik-cache of
+# all apps will be stored in /cache.
+# Use with caution, a lot of free space in /data and almost full /cache
+# is not a good thing...
+dalvik.vm.dexopt-cache-only=0
+
+# set to 1 if you don't want the screen to turn on when the phone is plugged
+# useful when using a solar power adapter (fluctuating power)
+ro.config.no_action_on_plug=0
+
+##
 
 windowsmgr.max_events_per_sec=60
 
