@@ -65,6 +65,18 @@ chown mot_usb mot_usb /dev/ttyGS0
 chown mot_usb mot_usb /dev/usb_device_mode
 chown mot_usb mot_usb /proc/mtpctl
 
+#moto debug properties
+setprop ro.sys.atvc_allow_gki_log 1
+setprop ro.sys.atvc_allow_bp_log 1
+setprop ro.sys.atvc_allow_ap_mot_log 1
+setprop ro.sys.atvc_allow_netmon_usb 1
+setprop ro.sys.atvc_allow_netmon_ih 1
+setprop ro.sys.atvc_allow_res_core 1
+setprop ro.sys.atvc_allow_res_panic 1
+setprop ro.sys.atvc_allow_all_adb 1
+setprop ro.sys.atvc_allow_all_core 1
+setprop ro.sys.atvc_allow_efem 1
+
 on early-boot
 
 # Adjust the out of memory thresholds to account for the larget
