@@ -31,6 +31,11 @@
 
 #include <hardware/lights.h>
 
+// taken from led-lm3530.h in kernel source, these are als modes
+#define MANUAL          0
+#define AUTOMATIC       1
+#define MANUAL_SENSOR   2
+
 /******************************************************************************/
 
 static pthread_once_t g_init = PTHREAD_ONCE_INIT;
@@ -106,19 +111,22 @@ set_light_backlight(struct light_device_t* dev,
         struct light_state_t const* state)
 {
     int err = 0;
+    int als_mode;
+
     int brightness = rgb_to_brightness(state);
 
     switch(state->brightnessMode) {
         case BRIGHTNESS_MODE_SENSOR:
-            err = write_int(ALS_FILE, 2);
+            als_mode = AUTOMATIC;
             break;
         case BRIGHTNESS_MODE_USER:
         default:
-            err = write_int(ALS_FILE, 1);
+            als_mode = MANUAL_SENSOR;
             break;
     }
 
     pthread_mutex_lock(&g_lock);
+    err = write_int(ALS_FILE, als_mode);
     err = write_int(LCD_FILE, brightness);
     pthread_mutex_unlock(&g_lock);
 
