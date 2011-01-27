@@ -93,7 +93,8 @@ PRODUCT_PACKAGES += \
     libOMX.TI.Video.encoder \
     libVendor_ti_omx \
     gps.sholes \
-    sensors.sholes
+    sensors.sholes \
+    lights.sholes
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
