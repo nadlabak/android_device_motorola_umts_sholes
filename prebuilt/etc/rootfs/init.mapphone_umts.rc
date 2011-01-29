@@ -267,7 +267,8 @@ mount rootfs rootfs / ro remount
     insmod /system/lib/modules/sec.ko
 
     insmod /system/lib/modules/mbcache.ko
-    insmod /system/lib/modules/ext2.ko
+    insmod /system/lib/modules/jbd2.ko
+    insmod /system/lib/modules/ext4.ko
 
 # Start services
     exec /system/bin/mot_boot_mode
