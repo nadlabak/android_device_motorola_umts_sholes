@@ -253,10 +253,10 @@ set_light_notification(struct light_device_t* dev,
             blink = 0;
             break;
     }
-
+#if 0
     LOGD("set_light_notification color=%08X, blink=%d****************\n",
             state->color, blink);
-
+#endif
     err = set_light_locked(state->color, blink);
 
     return err;
