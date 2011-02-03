@@ -119,6 +119,7 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/app/Usb.apk:/system/app/Usb.apk \
     device/motorola/umts_sholes/prebuilt/app/Toggle2G.apk:/system/app/Toggle2G.apk \
     device/motorola/umts_sholes/prebuilt/app/Toggle_2G_Notification_Plugin.apk:/system/app/Toggle_2G_Notification_Plugin.apk \
+    device/motorola/umts_sholes/prebuilt/lib/libgki.so:/system/lib/libgki.so \
     device/motorola/umts_sholes/prebuilt/lib/modules/symsearch.ko:/system/lib/modules/symsearch.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/cpufreq_interactive.ko:/system/lib/modules/cpufreq_interactive.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/cpufreq_smartass.ko:/system/lib/modules/cpufreq_smartass.ko \
