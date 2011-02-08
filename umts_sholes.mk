@@ -44,8 +44,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	dalvik.vm.lockprof.threshold=500 \
 	dalvik.vm.dexopt-flags=m=y \
         ro.product.multi_touch_enabled=true \
-        ro.product.max_num_touch=4 \
-        ro.com.google.gmsversion=2.2_r8 
+        ro.product.max_num_touch=2 \
+        ro.com.google.gmsversion=2.2_r9 
+
+# Enable TI HotSpot
+#PRODUCT_PROPERTY_OVERRIDES += \
+#    wifi.hotspot.ti=1
 
 DEVICE_PACKAGE_OVERLAYS += device/motorola/umts_sholes/overlay
 
@@ -85,7 +89,6 @@ PRODUCT_PACKAGES += \
     libOMX.TI.MP3.decode \
     libOMX.TI.WBAMR.decode \
     libOMX.TI.WBAMR.encode \
-    libOMX.TI.WMA.decode \
     libOMX.TI.JPEG.Encoder \
     libLCML \
     libOMX_Core \
@@ -95,6 +98,14 @@ PRODUCT_PACKAGES += \
     gps.sholes \
     sensors.sholes \
     lights.sholes
+
+# HotSpot
+#PRODUCT_PACKAGES += \
+#    tiap_loader \
+#    tiap_cu \
+#    tiwlan_ap.ini \
+#    hostap \
+#    hostapd.conf
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
