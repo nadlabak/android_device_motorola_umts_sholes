@@ -24,10 +24,6 @@ ro.opengles.version = 131072
 # This is a high density device with more memory, so larger vm heaps for it.
 dalvik.vm.heapsize=32m
 
-# dalvik-cache of both system and data/sdcard apps in /cache
-# (dexopt-cache-only overrides dexopt-data-only, so use it with care) 
-dalvik.vm.dexopt-cache-only=0
-
 #proximit sensor screen off delay
 mot.proximity.delay=450
 
@@ -35,9 +31,11 @@ mot.proximity.delay=450
 mot.proximity.distance=100
 
 #set to 0 if you don't use a dock but a case with a magentic closure
+# !not re-implemented yet in CM7!
 ro.config.dockobserver=1
 
 #swap volume keys in landscape mode
+# !not re-implemented yet in CM7!
 ro.config.volume_keys_rotation=1
 
 windowsmgr.max_events_per_sec=60
