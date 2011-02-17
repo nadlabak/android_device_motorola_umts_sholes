@@ -50,50 +50,6 @@
          so, we wouldn't need this flag at all.) -->
     <bool name="allow_in_call_touch_ui">true</bool>
 
-    <!-- OTA configuration values, used when provisioning CDMA devices.
-         Following defaults values of zero means OTA UI is completely disabled.
-         These OTA UI can be enabled by setting config value to one in the product
-         specific overlay file -->
-
-    <!-- Determine whether we want to display the OTA activation screen, which
-         gives the user option to activate or cancel -->
-    <integer name="OtaShowActivationScreen">1</integer>
-    <!-- Determine whether we should show the "listen for instructions" screen after
-         successfully placing the OTA call -->
-    <integer name="OtaShowListeningScreen">1</integer>
-    <!-- The number of times we should show the activation screen/allow the provisioning
-         to fail before just showing an unsuccessful dialog -->
-    <integer name="OtaShowActivateFailTimes">0</integer>
-    <!-- Determine whether or not we should play the success/failure tone -->
-    <integer name="OtaPlaySuccessFailureTone">0</integer>
-
-    <!-- Flag indicating if the phone is a world phone -->
-    <bool name="world_phone">false</bool>
-
-    <!-- If true, enable vibration (haptic feedback) for key presses
-         in the EmergencyDialer activity. The pattern is set on a
-         per-platform basis using config_virtualKeyVibePattern.  To be
-         consistent with the regular Dialer, this value should agree
-         with the corresponding values from config.xml under
-         apps/Contacts. -->
-    <bool name="config_enable_dialer_key_vibration">true</bool>
-
-    <!-- Flag indicating if the tty is enabled -->
-    <bool name="tty_enabled">false</bool>
-
-    <!-- Flag indicating if hac is enabled -->
-    <bool name="hac_enabled">false</bool>
-
-    <!-- Flag indicating if dtmf tone type is enabled -->
-    <bool name="dtmf_type_enabled">false</bool>
-
-    <!-- Flag indicating if auto retry is enabled -->
-    <bool name="auto_retry_enabled">false</bool>
-
-    <!-- Determine whether we want to play local DTMF tones in a call, or
-         just let the radio/BP handle playing of the tones. -->
-    <bool name="allow_local_dtmf_tones">true</bool>
-
     <!-- While an incoming call is ringing, this flag specifies whether
          the BACK key should reject the current call (just like the
          ENDCALL button does.)
