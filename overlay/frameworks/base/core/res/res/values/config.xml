@@ -81,7 +81,7 @@
          Wifi interfaces.  If the device doesn't want to support tethering over Wifi this
          should be empty.  An example would be "softap.*" -->
     <string-array translatable="false" name="config_tether_wifi_regexs">
-        <item>"tiap\\d"</item>
+<!--        <item>"tiap\\d"</item> -->
     </string-array>
 
     <!-- Dhcp range (min, max) to use for tethering purposes -->
@@ -286,7 +286,7 @@
     <!-- Amount of time it takes for the light sensor to warm up in milliseconds.
          For this time after the screen turns on, the Power Manager
          will not debounce light sensor readings -->
-    <integer name="config_lightSensorWarmupTime">2000</integer>
+    <integer name="config_lightSensorWarmupTime">250</integer>
 
     <!-- Enables swipe versus poly-finger touch disambiguation in the KeyboardView -->
     <bool name="config_swipeDisambiguation">true</bool>
