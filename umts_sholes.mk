@@ -97,7 +97,8 @@ PRODUCT_PACKAGES += \
     libVendor_ti_omx \
     gps.sholes \
     sensors.sholes \
-    lights.sholes
+    lights.sholes \
+    libaudiopolicy
 
 # HotSpot
 #PRODUCT_PACKAGES += \
