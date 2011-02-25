@@ -93,7 +93,7 @@
         </EncoderProfile>
 
         <EncoderProfile quality="low" fileFormat="3gp" duration="30">
-            <Video codec="m4v"
+            <Video codec="h263"
                    bitRate="200000"
                    width="320"
                    height="240"
