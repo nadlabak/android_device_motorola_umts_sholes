@@ -393,9 +393,9 @@ service battd /system/bin/battd
     group mot_accy mot_pwric
     oneshot
 
-service catcommands /system/bin/catcommands
-    class pre-zygote_services
-    group radio 
+#service catcommands /system/bin/catcommands
+#    class pre-zygote_services
+#    group radio 
 
 service bplogd_daemon /system/bin/bplogd_daemon
     class pre-zygote_services
@@ -417,12 +417,12 @@ service ssmgrd /system/xbin/ssmgrd
     group radio input mot_pwric
     oneshot
 
-service tcmd /system/bin/tcmd
-    class post-zygote_services
-    group mot_tcmd radio mot_pwric input system log camera graphics mot_accy sdcard_rw audio inet bluetooth wifi
-    socket local_tcmd stream 0660 mot_tcmd mot_tcmd
-    socket batch_socket stream 0600 mot_tcmd mot_tcmd
-    oneshot
+#service tcmd /system/bin/tcmd
+#    class post-zygote_services
+#    group mot_tcmd radio mot_pwric input system log camera graphics mot_accy sdcard_rw audio inet bluetooth wifi
+#    socket local_tcmd stream 0660 mot_tcmd mot_tcmd
+#    socket batch_socket stream 0600 mot_tcmd mot_tcmd
+#    oneshot
 
 # turn on wifi for tcmd step one
 on property:tcmd.load_wlan=1
