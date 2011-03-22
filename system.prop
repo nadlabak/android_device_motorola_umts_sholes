@@ -38,5 +38,7 @@ ro.config.dockobserver=1
 # !not re-implemented yet in CM7!
 ro.config.volume_keys_rotation=1
 
+persist.sys.purgeable_assets=1
+
 windowsmgr.max_events_per_sec=60
 
