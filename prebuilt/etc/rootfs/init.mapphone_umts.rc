@@ -256,8 +256,8 @@ mount rootfs rootfs / ro remount
 # Enable panic on softlockup
     write /proc/sys/kernel/softlockup_panic 1
 
-# Set OMAP DSS update_mode to 1 (auto) to get rid of the DSI errors
-    write /sys/devices/omapdss/display0/update_mode 1
+# Permissions for OMAP DSS update_mode workaround to get rid of the DSI errors
+    chown system system /sys/devices/omapdss/display0/update_mode
 
 # Install kernel modules
 
