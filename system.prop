@@ -30,10 +30,6 @@ mot.proximity.delay=450
 #proximit sensor disable touch distance 
 mot.proximity.distance=100
 
-#set to 0 if you don't use a dock but a case with a magentic closure
-# !not re-implemented yet in CM7!
-ro.config.dockobserver=1
-
 # Milestone DSI kernel bug workaround
 persist.sys.omap_dss_mode=1
 
