@@ -98,7 +98,8 @@ PRODUCT_PACKAGES += \
     gps.sholes \
     sensors.sholes \
     lights.sholes \
-    libaudiopolicy
+    libaudiopolicy \
+    Usb
 
 # HotSpot
 #PRODUCT_PACKAGES += \
@@ -128,7 +129,6 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/bin/sh_hijack.sh:/system/bin/sh_hijack.sh \
     device/motorola/umts_sholes/prebuilt/bin/tcmd:/system/bin/tcmd \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad.kcm.bin:/system/usr/keychars/sholesp2a-keypad.kcm.bin \
-    device/motorola/umts_sholes/prebuilt/app/Usb.apk:/system/app/Usb.apk \
     device/motorola/umts_sholes/prebuilt/lib/libgki.so:/system/lib/libgki.so \
     device/motorola/umts_sholes/prebuilt/lib/modules/symsearch.ko:/system/lib/modules/symsearch.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/cpufreq_interactive.ko:/system/lib/modules/cpufreq_interactive.ko \
