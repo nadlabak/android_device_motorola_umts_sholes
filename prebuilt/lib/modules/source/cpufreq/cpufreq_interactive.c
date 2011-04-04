@@ -27,9 +27,9 @@
 
 #include <asm/cputime.h>
 
-extern unsigned long lookup_symbol_address(const char *name);
-static unsigned long (*nr_running_k)(void);
-static uint nr_running_addr;
+#include "../symsearch/symsearch.h"
+
+SYMSEARCH_DECLARE_FUNCTION_STATIC(unsigned long, _nr_running, void);
 
 static void (*pm_idle_old)(void);
 static atomic_t active_count = ATOMIC_INIT(0);
@@ -97,7 +97,7 @@ static void cpufreq_interactive_timer(unsigned long data)
 		if (policy->cur == policy->max)
 			return;
 
-		if (nr_running_k() < 1)
+		if (_nr_running() < 1)
 			return;
 
 		target_freq = policy->max;
@@ -114,7 +114,7 @@ static void cpufreq_interactive_timer(unsigned long data)
 	 * Do not setup the timer if there is no scheduled work.
 	 */
 	t = &per_cpu(cpu_timer, data);
-	if (!timer_pending(t) && nr_running_k() > 0) {
+	if (!timer_pending(t) && _nr_running() > 0) {
 			*cpu_time_in_idle = get_cpu_idle_time_us(
 					data, cpu_idle_exit_time);
 			mod_timer(t, jiffies + 2);
@@ -188,7 +188,7 @@ static void cpufreq_interactive_freq_change_time_work(struct work_struct *work)
 	cpumask_t tmp_mask = work_cpumask;
 	for_each_cpu(cpu, tmp_mask) {
 		if (target_freq == policy->max) {
-			if (nr_running_k() == 1) {
+			if (_nr_running() == 1) {
 				cpumask_clear_cpu(cpu, &work_cpumask);
 				return;
 			}
@@ -288,12 +288,8 @@ static int __init cpufreq_interactive_init(void)
 	unsigned int i;
 	struct timer_list *t;
 	min_sample_time = DEFAULT_MIN_SAMPLE_TIME;
-        nr_running_addr = lookup_symbol_address("nr_running");
-        if(!nr_running_addr) {
-                printk(KERN_INFO "overclock: Could not find symbol: cpufreq_stats_update.\n");
-                return -EBUSY;
-        }
-	nr_running_k = (void *) nr_running_addr;
+	
+	SYMSEARCH_BIND_FUNCTION_TO(cpufreq_interactive,nr_running,_nr_running);
 
 	/* Initalize per-cpu timers */
 	for_each_possible_cpu(i) {

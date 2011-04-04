@@ -33,9 +33,9 @@
 #include <asm/cputime.h>
 #include <linux/earlysuspend.h>
 
-extern unsigned long lookup_symbol_address(const char *name);
-static unsigned long (*nr_running_k)(void);
-static uint nr_running_addr;
+#include "../symsearch/symsearch.h"
+
+SYMSEARCH_DECLARE_FUNCTION_STATIC(unsigned long, _nr_running, void);
 
 static void (*pm_idle_old)(void);
 static atomic_t active_count = ATOMIC_INIT(0);
@@ -225,7 +225,7 @@ static void cpufreq_smartass_timer(unsigned long data)
                 if (policy->cur == policy->max)
                         return;
 
-                if (nr_running_k() < 1)
+                if (_nr_running() < 1)
                         return;
 
                 this_smartass->force_ramp_up = 1;
@@ -241,7 +241,7 @@ static void cpufreq_smartass_timer(unsigned long data)
          * firing. So setup another timer to fire to check cpu utlization.
          * Do not setup the timer if there is no scheduled work or if at max speed.
          */
-        if (policy->cur < this_smartass->max_speed && !timer_pending(&this_smartass->timer) && nr_running_k() > 0)
+        if (policy->cur < this_smartass->max_speed && !timer_pending(&this_smartass->timer) && _nr_running() > 0)
                 reset_timer(data,this_smartass);
 
         if (policy->cur == policy->min)
@@ -291,7 +291,7 @@ static void cpufreq_smartass_freq_change_time_work(struct work_struct *work)
                 this_smartass = &per_cpu(smartass_info, cpu);
                 policy = this_smartass->cur_policy;
                 cpu_load = this_smartass->cur_cpu_load;
-                force_ramp_up = this_smartass->force_ramp_up && nr_running_k() > 1;
+                force_ramp_up = this_smartass->force_ramp_up && _nr_running() > 1;
                 this_smartass->force_ramp_up = 0;
 
                 //printk(KERN_INFO "Smartass calc_freq: delta_time=%u cpu_load=%u\n",delta_time,cpu_load);
@@ -619,12 +619,9 @@ static int __init cpufreq_smartass_init(void)
 {
         unsigned int i;
         struct smartass_info_s *this_smartass;
-        nr_running_addr = lookup_symbol_address("nr_running");
-        if(!nr_running_addr) {
-                printk(KERN_INFO "overclock: Could not find symbol: cpufreq_stats_update.\n");
-                return -EBUSY;
-        }
-	nr_running_k = (void *) nr_running_addr;
+        
+        SYMSEARCH_BIND_FUNCTION_TO(cpufreq_smartass,nr_running,_nr_running);
+        
         down_rate_us = DEFAULT_DOWN_RATE_US;
         up_min_freq = DEFAULT_UP_MIN_FREQ;
         sleep_max_freq = DEFAULT_SLEEP_MAX_FREQ;
