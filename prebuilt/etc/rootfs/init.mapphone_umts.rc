@@ -273,6 +273,7 @@ mount rootfs rootfs / ro remount
     insmod /system/lib/modules/symsearch.ko
     insmod /system/lib/modules/slow-work.ko
     insmod /system/lib/modules/xt_multiport.ko
+    insmod /system/lib/modules/tun.ko
     insmod /system/lib/modules/overclock.ko
     insmod /system/lib/modules/cpufreq_interactive.ko
     insmod /system/lib/modules/cpufreq_conservative.ko
