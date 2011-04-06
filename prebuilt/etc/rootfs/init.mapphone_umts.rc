@@ -272,6 +272,7 @@ mount rootfs rootfs / ro remount
 # Install custom kernel modules
     insmod /system/lib/modules/symsearch.ko
     insmod /system/lib/modules/slow-work.ko
+    insmod /system/lib/modules/nls_utf8.ko
     insmod /system/lib/modules/xt_multiport.ko
     insmod /system/lib/modules/tun.ko
     insmod /system/lib/modules/overclock.ko
