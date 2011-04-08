@@ -79,6 +79,30 @@ chown mot_usb mot_usb /proc/mtpctl
 
 on early-boot
 
+# Install kernel modules
+
+# Install BP related kernel modules
+    #Start the engine modules for netmux first for other daemons depends on it
+    insmod /system/lib/modules/netmux.ko
+    insmod /system/lib/modules/netmux_linkdriver.ko
+    insmod /system/lib/modules/sim.ko
+    insmod /system/lib/modules/modem_pm_driver.ko
+    insmod /system/lib/modules/sec.ko
+
+# Install custom kernel modules
+    insmod /system/lib/modules/jbd2.ko
+    insmod /system/lib/modules/ext4.ko
+    insmod /system/lib/modules/symsearch.ko
+    insmod /system/lib/modules/slow-work.ko
+    insmod /system/lib/modules/nls_utf8.ko
+    insmod /system/lib/modules/xt_multiport.ko
+    insmod /system/lib/modules/tun.ko
+    insmod /system/lib/modules/overclock.ko
+    insmod /system/lib/modules/cpufreq_interactive.ko
+    insmod /system/lib/modules/cpufreq_conservative.ko
+    insmod /system/lib/modules/cpufreq_smartass.ko
+    insmod /system/lib/modules/cpufreq_stats.ko
+
 # Adjust the out of memory thresholds to account for the larget
 # space on sholes.  These numbers are in pages (4k).  Must be kept
 # in sync with init.rc.  This must be done before the regular init.rc
@@ -243,7 +267,7 @@ mount rootfs rootfs / ro remount
     write /sys/devices/platform/ohci.0/usb2/2-3/power/level auto
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 250000
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 550000
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor ondemand
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
     write /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold 86
     write /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate 46875
     # Wakelock debug
@@ -258,32 +282,6 @@ mount rootfs rootfs / ro remount
 
 # Permissions for OMAP DSS update_mode workaround to get rid of the DSI errors
     chown system system /sys/devices/omapdss/display0/update_mode
-
-# Install kernel modules
-
-# Install BP related kernel modules
-    #Start the engine modules for netmux first for other daemons depends on it
-    insmod /system/lib/modules/netmux.ko
-    insmod /system/lib/modules/netmux_linkdriver.ko
-    insmod /system/lib/modules/sim.ko
-    insmod /system/lib/modules/modem_pm_driver.ko
-    insmod /system/lib/modules/sec.ko
-
-# Install custom kernel modules
-    insmod /system/lib/modules/symsearch.ko
-    insmod /system/lib/modules/slow-work.ko
-    insmod /system/lib/modules/nls_utf8.ko
-    insmod /system/lib/modules/xt_multiport.ko
-    insmod /system/lib/modules/tun.ko
-    insmod /system/lib/modules/overclock.ko
-    insmod /system/lib/modules/cpufreq_interactive.ko
-    insmod /system/lib/modules/cpufreq_conservative.ko
-    insmod /system/lib/modules/cpufreq_smartass.ko
-    insmod /system/lib/modules/cpufreq_stats.ko
-    insmod /system/lib/modules/jbd2.ko
-    insmod /system/lib/modules/ext4.ko
-
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
 
 # Increase read throughput from sd card
     write /sys/block/mmcblk0/bdi/read_ahead_kb 2048
