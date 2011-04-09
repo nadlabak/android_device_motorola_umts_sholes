@@ -71,6 +71,8 @@ MODULE_DESCRIPTION(DRIVER_DESCRIPTION);
 MODULE_VERSION(DRIVER_VERSION);
 MODULE_LICENSE("GPL");
 
+extern int cpufreq_stats_freq_update(unsigned int cpu, int index, unsigned int freq);
+
 static uint freq_table_addr = 0;
 static uint mpu_opps_addr = 0;
 SYMSEARCH_DECLARE_ADDRESS_STATIC(omap2_clk_init_cpufreq_table);
@@ -248,6 +250,7 @@ static int proc_mpu_opps_write(struct file *filp, const char __user *buffer,
 			policy->min = policy->cpuinfo.min_freq =
 			policy->user_policy.min = rate / 1000;
 		}
+		cpufreq_stats_freq_update(0, MAX_VDD1_OPP - index, rate / 1000);
 	} 
 	else
 		printk(KERN_INFO "overclock: insufficient parameters for mpu_opps\n");

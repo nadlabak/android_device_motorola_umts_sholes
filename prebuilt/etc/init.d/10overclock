@@ -6,6 +6,4 @@
  echo "2 250000000 34" > /proc/overclock/mpu_opps
  echo "1 125000000 32" > /proc/overclock/mpu_opps
 
-rmmod cpufreq_stats
-insmod /system/lib/modules/cpufreq_stats.ko
 
