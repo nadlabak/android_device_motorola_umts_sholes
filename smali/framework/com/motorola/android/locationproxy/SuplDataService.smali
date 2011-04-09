@@ -1474,6 +1474,33 @@
 
     if-nez v17, :cond_3
 
+    move-object/from16 v0, p0
+
+    iget-object v0, v0, Lcom/motorola/android/locationproxy/SuplDataService;->mSocketChannel:Ljava/nio/channels/SocketChannel;
+
+    move-object/from16 v17, v0
+
+    invoke-virtual/range {v17 .. v17}, Ljava/nio/channels/SocketChannel;->isConnectionPending()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_0
+
+    :goto_7
+    invoke-virtual/range {v17 .. v17}, Ljava/nio/channels/SocketChannel;->finishConnect()Z
+
+    move-result v0
+
+    if-nez v0, :cond_3
+
+    const-string v0, "SUPLJ"
+
+    const-string v8, "Waitting for connection to be established...(handleMessage)"
+
+    invoke-static {v0, v8}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    goto :goto_7
+
     .line 113
     :cond_0
     move-object/from16 v0, p0
@@ -1707,6 +1734,7 @@
     invoke-static/range {p1 .. p1}, Lcom/motorola/android/locationproxy/SuplDataService;->msg2ObjArray(Landroid/os/Message;)[Ljava/lang/Object;
 
     move-result-object v7
+
 
     .line 142
     .restart local v7       #data:[Ljava/lang/Object;
