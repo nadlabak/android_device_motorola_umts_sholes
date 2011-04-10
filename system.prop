@@ -36,5 +36,8 @@ persist.sys.omap_dss_mode=1
 # to spare some RAM
 persist.sys.purgeable_assets=1
 
+# disable Windows Media Sync Usb.apk mode
+ro.mtp_available=0
+
 windowsmgr.max_events_per_sec=60
 
