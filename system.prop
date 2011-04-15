@@ -36,6 +36,11 @@ persist.sys.omap_dss_mode=1
 # to spare some RAM
 persist.sys.purgeable_assets=1
 
+# apps to be kept in memory (specified by process name)
+# use with caution, RAM is limited!
+sys.keep_app_1=
+sys.keep_app_2=
+
 # disable Windows Media Sync Usb.apk mode
 ro.mtp_available=0
 
