@@ -9,7 +9,16 @@ then
 	echo "$SD_EXT_DIRECTORY not mounted.. skipping a2sd"
 	exit
 fi
-for dir in app app-private dalvik-cache;do
+if [ -L "/data/dalvik-cache" ];
+then
+	rm /data/dalvik-cache
+	install -m 771 -o 1000 -g 1000 -d /data/dalvik-cache
+fi
+if [ -e "${SD_EXT_DIRECTORY}/dalvik-cache" ];
+then
+	rm -rf ${SD_EXT_DIRECTORY}/dalvik-cache
+fi
+for dir in app app-private;do
 	if [ "`egrep -q \"/data/${dir}\" /proc/mounts;echo $?`" != "0" ];
 	then	
 		if [ ! -e "${SD_EXT_DIRECTORY}/${dir}" ];
@@ -21,14 +30,6 @@ for dir in app app-private dalvik-cache;do
 			rm /data/${dir}
 			install -m 771 -o 1000 -g 1000 -d /data/${dir}
 		fi
-		if [ "${dir}" = "dalvik-cache" ];
-		then
-			if [ ! -L "/data/${dir}" ];
-			then
-				rm -rf /data/${dir}
-				install -m 771 -o 1000 -g 1000 -d /data/${dir}
-			fi	
-		fi
 		if [ "${dir}" = "app" -o "${dir}" = "app-private" ];
 		then
 			for app in `find /data/${dir} -type f -iname "*.apk" -o -iname "*.zip"`;do
@@ -38,3 +39,4 @@ for dir in app app-private dalvik-cache;do
 		mount -o bind ${SD_EXT_DIRECTORY}/${dir}/ /data/${dir}
 	fi
 done
+
