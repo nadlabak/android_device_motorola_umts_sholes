@@ -283,6 +283,9 @@ mount rootfs rootfs / ro remount
 # Permissions for OMAP DSS update_mode workaround to get rid of the DSI errors
     chown system system /sys/devices/omapdss/display0/update_mode
 
+# Workaround for google maps freeze on launch
+    write /sys/block/mmcblk0/bdi/read_ahead_kb 32
+
 # Start services
     exec /system/bin/mot_boot_mode
 
