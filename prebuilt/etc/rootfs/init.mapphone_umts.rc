@@ -2,10 +2,6 @@ on init
 
 # Backward compatibility
     symlink /dev /dev/netmux
-# prepare generic keypad name
-    mount yaffs2 mtd@system /system rw remount
-    exec /system/bin/init_prep_keypad.sh
-    mount yaffs2 mtd@system /system ro remount
 
     mount rootfs rootfs / rw remount
 
@@ -31,7 +27,6 @@ on init
 # Power Management
     write /sys/power/sleep_while_idle 1
     write /sys/power/enable_off_mode 1
-
 
 # Mount mtd partitions
     # mount /pds as r/w
@@ -362,6 +357,11 @@ service atvc /system/bin/dbvc_atvc_property_set
     class pre-zygote_services
     user system
     group system
+    oneshot
+
+service keypadinit /system/bin/sh /system/bin/init_prep_keypad.sh
+    class pre-zygote_services
+    user root
     oneshot
 
 service usbd /system/bin/usbd

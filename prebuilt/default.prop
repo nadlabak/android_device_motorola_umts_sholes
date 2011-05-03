@@ -1,4 +1,3 @@
-ro.keyboard.type=euro_qwerty
 persist.sys.timezone=Europe/Brussels
 ro.fota.enable=0
 sms.convert.char.for.latam=0

@@ -41,6 +41,8 @@ persist.sys.purgeable_assets=1
 sys.keep_app_1=
 sys.keep_app_2=
 
+persist.sys.keypad_type=euro_qwerty
+
 # disable Windows Media Sync Usb.apk mode
 ro.mtp_available=0
 
