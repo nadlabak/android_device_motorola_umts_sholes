@@ -1,0 +1,5 @@
+#!/system/bin/sh
+#
+
+mount -o bind /data/logger /cache/logger
+

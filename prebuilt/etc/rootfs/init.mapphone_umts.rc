@@ -61,16 +61,16 @@ chown mot_usb mot_usb /dev/usb_device_mode
 chown mot_usb mot_usb /proc/mtpctl
 
 #moto debug properties
-#setprop ro.sys.atvc_allow_gki_log 1
-#setprop ro.sys.atvc_allow_bp_log 1
-#setprop ro.sys.atvc_allow_ap_mot_log 1
-#setprop ro.sys.atvc_allow_netmon_usb 1
-#setprop ro.sys.atvc_allow_netmon_ih 1
-#setprop ro.sys.atvc_allow_res_core 1
-#setprop ro.sys.atvc_allow_res_panic 1
-#setprop ro.sys.atvc_allow_all_adb 1
-#setprop ro.sys.atvc_allow_all_core 1
-#setprop ro.sys.atvc_allow_efem 1
+setprop ro.sys.atvc_allow_gki_log 1
+setprop ro.sys.atvc_allow_bp_log 1
+setprop ro.sys.atvc_allow_ap_mot_log 1
+setprop ro.sys.atvc_allow_netmon_usb 1
+setprop ro.sys.atvc_allow_netmon_ih 1
+setprop ro.sys.atvc_allow_res_core 1
+setprop ro.sys.atvc_allow_res_panic 1
+setprop ro.sys.atvc_allow_all_adb 1
+setprop ro.sys.atvc_allow_all_core 1
+setprop ro.sys.atvc_allow_efem 1
 
 on early-boot
 
@@ -185,6 +185,9 @@ on boot
     mkdir /data/logger 0770 radio log
     chown radio log /data/logger
     chmod 0770 /data/logger
+    mkdir /cache/logger 0770 radio log
+    chown radio log /cache/logger
+    chmod 0770 /cache/logger
 
     # create the lost+found directories, so as to enforce our permissions
     mkdir /pds/lost+found 0770
@@ -279,7 +282,7 @@ mount rootfs rootfs / ro remount
     chown system system /sys/devices/omapdss/display0/update_mode
 
 # Workaround for google maps freeze on launch
-    write /sys/block/mmcblk0/bdi/read_ahead_kb 16
+    write /sys/block/mmcblk0/bdi/read_ahead_kb 8
 
 # Start services
     exec /system/bin/mot_boot_mode
