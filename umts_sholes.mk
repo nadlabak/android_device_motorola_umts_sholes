@@ -135,6 +135,7 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-euro_qwerty.kcm.bin:/system/usr/keychars/sholesp2a-keypad-euro_qwerty.kcm.bin \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-qwertz.kcm.bin:/system/usr/keychars/sholesp2a-keypad-qwertz.kcm.bin \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-azerty.kcm.bin:/system/usr/keychars/sholesp2a-keypad-azerty.kcm.bin \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-swe_qwerty.kcm.bin:/system/usr/keychars/sholesp2a-keypad-swe_qwerty.kcm.bin \
     device/motorola/umts_sholes/prebuilt/lib/libgki.so:/system/lib/libgki.so \
     device/motorola/umts_sholes/prebuilt/lib/modules/symsearch.ko:/system/lib/modules/symsearch.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/slow-work.ko:/system/lib/modules/slow-work.ko \
