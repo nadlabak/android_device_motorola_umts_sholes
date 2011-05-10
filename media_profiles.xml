@@ -92,6 +92,19 @@
                    channels="1" />
         </EncoderProfile>
 
+        <EncoderProfile quality="wide" fileFormat="mp4" duration="30">
+            <Video codec="h264"
+                   bitRate="3000000"
+                   width="720"
+                   height="400"
+                   frameRate="25" />
+
+            <Audio codec="aac"
+                   bitRate="96000"
+                   sampleRate="16000"
+                   channels="1" />
+        </EncoderProfile>
+
         <EncoderProfile quality="low" fileFormat="3gp" duration="30">
             <Video codec="h263"
                    bitRate="200000"
