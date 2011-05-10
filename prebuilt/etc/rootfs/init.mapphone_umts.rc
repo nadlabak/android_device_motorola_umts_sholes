@@ -282,7 +282,7 @@ mount rootfs rootfs / ro remount
     chown system system /sys/devices/omapdss/display0/update_mode
 
 # Workaround for google maps freeze on launch
-    write /sys/block/mmcblk0/bdi/read_ahead_kb 8
+    write /sys/block/mmcblk0/bdi/read_ahead_kb 0
 
 # Start services
     exec /system/bin/mot_boot_mode
