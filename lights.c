@@ -63,6 +63,9 @@ char const*const BLUE_LED_FILE
 
 static unsigned int colorstate = 0;
 static int blinkstate = 0;
+static unsigned int lastnotificationcolor = 0;
+static int lastnotificationblink = 0;
+static int lowbattery = 0;
 
 void init_globals(void)
 {
@@ -163,46 +166,6 @@ set_light_buttons(struct light_device_t* dev,
 }
 
 static int
-set_light_battery(struct light_device_t* dev,
-        struct light_state_t const* state)
-{
-    int err = 0;
-
-    /**
-     * there is a charging LED on the droid, but not sure how it gets set
-     *
-
-    int red, green, blue;
-    unsigned int colorRGB;
-    int onMS, offMS;
-
-    switch (state->flashMode) {
-        case LIGHT_FLASH_HARDWARE:
-        case LIGHT_FLASH_TIMED:
-            onMS = state->flashOnMS;
-            offMS = state->flashOffMS;
-            break;
-        case LIGHT_FLASH_NONE:
-        default:
-            onMS = 0;
-            offMS = 0;
-            break;
-    }
-
-    colorRGB = state->color;
-#if 0
-    LOGD("set_light_battery colorRGB=%08X, onMS=%d, offMS=%d****************\n",
-            colorRGB, onMS, offMS);
-#endif
-    err = write_int(CHARGING_LED_FILE, colorRGB ? 255 : 0);
-
-     *
-     */
-
-    return err;
-}
-
-static int
 set_light_locked(unsigned int color, int blink)
 {
     int err = 0;
@@ -237,6 +200,38 @@ set_light_locked(unsigned int color, int blink)
 }
 
 static int
+set_light_battery(struct light_device_t* dev,
+        struct light_state_t const* state)
+{
+    int err = 0;
+    int blink;
+
+    switch (state->flashMode) {
+        case LIGHT_FLASH_HARDWARE:
+        case LIGHT_FLASH_TIMED:
+            blink = 1;
+            break;
+        case LIGHT_FLASH_NONE:
+        default:
+            blink = 0;
+            break;
+    }
+#if 0
+    LOGD("set_light_battery color=%08X, blink=%d****************\n",
+            state->color, blink);
+#endif
+    if (state->color == 0xffff0000) {
+        lowbattery = 1;
+        err = set_light_locked(state->color, blink);
+    } else if (lowbattery == 1) {
+        lowbattery = 0;
+        err = set_light_locked(lastnotificationcolor, lastnotificationblink);
+    }
+
+    return err;
+}
+
+static int
 set_light_notification(struct light_device_t* dev,
         struct light_state_t const* state)
 {
@@ -257,7 +252,11 @@ set_light_notification(struct light_device_t* dev,
     LOGD("set_light_notification color=%08X, blink=%d****************\n",
             state->color, blink);
 #endif
-    err = set_light_locked(state->color, blink);
+    lastnotificationcolor = state->color;
+    lastnotificationblink = blink;
+    if (lowbattery == 0) {
+        err = set_light_locked(state->color, blink);
+    }
 
     return err;
 }
