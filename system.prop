@@ -43,6 +43,8 @@ sys.keep_app_2=
 
 persist.sys.keypad_type=euro_qwerty
 
+persist.sys.one_percent_batt=1
+
 # disable Windows Media Sync Usb.apk mode
 ro.mtp_available=0
 

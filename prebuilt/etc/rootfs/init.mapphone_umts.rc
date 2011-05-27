@@ -298,6 +298,14 @@ on property:sys.chargeonly.mode=1
     start console
     exec /sbin/charge_only_mode
 
+on property:persist.sys.one_percent_batt=0
+    stop batt2d
+    start battd
+
+on property:persist.sys.one_percent_batt=1
+    stop battd
+    start batt2d
+
 # Power up to normal
 on property:tcmd.suspend=0
     class_start pre-zygote_services
@@ -407,7 +415,12 @@ service rild_tcmd /system/bin/rild_tcmd
     group radio
 
 service battd /system/bin/battd
-    class pre-zygote_services
+    socket battdsock stream 0660 mot_accy mot_accy
+    user root
+    group mot_accy mot_pwric
+    oneshot
+
+service batt2d /system/bin/batt2d
     socket battdsock stream 0660 mot_accy mot_accy
     user root
     group mot_accy mot_pwric
