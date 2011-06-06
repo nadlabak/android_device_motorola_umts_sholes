@@ -505,6 +505,11 @@ service dhcpcd_tiwlan0 /system/bin/dhcpcd -ABKL
     disabled
     oneshot
 
+service iprenew_tiwlan0 /system/bin/dhcpcd -n
+    class post-zygote_services
+    disabled
+    oneshot
+
 service hciattach /system/bin/hciattach \
     -n -t 10 /dev/ttyS1 texasalt 3000000 flow
     class post-zygote_services
