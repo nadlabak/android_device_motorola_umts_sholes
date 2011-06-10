@@ -53,3 +53,6 @@ windowsmgr.max_events_per_sec=60
 # The interfaces to get DNS data from when using mobile data, comma-separated
 mobiledata.interfaces=rmnet0
 
+# Maximum time (in msec) we allow the CallerInfo query to run,
+# before giving up and falling back to the default ringtone.
+ro.ringtone_query_wait_time=1500

@@ -129,6 +129,7 @@ loglevel 3
     mount yaffs2 mtd@cache /cache nosuid nodev
     chown system cache /cache
     chmod 0771 /cache
+    mkdir /cache/download 0777 system cache
 
     # This may have been created by the recovery system with odd permissions
     chown system cache /cache/recovery
