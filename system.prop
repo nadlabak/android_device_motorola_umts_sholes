@@ -30,9 +30,6 @@ mot.proximity.delay=450
 #proximit sensor disable touch distance 
 mot.proximity.distance=100
 
-# Milestone DSI kernel bug workaround
-persist.sys.omap_dss_mode=0
-
 # to spare some RAM
 persist.sys.purgeable_assets=1
 

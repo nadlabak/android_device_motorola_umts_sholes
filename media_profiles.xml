@@ -94,7 +94,7 @@
 
         <EncoderProfile quality="wide" fileFormat="mp4" duration="30">
             <Video codec="h264"
-                   bitRate="3000000"
+                   bitRate="4000000"
                    width="720"
                    height="400"
                    frameRate="25" />
