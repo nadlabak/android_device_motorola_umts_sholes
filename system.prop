@@ -53,3 +53,15 @@ mobiledata.interfaces=rmnet0
 # Maximum time (in msec) we allow the CallerInfo query to run,
 # before giving up and falling back to the default ringtone.
 ro.ringtone_query_wait_time=1500
+
+# Logger properties
+#
+#  max single log file size in MB (default is 10)
+aplogd.logfile.size 5
+
+#  single buffers to be collected (0 - disabled)
+aplogd.collect.main 1
+aplogd.collect.kernel 1
+aplogd.collect.radio 1
+aplogd.collect.events 1
+
