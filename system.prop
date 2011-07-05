@@ -45,6 +45,8 @@ persist.sys.one_percent_batt=1
 # disable Windows Media Sync Usb.apk mode
 ro.mtp_available=0
 
+ro.usb.use_custom_service=1
+
 windowsmgr.max_events_per_sec=60
 
 # The interfaces to get DNS data from when using mobile data, comma-separated
