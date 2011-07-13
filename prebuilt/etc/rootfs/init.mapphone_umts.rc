@@ -98,6 +98,7 @@ on early-boot
     insmod /system/lib/modules/cpufreq_smartass.ko
     insmod /system/lib/modules/cpufreq_stats.ko
     insmod /system/lib/modules/overclock.ko
+    insmod /system/lib/modules/qtouch_num.ko
     
     chmod 0666 /dev/DspBridge
     class_start media_early_init

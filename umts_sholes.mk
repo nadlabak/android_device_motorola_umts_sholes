@@ -44,7 +44,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	dalvik.vm.lockprof.threshold=500 \
 	dalvik.vm.dexopt-flags=m=y \
         ro.product.multi_touch_enabled=true \
-        ro.product.max_num_touch=4 \
+        ro.product.max_num_touch=5 \
         ro.com.google.gmsversion=2.2_r9 
 
 # Enable TI HotSpot
@@ -159,7 +159,8 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/lib/modules/auth_rpcgss.ko:/system/lib/modules/auth_rpcgss.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/rpcsec_gss_krb5.ko:/system/lib/modules/rpcsec_gss_krb5.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/sunrpc.ko:/system/lib/modules/sunrpc.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/nfs.ko:/system/lib/modules/nfs.ko
+    device/motorola/umts_sholes/prebuilt/lib/modules/nfs.ko:/system/lib/modules/nfs.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/qtouch_num.ko:/system/lib/modules/qtouch_num.ko
 
 $(call inherit-product-if-exists, vendor/motorola/umts_sholes/umts_sholes-vendor.mk)
 
