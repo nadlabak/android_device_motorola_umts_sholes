@@ -86,7 +86,6 @@ PRODUCT_PACKAGES += \
     libOMX.TI.AAC.encode \
     libOMX.TI.AMR.decode \
     libOMX.TI.AMR.encode \
-    libOMX.TI.MP3.decode \
     libOMX.TI.WBAMR.decode \
     libOMX.TI.WBAMR.encode \
     libOMX.TI.JPEG.Encoder \
