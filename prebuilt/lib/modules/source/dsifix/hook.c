@@ -1,5 +1,6 @@
 /*
  * hook - Hook utilities.
+ * use of Skrilax's symsearch added by Nadlabak
  *
  * Copyright (C) 2010 Nothize
  *
@@ -20,6 +21,7 @@
  */
 
 #include "hook.h"
+#include "symsearch.h"
 #include <linux/module.h>
 #include <linux/kallsyms.h>
 #include <linux/smp_lock.h>
@@ -33,17 +35,8 @@
 
 #define INFO(format, ...) (printk(KERN_INFO "hook:%s:%d " format, __FUNCTION__, __LINE__, ## __VA_ARGS__))
 
-/**
- * Update the addresses below from /proc/kallsyms!
- */
-typedef unsigned long (*fkallsyms_lookup_name)(const char *name);
-typedef const char (*fkallsyms_lookup)(unsigned long addr,
-			    unsigned long *symbolsize,
-			    unsigned long *offset,
-			    char **modname, char *namebuf);
-
-fkallsyms_lookup_name pkallsyms_lookup_name = (fkallsyms_lookup_name)0xc0086e80;
-fkallsyms_lookup pkallsyms_lookup = (fkallsyms_lookup)0xc0086c10;
+SYMSEARCH_DECLARE_FUNCTION_STATIC(unsigned long, pkallsyms_lookup_name, const char *);
+SYMSEARCH_DECLARE_FUNCTION_STATIC(const char *, pkallsyms_lookup, unsigned long, unsigned long *, unsigned long *, char **, char *);
 
 /* Only ARM is supported and the target will crash if there involves
    PC related addressing in the first instruction. Because that
@@ -96,6 +89,8 @@ int unhook(struct hook_info *hi) {
 
 void hook_init(void) {
 	int i;
+	SYMSEARCH_BIND_FUNCTION_TO(qtouch_num, kallsyms_lookup_name, pkallsyms_lookup_name);
+	SYMSEARCH_BIND_FUNCTION_TO(qtouch_num, kallsyms_lookup, pkallsyms_lookup);
 	lock_kernel();
 	for (i = 0; g_hi[i].newfunc; ++i) {
 		hook(&g_hi[i]);

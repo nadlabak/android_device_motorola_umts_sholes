@@ -1,6 +1,8 @@
 /*
- * DSI-fix - add error recovery scheduling missing from dsi.c
- * (in Milestone 2.6.32 kernel), by Nadlabak
+ * DSI-fix v2 - get rid of DSI False Control Errors by optimization - don't send
+ * the coordinates to panel before every frame if they haven't changed, as in such
+ * case they are already programmed, (for Milestone 2.6.32 kernel), by Nadlabak
+ *
  * hooking taken from "n - for testing kernel function hooking" by Nothize.
  *
  * Copyright (C) 2011 Nadlabak, 2010 Nothize
@@ -23,43 +25,60 @@
 
 #include <linux/module.h>
 #include <linux/device.h>
-
+#include <plat/display.h>
 #include "hook.h"
 
-//#define DEBUG
-#ifdef DEBUG
-#define INFO(format, ...) (printk(KERN_INFO "n:%s:%d " format, __FUNCTION__, __LINE__, ## __VA_ARGS__))
-#else
-#define INFO(format, ...)
-#endif
+//#define DSI_STRUCT_ADDR 0xc05547f0
 
-#define DSI_STRUCT_ADDR 0xc05547f0
+#define EDISCO_CMD_SET_COLUMN_ADDRESS	0x2A
+#define EDISCO_CMD_SET_PAGE_ADDRESS	0x2B
+#define EDISCO_CMD_VC   0
 
-bool *enabled;
-bool *recovering;
-struct work_struct *work;
+u16 xlast, ylast, wlast, hlast = 0;
 
-void dsi_show_rx_ack_with_err(u16 err)
-{
-	HOOK_INVOKE(dsi_show_rx_ack_with_err, err);
-	if (err & (1 << 6)) {
-		if (*enabled && !(*recovering)) {
-			printk(KERN_INFO "DSI-fix: scheduling error recovery\n");
-			schedule_work(work); 
-		}
+static void mapphone_panel_setup_update(struct omap_dss_device *dssdev,
+				      u16 x, u16 y, u16 w, u16 h) {
+	u8 data[5];
+	int ret;
+
+//	printk(KERN_INFO "DSI-fix: x %d, y %d, w %d, h %d", x, y, w, h);
+//	printk(KERN_INFO "DSI-fix: xlast %d, ylast %d, wlast %d, hlast %d", xlast, ylast, wlast, hlast);
+
+	/* set page, column address */
+	if (y != ylast || h != hlast) {
+		data[0] = EDISCO_CMD_SET_PAGE_ADDRESS;
+		data[1] = y >> 8;
+		data[2] = y & 0xff;
+		data[3] = (y + h - 1) >> 8;
+		data[4] = (y + h - 1) & 0xff;
+		ret = dsi_vc_dcs_write(EDISCO_CMD_VC, data, 5);
+		if (ret)
+			return;
+		ylast = y;
+		hlast = h;
+	}
+
+	if (x != xlast || w != wlast) {
+		data[0] = EDISCO_CMD_SET_COLUMN_ADDRESS;
+		data[1] = x >> 8;
+		data[2] = x & 0xff;
+		data[3] = (x + w - 1) >> 8;
+		data[4] = (x + w - 1) & 0xff;
+		ret = dsi_vc_dcs_write(EDISCO_CMD_VC, data, 5);
+		if (ret)
+			return;
+		xlast = x;
+		wlast = w;
 	}
 }
 
 struct hook_info g_hi[] = {
-	HOOK_INIT(dsi_show_rx_ack_with_err),
+	HOOK_INIT(mapphone_panel_setup_update),
 	HOOK_INIT_END
 };
 
 static int __init dsifix_init(void)
 {
-        enabled = (bool *)(DSI_STRUCT_ADDR + 0x14c);
-        recovering = (bool *)(DSI_STRUCT_ADDR + 0x14d);
-        work = (void *)(DSI_STRUCT_ADDR + 0x138);
 	hook_init();
 	return 0;
 }
@@ -73,6 +92,6 @@ module_init(dsifix_init);
 module_exit(dsifix_exit);
 
 MODULE_ALIAS("DSI-fix");
-MODULE_DESCRIPTION("fix Milestone dsi.c via kernel function hook");
-MODULE_AUTHOR("Nadlabak, Nothize");
+MODULE_DESCRIPTION("fix Milestone DSS drivers via kernel function hook");
+MODULE_AUTHOR("Nadlabak");
 MODULE_LICENSE("GPL");
