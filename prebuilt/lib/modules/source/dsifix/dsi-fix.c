@@ -1,7 +1,12 @@
 /*
- * DSI-fix v2 - get rid of DSI False Control Errors by optimization - don't send
+ * DSI-fix v2.1 - get rid of DSI False Control Errors by optimization - don't send
  * the coordinates to panel before every frame if they haven't changed, as in such
  * case they are already programmed, (for Milestone 2.6.32 kernel), by Nadlabak
+ *
+ * v2->2.1: add suppression of BTA send after frame was received to get rid of
+ * "Received error during frame transfer" (this BTA is needed only when tearing
+ * elimination is enabled and te is not working on Milestone anyway and is off
+ * by default)
  *
  * hooking taken from "n - for testing kernel function hooking" by Nothize.
  *
@@ -35,6 +40,21 @@
 #define EDISCO_CMD_VC   0
 
 u16 xlast, ylast, wlast, hlast = 0;
+bool framedone = false;
+
+void dsi_framedone_irq_callback(void *data, u32 mask) {
+	framedone = true;
+	HOOK_INVOKE(dsi_framedone_irq_callback, data, mask);
+}
+
+int dsi_vc_send_bta_sync(int channel){
+	if (framedone) {
+		framedone = false;
+		return 0;
+	} else {
+		return HOOK_INVOKE(dsi_vc_send_bta_sync, channel);
+	}
+}
 
 static void mapphone_panel_setup_update(struct omap_dss_device *dssdev,
 				      u16 x, u16 y, u16 w, u16 h) {
@@ -73,6 +93,8 @@ static void mapphone_panel_setup_update(struct omap_dss_device *dssdev,
 }
 
 struct hook_info g_hi[] = {
+	HOOK_INIT(dsi_framedone_irq_callback),
+	HOOK_INIT(dsi_vc_send_bta_sync),
 	HOOK_INIT(mapphone_panel_setup_update),
 	HOOK_INIT_END
 };
