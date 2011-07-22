@@ -1,12 +1,15 @@
 /*
- * DSI-fix v2.1 - get rid of DSI False Control Errors by optimization - don't send
+ * DSI-fix v2.2 - get rid of DSI False Control Errors by optimization - don't send
  * the coordinates to panel before every frame if they haven't changed, as in such
  * case they are already programmed, (for Milestone 2.6.32 kernel), by Nadlabak
  *
- * v2->2.1: add suppression of BTA send after frame was received to get rid of
+ * v2->2.1: add suppression of BTA sync after frame was received to get rid of
  * "Received error during frame transfer" (this BTA is needed only when tearing
  * elimination is enabled and te is not working on Milestone anyway and is off
  * by default)
+ *
+ * v2.1->2.2: use __builtin_return_address(0) to decide whether to suppress
+ * the BTA sync call (to determine if it comes from dsi_update_thread or elsewhere)
  *
  * hooking taken from "n - for testing kernel function hooking" by Nothize.
  *
@@ -28,10 +31,12 @@
  *
  */
 
-#include <linux/module.h>
 #include <linux/device.h>
+#include <linux/kallsyms.h>
+#include <linux/module.h>
 #include <plat/display.h>
 #include "hook.h"
+#include "symsearch.h"
 
 //#define DSI_STRUCT_ADDR 0xc05547f0
 
@@ -40,16 +45,16 @@
 #define EDISCO_CMD_VC   0
 
 u16 xlast, ylast, wlast, hlast = 0;
-bool framedone = false;
+void *p_dsi_update_thread_start;
+void *p_dsi_update_thread_end;
 
-void dsi_framedone_irq_callback(void *data, u32 mask) {
-	framedone = true;
-	HOOK_INVOKE(dsi_framedone_irq_callback, data, mask);
-}
+SYMSEARCH_DECLARE_FUNCTION_STATIC(const char *, ss_kallsyms_lookup, unsigned long, unsigned long *, unsigned long *, char **, char *);
 
 int dsi_vc_send_bta_sync(int channel){
-	if (framedone) {
-		framedone = false;
+	/* suppress dsi_vc_send_bta_sync call if it comes from dsi_update_thread */ 
+	void *p;
+	p = __builtin_return_address(0);
+	if (p > p_dsi_update_thread_start && p < p_dsi_update_thread_end) {
 		return 0;
 	} else {
 		return HOOK_INVOKE(dsi_vc_send_bta_sync, channel);
@@ -93,7 +98,6 @@ static void mapphone_panel_setup_update(struct omap_dss_device *dssdev,
 }
 
 struct hook_info g_hi[] = {
-	HOOK_INIT(dsi_framedone_irq_callback),
 	HOOK_INIT(dsi_vc_send_bta_sync),
 	HOOK_INIT(mapphone_panel_setup_update),
 	HOOK_INIT_END
@@ -101,6 +105,13 @@ struct hook_info g_hi[] = {
 
 static int __init dsifix_init(void)
 {
+	unsigned long size;
+	char name[KSYM_NAME_LEN];
+	printk(KERN_INFO "DSI-fix v2.2");
+	SYMSEARCH_BIND_FUNCTION_TO(dsifix, kallsyms_lookup, ss_kallsyms_lookup);
+	p_dsi_update_thread_start = lookup_symbol_address("dsi_update_thread");
+	ss_kallsyms_lookup((unsigned long)p_dsi_update_thread_start, &size, NULL, NULL, name);
+	p_dsi_update_thread_end = p_dsi_update_thread_start + size;
 	hook_init();
 	return 0;
 }
