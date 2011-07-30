@@ -57,7 +57,8 @@ mobiledata.interfaces=rmnet0
 ro.ringtone_query_wait_time=1500
 
 # Logger properties
-#
+persist.service.aplogd.enable=0
+
 #  max single log file size in MB (default is 10)
 aplogd.logfile.size=5
 
