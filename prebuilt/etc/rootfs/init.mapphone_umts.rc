@@ -72,7 +72,6 @@ setprop ro.sys.atvc_allow_all_adb 0
 setprop ro.sys.atvc_allow_all_core 0
 setprop ro.sys.atvc_allow_efem 0
 
-on early-boot
 
 # Install kernel modules
 
@@ -99,7 +98,9 @@ on early-boot
     insmod /system/lib/modules/cpufreq_stats.ko
     insmod /system/lib/modules/overclock.ko
     insmod /system/lib/modules/qtouch_num.ko
-    
+
+on early-boot
+
     chmod 0666 /dev/DspBridge
     class_start media_early_init
 
@@ -265,9 +266,6 @@ mount rootfs rootfs / ro remount
 # Enable panic on softlockup
     write /proc/sys/kernel/softlockup_panic 1
 
-# Permissions for OMAP DSS update_mode workaround to get rid of the DSI errors
-    chown system system /sys/devices/omapdss/display0/update_mode
-
 # google maps can freeze on launch when SD card read_ahead_kb is set too high
 # RAM is too precious on Milestone, so don't waste it on marginals
 # let's keep the default (128) - the next line is commented out
@@ -293,6 +291,21 @@ on property:persist.sys.one_percent_batt=0
 on property:persist.sys.one_percent_batt=1
     stop battd
     start batt2d
+
+on property:persist.sys.omap_dss_mode=0
+    write /sys/devices/omapdss/display0/update_mode 2
+
+on property:persist.sys.omap_dss_mode=1
+    write /sys/devices/omapdss/display0/update_mode 1
+
+on property:persist.qtouch.num=2
+    write /proc/qtouch/num 2
+
+on property:persist.qtouch.num=4
+    write /proc/qtouch/num 4
+
+on property:persist.qtouch.num=5
+    write /proc/qtouch/num 5
 
 # Power up to normal
 on property:tcmd.suspend=0
