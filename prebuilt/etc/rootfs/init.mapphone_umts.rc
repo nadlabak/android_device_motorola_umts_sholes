@@ -298,14 +298,14 @@ on property:persist.sys.omap_dss_mode=0
 on property:persist.sys.omap_dss_mode=1
     write /sys/devices/omapdss/display0/update_mode 1
 
-on property:persist.qtouch.num=2
-    write /proc/qtouch/num 2
+on property:persist.sys.qtouch_num=2
+    write /proc/qtouch/num_touch 2
 
-on property:persist.qtouch.num=4
-    write /proc/qtouch/num 4
+on property:persist.sys.qtouch_num=4
+    write /proc/qtouch/num_touch 4
 
-on property:persist.qtouch.num=5
-    write /proc/qtouch/num 5
+on property:persist.sys.qtouch_num=5
+    write /proc/qtouch/num_touch 5
 
 # Power up to normal
 on property:tcmd.suspend=0

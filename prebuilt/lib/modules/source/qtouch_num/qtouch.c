@@ -1,9 +1,12 @@
 /*
- * qtouch_num - 5 point multitouch for Milestone, by Nadlabak
+ * qtouch_num - set number of multitouch points for Milestone, by Nadlabak
  * hooking taken from "n - for testing kernel function hooking" by Nothize
- * needs symsearch module by Skrilax
+ * uses symsearch module by Skrilax
  *
- * Copyright (C) 2011 Nadlabak, 2010 Nothize
+ * number of touches can be set by write to /proc/qtouch/num_touch (2-10)
+ * the screen has to be on (touchscreen active) at the time of write
+ *
+ * Copyright (C) 2011 Nadlabak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,8 +28,15 @@
 #include <linux/device.h>
 #include <linux/earlysuspend.h>
 #include <linux/qtouch_obp_ts.h>
+#include <linux/proc_fs.h>
+#include <linux/vmalloc.h>
+#include <asm/uaccess.h>
 
 #include "hook.h"
+#include "symsearch.h"
+
+#define BUF_SIZE 16
+static char *buf;
 
 struct qtm_object {
 	struct qtm_obj_entry		entry;
@@ -85,26 +95,16 @@ struct qtouch_ts_data {
 
 uint16_t eeprom_checksum;
 bool checksumNeedsCorrection = false;
-bool done = false;
 struct qtouch_ts_data *ts;
+uint8_t num_touch = 0;
 
+SYMSEARCH_DECLARE_FUNCTION_STATIC(int, ss_mapphone_touch_reset);
+
+/* previously used to find out ts address
 static int qtouch_read(struct qtouch_ts_data *ts, void *buf, int buf_sz) {
-	if (!done && ts->pdata) {
-		done = true;
-		ts->pdata->multi_touch_cfg.num_touch = 5;
-		printk(KERN_INFO "qtouch_num: num_touch set to %u \n",ts->pdata->multi_touch_cfg.num_touch);
-		printk(KERN_INFO "qtouch_num: forcing checksum error to cause qtouch_hw_init call \n");
-		// qtouch_hw_init will be invoked on next qtouch resume (screen on)
-		ts->pdata->flags |= QTOUCH_EEPROM_CHECKSUM;
-		eeprom_checksum = ts->eeprom_checksum;
-		ts->eeprom_checksum = 0;
-		ts->checksum_cnt = 0;
-		checksumNeedsCorrection = true;
-	} else if (!done) {
-		printk(KERN_INFO "qtouch_num: ts->pdata is null! \n");
-	}
+	printk(KERN_INFO "qtouch_num: ts address 0x%lx. \n", ts);
 	return HOOK_INVOKE(qtouch_read, ts, buf, buf_sz);
-}
+} */
 
 static int qtouch_hw_init(struct qtouch_ts_data *ts) {
 	if (checksumNeedsCorrection) {
@@ -114,23 +114,71 @@ static int qtouch_hw_init(struct qtouch_ts_data *ts) {
 	return HOOK_INVOKE(qtouch_hw_init, ts);
 }
 
+static int proc_qtouch_num_read(char *buffer, char **buffer_location,
+		off_t offset, int count, int *eof, void *data) {
+	int ret;
+	if (offset > 0)
+		ret = 0;
+	else
+		ret = scnprintf(buffer, count, "%u\n", num_touch);
+	return ret;
+}
+
+static int proc_qtouch_num_write(struct file *filp, const char __user *buffer,
+		unsigned long len, void *data) {
+	uint8_t new_num_touch;
+	if (!len || len >= BUF_SIZE)
+		return -ENOSPC;
+	if (copy_from_user(buf, buffer, len))
+		return -EFAULT;
+	buf[len] = 0;
+	if (sscanf(buf, "%u", &new_num_touch) == 1) {
+		if (new_num_touch > 10) new_num_touch = 10;
+		if (new_num_touch < 2) new_num_touch = 2;
+		if (num_touch != new_num_touch) {
+			num_touch = new_num_touch;
+			if (ts->pdata) {
+				ts->pdata->multi_touch_cfg.num_touch = num_touch;
+				printk(KERN_INFO "qtouch_num: num_touch set to %u \n",num_touch);
+				printk(KERN_INFO "qtouch_num: forcing checksum error to run qtouch_hw_init\n");
+				ts->pdata->flags |= QTOUCH_EEPROM_CHECKSUM;
+				eeprom_checksum = ts->eeprom_checksum;
+				ts->eeprom_checksum = 0;
+				ts->checksum_cnt = 0;
+				checksumNeedsCorrection = true;
+				ss_mapphone_touch_reset();
+			} else
+				printk(KERN_INFO "qtouch_num: ts->pdata is null!\n");
+		}
+	} else
+		printk(KERN_INFO "qtouh_num: wrong parameter for num_touch\n");
+	return len;
+}
+
 struct hook_info g_hi[] = {
-	HOOK_INIT(qtouch_read),
+//	HOOK_INIT(qtouch_read),
 	HOOK_INIT(qtouch_hw_init),
 	HOOK_INIT_END
 };
 
-static int __init qtouch_init(void)
-{
-/* ts struct address previously found for final Milestone kernel, not used
-	ts = (struct qtouch_ts_data *) 0xced71400; */
+static int __init qtouch_init(void) {
+	struct proc_dir_entry *proc_entry;
+	SYMSEARCH_BIND_FUNCTION_TO(qtouch_num, mapphone_touch_reset, ss_mapphone_touch_reset);
+	/* ts struct address previously found for final Milestone kernel by qtouch_read hook */
+	ts = (struct qtouch_ts_data *) 0xced71400;
+	buf = (char *)vmalloc(BUF_SIZE);
 	hook_init();
+	proc_mkdir("qtouch", NULL);
+	proc_entry = create_proc_read_entry("qtouch/num_touch", 0644, NULL, proc_qtouch_num_read, NULL);
+	proc_entry->write_proc = proc_qtouch_num_write;
 	return 0;
 }
 
-static void __exit qtouch_exit(void)
-{
+static void __exit qtouch_exit(void) {
 	hook_exit();
+        remove_proc_entry("qtouch/num_touch", NULL);
+	remove_proc_entry("qtouch", NULL);
+	vfree(buf);
 }
 
 module_init(qtouch_init);
@@ -138,5 +186,5 @@ module_exit(qtouch_exit);
 
 MODULE_ALIAS("QTOUCH_NUM");
 MODULE_DESCRIPTION("change qtouch num_touch via kernel function hook");
-MODULE_AUTHOR("Nadlabak, Nothize");
+MODULE_AUTHOR("Nadlabak");
 MODULE_LICENSE("GPL");
