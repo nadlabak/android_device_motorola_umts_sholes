@@ -60,4 +60,7 @@
     <!-- Determines if device implements a noise suppression device for in call audio-->
     <bool name="has_in_call_noise_suppression">true</bool>
 
+    <!--CrystalTalk-->
+    <bool name="crystaltalk_enabled">true</bool>
+
 </resources>
