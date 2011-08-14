@@ -31,7 +31,6 @@
  *
  */
 
-#include <linux/delay.h>
 #include <linux/device.h>
 #include <linux/io.h>
 #include <linux/kallsyms.h>
