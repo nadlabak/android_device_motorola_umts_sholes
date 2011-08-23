@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string-array name="usb_mode_entries" translatable="false">
+        <item>@string/usb_mode_ngp</item>
+        <item>@string/usb_mode_msc</item>
+        <item>@string/usb_mode_none</item>
+    </string-array>
+
+    <!-- Those values must match up with the mode constants in UsbService.java! -->
+    <integer-array name="usb_mode_values" translatable="false">
+        <item>0</item>
+        <item>2</item>
+        <item>5</item>
+    </integer-array>
+
+    <!-- Allow overriding the mode strings for certain modes. Format:
+         - usb_mode_override_values contains the overridden mode numbers
+         - usb_mode_override_modes contains the mode strings
+         - usb_mode_override_adb_modes contains the mode strings for ADB mode -->
+    <integer-array name="usb_mode_override_values">
+        <item>5</item>
+    </integer-array>
+
+    <string-array name="usb_mode_override_modes">
+        <item>usb_mode_msc</item>
+    </string-array>
+
+    <string-array name="usb_mode_override_adb_modes">
+        <item>usb_mode_msc_adb</item>
+    </string-array>
+
+    <!-- Default mode USB if nothing was configured by the user yet -->
+    <integer name="default_usb_mode">5</integer>
+
+    <!-- Whether to allow mode switching while tethered or not -->
+    <bool name="allow_mode_change_while_tethered">false</bool>
+
+    <!-- Whether a notification should be shown while USB is connected -->
+    <bool name="show_connection_notification">true</bool>
+
+    <!-- If the currently active USB state should be written to a file, put file name here -->
+    <string name="current_usb_state_file_name" translatable="false"></string>
+</resources>

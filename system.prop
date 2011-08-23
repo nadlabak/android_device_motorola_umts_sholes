@@ -5,7 +5,6 @@
 rild.libpath=/system/lib/libril-moto-umts-1.so
 rild.libargs=-d /dev/ttyS0
 ro.sf.lcd_density=240
-ro.default_usb_mode=4
 
 # Default network type.
 # 3 -> GSM/WCDMA (auto mode, according to PRL)
@@ -43,9 +42,6 @@ persist.sys.keypad_type=euro_qwerty
 persist.sys.qtouch_num=2
 
 persist.sys.one_percent_batt=1
-
-# disable Windows Media Sync Usb.apk mode
-ro.mtp_available=0
 
 ro.usb.use_custom_service=1
 
