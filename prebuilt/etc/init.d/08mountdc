@@ -1,0 +1,7 @@
+#!/system/bin/sh
+#
+# bind mount /cache/dalvik-cache to /data/dalvik-cache
+#
+
+rm /data/dalvik-cache/*
+mount -o bind /cache/dalvik-cache /data/dalvik-cache

@@ -172,10 +172,6 @@ on boot
     mkdir /data/logger 0770 radio log
     chown radio log /data/logger
     chmod 0770 /data/logger
-    mkdir /cache/logger 0770 radio log
-    chown radio log /cache/logger
-    chmod 0770 /cache/logger
-    exec /system/bin/sh /system/bin/init_mount_logger.sh
 
     # create the lost+found directories, so as to enforce our permissions
     mkdir /pds/lost+found 0770
