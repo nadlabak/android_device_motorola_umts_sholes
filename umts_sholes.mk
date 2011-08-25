@@ -98,7 +98,9 @@ PRODUCT_PACKAGES += \
     sensors.sholes \
     lights.sholes \
     libaudiopolicy \
-    Usb
+    Usb \
+    mot_boot_mode \
+    charge_only_mode
 
 # HotSpot
 #PRODUCT_PACKAGES += \
