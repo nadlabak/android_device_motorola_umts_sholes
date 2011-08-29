@@ -1,19 +1,15 @@
 /*
- * DSI-fix v2.2 - get rid of DSI False Control Errors by optimization - don't send
- * the coordinates to panel before every frame if they haven't changed, as in such
- * case they are already programmed, (for Milestone 2.6.32 kernel), by Nadlabak
- *
- * v2->2.1: add suppression of BTA sync after frame was received to get rid of
- * "Received error during frame transfer" (this BTA is needed only when tearing
- * elimination is enabled and te is not working on Milestone anyway and is off
- * by default)
- *
- * v2.1->2.2: use __builtin_return_address(0) to decide whether to suppress
- * the BTA sync call (to determine if it comes from dsi_update_thread or elsewhere)
+ * DSI/MMC-fix v2.6 - fix display freezes and kernel panics caused by DSS/DSI
+ * kernel drivers used in stock Milestone kernel for Froyo by function hooking
+ * - add error recovery calls and other modifications.
+ * Fix also SD card read/write errors (mmcblk0: error -110 - common and known
+ * linux-omap issue) by replacement of set_data_timeout function in omap_hsmmc.c
+ * to use the default DTO value of 0xE instead of dynamic calculation.
  *
  * hooking taken from "n - for testing kernel function hooking" by Nothize.
- *
- * Copyright (C) 2011 Nadlabak, 2010 Nothize
+ * depends on symsearch module by Skrilax_CZ
+ * 
+ * Copyright (C) 2011 Nadlabak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -40,7 +36,60 @@
 #include "hook.h"
 #include "symsearch.h"
 
-#define DSI_STRUCT_ADDR 0xc05547f0
+#define DTO			0xe
+#define DTO_MASK		0x000F0000
+#define DTO_SHIFT		16
+#define OMAP_HSMMC_SYSCTL	0x012C
+
+/*
+ * MMC Host controller read/write API's
+ */
+#define OMAP_HSMMC_READ(base, reg)	\
+	__raw_readl((base) + OMAP_HSMMC_##reg)
+
+#define OMAP_HSMMC_WRITE(base, reg, val) \
+	__raw_writel((val), (base) + OMAP_HSMMC_##reg)
+
+struct omap_hsmmc_host {
+	struct	device		*dev;
+	struct	mmc_host	*mmc;
+	struct	mmc_request	*mrq;
+	struct	mmc_command	*cmd;
+	struct	mmc_data	*data;
+	struct	clk		*fclk;
+	struct	clk		*iclk;
+	struct	clk		*dbclk;
+	struct	semaphore	sem;
+	struct	work_struct	mmc_carddetect_work;
+	void	__iomem		*base;
+	resource_size_t		mapbase;
+	spinlock_t		irq_lock; /* Prevent races with irq handler */
+	unsigned long		flags;
+	unsigned int		id;
+	unsigned int		dma_len;
+	unsigned int		dma_sg_idx;
+	unsigned char		bus_mode;
+	unsigned char		power_mode;
+	u32			*buffer;
+	u32			bytesleft;
+	int			suspended;
+	int			irq;
+	int			use_dma, dma_ch;
+	int			dma_line_tx, dma_line_rx;
+	int			slot_id;
+	int			got_dbclk;
+	int			response_busy;
+	int			context_loss;
+	int			dpm_state;
+	int			vdd;
+	int			protect_card;
+	int			reqs_blocked;
+
+	struct	omap_mmc_platform_data	*pdata;
+};
+
+// #define DSI_STRUCT_ADDR 0xc05547f0
+// - not used anymore, autodetected
 
 #define EDISCO_CMD_SET_COLUMN_ADDRESS	0x2A
 #define EDISCO_CMD_SET_PAGE_ADDRESS	0x2B
@@ -283,8 +332,9 @@ static struct dsi_struct
 
 struct dsi_struct *dsi;
 // u16 xlast, ylast, wlast, hlast = 0;
-// void *p_dsi_update_thread_start;
-// void *p_dsi_update_thread_end;
+void *p_dsi_update_thread_start;
+void *p_dsi_update_thread_end;
+bool framedonetimeout = false;
 
 SYMSEARCH_DECLARE_FUNCTION_STATIC(const char *, ss_kallsyms_lookup, unsigned long, unsigned long *, unsigned long *, char **, char *);
 SYMSEARCH_DECLARE_FUNCTION_STATIC(void, ss_dss_clk_enable, enum dss_clock);
@@ -301,6 +351,10 @@ SYMSEARCH_DECLARE_FUNCTION_STATIC(int, ss_dsi_set_update_mode, struct omap_dss_d
 SYMSEARCH_DECLARE_FUNCTION_STATIC(int, ss_dsi_force_tx_stop_mode_io);
 SYMSEARCH_DECLARE_FUNCTION_STATIC(int, ss_dsi_vc_enable, int, bool);
 SYMSEARCH_DECLARE_FUNCTION_STATIC(void, ss_dsi_show_rx_ack_with_err, u16);
+SYMSEARCH_DECLARE_ADDRESS_STATIC(dsi_irq_handler);
+
+
+// needed functions from dsi.c that are not available to symsearch
 
 static inline void dsi_write_reg(const struct dsi_reg idx, u32 val)
 {
@@ -325,7 +379,6 @@ static inline int wait_for_bit_change(const struct dsi_reg idx, int bitnum,
 	return value;
 }
 
-/* DSI func clock. this could also be DSI2_PLL_FCLK */
 static inline void enable_clocks(bool enable)
 {
 	if (enable)
@@ -334,7 +387,6 @@ static inline void enable_clocks(bool enable)
 		ss_dss_clk_disable(DSS_CLK_ICK | DSS_CLK_FCK1);
 }
 
-/* source clock for DSI PLL. this could also be PCLKFREE */
 static inline void dsi_enable_pll_clock(bool enable)
 {
 	if (enable)
@@ -381,6 +433,9 @@ static void dsi_vc_flush_long_data(int channel)
 				(val >> 24) & 0xff);
 	}
 }
+
+
+// custom functions
 
 static int dsi_do_display_suspend(struct omap_dss_device *dssdev)
 {
@@ -462,6 +517,24 @@ err0:
 	return r;
 }
 
+
+// hooked functions
+
+static void set_data_timeout(struct omap_hsmmc_host *host,
+			     unsigned int timeout_ns,
+			     unsigned int timeout_clks)
+{
+	uint32_t reg;
+
+//	printk(KERN_INFO "DSI/MMC-fix: set_data_timeout called\n");
+	reg = OMAP_HSMMC_READ(host->base, SYSCTL);
+
+	reg &= ~DTO_MASK;
+	reg |= DTO << DTO_SHIFT;
+	OMAP_HSMMC_WRITE(host->base, SYSCTL, reg);
+	if (0) HOOK_INVOKE(set_data_timeout, host, timeout_ns, timeout_clks);
+}
+
 static int dsi_display_suspend(struct omap_dss_device *dssdev)
 {
 	mutex_lock(&dsi->lock);
@@ -500,6 +573,7 @@ static u16 dsi_vc_flush_receive_data(int channel)
 			DSSERR("\tunknown datatype 0x%02x\n", dt);
 		}
 	}
+	if (0) return HOOK_INVOKE(dsi_vc_flush_receive_data, channel);
 	return 0;
 }
 
@@ -545,11 +619,11 @@ static void dsi_error_recovery_worker(struct work_struct *work)
 	/* Now check to ensure there is communication. */
 	/* If not, we need to hard reset */
 	if (dssdev->driver->run_test) {
-		if (dssdev->driver->run_test(dssdev, 1) != 0) {
-			DSSERR("DSS IF reset failed, resetting panel\n");
-
+		if (framedonetimeout || dssdev->driver->run_test(dssdev, 1) != 0) {
+			printk(KERN_INFO "DSI-fix: framedone timeout - doing hard reset \n");
 			dsi_do_display_suspend(dssdev);
 			dsi_do_display_resume(dssdev);
+			framedonetimeout = false;
 		}
 	}
 
@@ -559,9 +633,10 @@ static void dsi_error_recovery_worker(struct work_struct *work)
 
 end:
 	mutex_unlock(&dsi->lock);
+	if (0) HOOK_INVOKE(dsi_error_recovery_worker, work);
 } 
 
-/* work in progress, unused for now...
+/* unused for now...
 int dsi_vc_send_bta_sync(int channel)
 {
 	// suppress dsi_vc_send_bta_sync call if it comes from dsi_update_thread
@@ -573,9 +648,8 @@ int dsi_vc_send_bta_sync(int channel)
 		return HOOK_INVOKE(dsi_vc_send_bta_sync, channel);
 	}
 }
-*/
 
-/* work in progress, unused for now...
+
 static void mapphone_panel_setup_update(struct omap_dss_device *dssdev,
 				      u16 x, u16 y, u16 w, u16 h)
 {
@@ -611,24 +685,59 @@ static void mapphone_panel_setup_update(struct omap_dss_device *dssdev,
 		xlast = x;
 		wlast = w;
 	}
+	if (0) HOOK_INVOKE(mapphone_panel_setup_update, dssdev, x, y, w, h);
 }
 */
 
+void dispc_enable_lcd_out(bool enable)
+{
+	void *p;
+	p = __builtin_return_address(0);
+	HOOK_INVOKE(dispc_enable_lcd_out, enable);
+	if (!enable && p > p_dsi_update_thread_start && p < p_dsi_update_thread_end)
+	{
+		/* framedone timeout happened */
+		framedonetimeout = true;
+		schedule_error_recovery();
+	}
+}
+
+// find the dsi structure address
+void find_dsi_struct_addr(void)
+{
+	unsigned char *func = (void *)SYMSEARCH_GET_ADDRESS(dsi_irq_handler);
+	uint *addr;
+	int i;
+
+	for(i = 0; i < 100; i+=4) 
+	{
+		if((func[i+3] == 0xe5) /* ldr */
+			&& func[i+2] == 0x9f) /* [pc, */
+		{ 
+			addr = (void *)((uint)func)+i+8+(func[i+1]&0x0f)*0x100+func[i];
+			dsi = *addr;
+			printk (KERN_INFO "DSI-fix: found dsi struct addr at 0x%x\n", dsi);
+			break;
+		}
+	}
+}
+
 struct hook_info g_hi[] = {
+	HOOK_INIT(set_data_timeout),
 //	HOOK_INIT(dsi_vc_send_bta_sync),
 	HOOK_INIT(dsi_display_suspend),
 	HOOK_INIT(dsi_vc_flush_receive_data),
 	HOOK_INIT(dsi_error_recovery_worker),
 //	HOOK_INIT(mapphone_panel_setup_update),
+	HOOK_INIT(dispc_enable_lcd_out),
 	HOOK_INIT_END
 };
 
 static int __init dsifix_init(void)
 {
-//	unsigned long size;
-//	char name[KSYM_NAME_LEN];
-	printk(KERN_INFO "DSI-fix v2.41");
-	dsi = (void *) DSI_STRUCT_ADDR;
+	unsigned long size;
+	char name[KSYM_NAME_LEN];
+	printk(KERN_INFO "DSI/MMC-fix v2.6");
 	SYMSEARCH_BIND_FUNCTION_TO(dsifix, kallsyms_lookup, ss_kallsyms_lookup);
 	SYMSEARCH_BIND_FUNCTION_TO(dsifix, dss_clk_disable, ss_dss_clk_disable);
 	SYMSEARCH_BIND_FUNCTION_TO(dsifix, dss_clk_enable, ss_dss_clk_enable);
@@ -644,9 +753,11 @@ static int __init dsifix_init(void)
 	SYMSEARCH_BIND_FUNCTION_TO(dsifix, dsi_force_tx_stop_mode_io, ss_dsi_force_tx_stop_mode_io);
 	SYMSEARCH_BIND_FUNCTION_TO(dsifix, dsi_vc_enable, ss_dsi_vc_enable);
 	SYMSEARCH_BIND_FUNCTION_TO(dsifix, dsi_show_rx_ack_with_err, ss_dsi_show_rx_ack_with_err);
-//	p_dsi_update_thread_start = lookup_symbol_address("dsi_update_thread");
-//	ss_kallsyms_lookup((unsigned long)p_dsi_update_thread_start, &size, NULL, NULL, name);
-//	p_dsi_update_thread_end = p_dsi_update_thread_start + size;
+	SYMSEARCH_BIND_ADDRESS(dsifix, dsi_irq_handler);
+	find_dsi_struct_addr();
+	p_dsi_update_thread_start = lookup_symbol_address("dsi_update_thread");
+	ss_kallsyms_lookup((unsigned long)p_dsi_update_thread_start, &size, NULL, NULL, name);
+	p_dsi_update_thread_end = p_dsi_update_thread_start + size;
 	hook_init();
 	return 0;
 }
@@ -659,7 +770,7 @@ static void __exit dsifix_exit(void)
 module_init(dsifix_init);
 module_exit(dsifix_exit);
 
-MODULE_ALIAS("DSI-fix");
-MODULE_DESCRIPTION("fix Milestone DSS drivers via kernel function hook");
+MODULE_ALIAS("DSI/MMC-fix");
+MODULE_DESCRIPTION("fix Milestone DSS/MMC drivers via kernel function hook");
 MODULE_AUTHOR("Nadlabak");
 MODULE_LICENSE("GPL");
