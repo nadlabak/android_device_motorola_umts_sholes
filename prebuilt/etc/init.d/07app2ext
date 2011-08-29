@@ -39,4 +39,7 @@ for dir in app app-private;do
 		mount -o bind ${SD_EXT_DIRECTORY}/${dir}/ /data/${dir}
 	fi
 done
+rm -rf ${SD_EXT_DIRECTORY}/download
+install -m 775 -o 1000 -g 2001 -d ${SD_EXT_DIRECTORY}/download
+mount -o bind ${SD_EXT_DIRECTORY}/download /cache/download
 
