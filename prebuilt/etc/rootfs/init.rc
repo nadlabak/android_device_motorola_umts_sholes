@@ -15,6 +15,7 @@ loglevel 3
     export ANDROID_ROOT /system
     export ANDROID_ASSETS /system/app
     export ANDROID_DATA /data
+    export DOWNLOAD_CACHE /cache/download
     export EXTERNAL_STORAGE /mnt/sdcard
     export ASEC_MOUNTPOINT /mnt/asec
     export SD_EXT_DIRECTORY /sd-ext
@@ -129,7 +130,6 @@ loglevel 3
     mount yaffs2 mtd@cache /cache nosuid nodev
     chown system cache /cache
     chmod 0771 /cache
-    mkdir /cache/download 0777 system cache
 
     # This may have been created by the recovery system with odd permissions
     chown system cache /cache/recovery
@@ -164,9 +164,12 @@ loglevel 3
     mkdir /data/local 0771 mot_tcmd shell
     mkdir /data/local/tmp 0771 mot_tcmd shell
     mkdir /data/data 0771 system system
+    mkdir /data/local/download 0771 system cache
     mkdir /data/app-private 0771 system system
     mkdir /data/app 0771 system system
     mkdir /data/property 0700 root root
+
+    mkdir /cache/download 0771 system cache
 
     # create dalvik-cache and double-check the perms
     mkdir /data/dalvik-cache 0771 system system
