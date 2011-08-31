@@ -1,10 +1,13 @@
 /*
- * DSI/MMC-fix v2.6 - fix display freezes and kernel panics caused by DSS/DSI
- * kernel drivers used in stock Milestone kernel for Froyo by function hooking
- * - add error recovery calls and other modifications.
- * Fix also SD card read/write errors (mmcblk0: error -110 - common and known
+ * DSI/MMC/NAND-fix v2.61
+ * - fix display freezes and kernel panics caused by DSS/DSI kernel drivers
+ * used in stock Milestone kernel for Froyo by function hooking - added error
+ * recovery calls and other modifications.
+ * - fix SD card read/write errors (mmcblk0: error -110 - common and known
  * linux-omap issue) by replacement of set_data_timeout function in omap_hsmmc.c
  * to use the default DTO value of 0xE instead of dynamic calculation.
+ * - disable duplicated NAND suspend/resume calls to get rid of the
+ * "nand_resume called for a chip which is not in suspend_state" messages.
  *
  * hooking taken from "n - for testing kernel function hooking" by Nothize.
  * depends on symsearch module by Skrilax_CZ
@@ -518,8 +521,9 @@ err0:
 }
 
 
-// hooked functions
+// hooked functions:
 
+// MMC
 static void set_data_timeout(struct omap_hsmmc_host *host,
 			     unsigned int timeout_ns,
 			     unsigned int timeout_clks)
@@ -535,6 +539,19 @@ static void set_data_timeout(struct omap_hsmmc_host *host,
 	if (0) HOOK_INVOKE(set_data_timeout, host, timeout_ns, timeout_clks);
 }
 
+// NAND
+static int omap_nand_suspend(struct platform_device *pdev, pm_message_t state)
+{
+	if (0) HOOK_INVOKE(omap_nand_suspend, pdev, state);
+	return 0;
+}
+static int omap_nand_resume(struct platform_device *pdev)
+{
+	if (0) HOOK_INVOKE(omap_nand_resume, pdev);
+	return 0;
+}
+
+// DSI
 static int dsi_display_suspend(struct omap_dss_device *dssdev)
 {
 	mutex_lock(&dsi->lock);
@@ -724,10 +741,12 @@ void find_dsi_struct_addr(void)
 
 struct hook_info g_hi[] = {
 	HOOK_INIT(set_data_timeout),
-//	HOOK_INIT(dsi_vc_send_bta_sync),
+	HOOK_INIT(omap_nand_suspend),
+	HOOK_INIT(omap_nand_resume),
 	HOOK_INIT(dsi_display_suspend),
 	HOOK_INIT(dsi_vc_flush_receive_data),
 	HOOK_INIT(dsi_error_recovery_worker),
+//	HOOK_INIT(dsi_vc_send_bta_sync),
 //	HOOK_INIT(mapphone_panel_setup_update),
 	HOOK_INIT(dispc_enable_lcd_out),
 	HOOK_INIT_END
@@ -737,7 +756,7 @@ static int __init dsifix_init(void)
 {
 	unsigned long size;
 	char name[KSYM_NAME_LEN];
-	printk(KERN_INFO "DSI/MMC-fix v2.6");
+	printk(KERN_INFO "DSI/MMC/NAND-fix v2.61");
 	SYMSEARCH_BIND_FUNCTION_TO(dsifix, kallsyms_lookup, ss_kallsyms_lookup);
 	SYMSEARCH_BIND_FUNCTION_TO(dsifix, dss_clk_disable, ss_dss_clk_disable);
 	SYMSEARCH_BIND_FUNCTION_TO(dsifix, dss_clk_enable, ss_dss_clk_enable);
@@ -770,7 +789,7 @@ static void __exit dsifix_exit(void)
 module_init(dsifix_init);
 module_exit(dsifix_exit);
 
-MODULE_ALIAS("DSI/MMC-fix");
-MODULE_DESCRIPTION("fix Milestone DSS/MMC drivers via kernel function hook");
+MODULE_ALIAS("DSI/MMC/NAND-fix");
+MODULE_DESCRIPTION("fix Milestone DSS/MMC/NAND drivers via kernel function hooks");
 MODULE_AUTHOR("Nadlabak");
 MODULE_LICENSE("GPL");
