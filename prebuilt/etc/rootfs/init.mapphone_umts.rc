@@ -98,6 +98,7 @@ setprop ro.sys.atvc_allow_efem 0
     insmod /system/lib/modules/cpufreq_stats.ko
     insmod /system/lib/modules/overclock.ko
     insmod /system/lib/modules/qtouch_num.ko
+    insmod /system/lib/modules/mot_usb.ko
 
 on early-boot
 
