@@ -365,6 +365,7 @@ service vold /system/bin/vold
 service netd /system/bin/netd
     class pre-zygote_services
     socket netd stream 0660 root system
+    socket dnsproxyd stream 0660 root inet
 
 service debuggerd /system/bin/debuggerd
     class pre-zygote_services
