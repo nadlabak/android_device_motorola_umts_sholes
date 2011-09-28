@@ -21,5 +21,11 @@
         <item>@string/voice_quality_entry_crisp</item>
         <item>@string/voice_quality_entry_bright</item>
     </string-array>
+    <string-array translatable="false" name="voice_quality_values">
+        <item>Normal</item>
+        <item>Clear</item>
+        <item>Crisp</item>
+        <item>Bright</item>
+    </string-array>
 </resources>
 
