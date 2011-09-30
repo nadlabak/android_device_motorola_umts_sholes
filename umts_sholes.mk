@@ -150,9 +150,6 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/lib/modules/cpufreq_smartass.ko:/system/lib/modules/cpufreq_smartass.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/cpufreq_conservative.ko:/system/lib/modules/cpufreq_conservative.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/cpufreq_stats.ko:/system/lib/modules/cpufreq_stats.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/ext2.ko:/system/lib/modules/ext2.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/jbd.ko:/system/lib/modules/jbd.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/ext3.ko:/system/lib/modules/ext3.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/jbd2.ko:/system/lib/modules/jbd2.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/ext4.ko:/system/lib/modules/ext4.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/tun.ko:/system/lib/modules/tun.ko \
