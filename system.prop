@@ -48,6 +48,14 @@ ro.usb.use_custom_service=1
 # enable 16bit transparency by default
 persist.sys.use_16bpp_alpha=1
 
+# when set to 1, Google Maps NetworkLocationService
+# (designed to be constantly running since gmaps 5.1.0)
+# won't be kept in RAM anymore, unless Google Maps really need it
+#
+# set this property to 0 if you rely on Latitude service
+# to automatically report your location (bye bye, free RAM)
+persist.sys.gmaps_hack=1
+
 windowsmgr.max_events_per_sec=60
 
 # The interfaces to get DNS data from when using mobile data, comma-separated
