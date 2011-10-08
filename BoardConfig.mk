@@ -78,11 +78,17 @@ BOARD_HAVE_BLUETOOTH_BCM := true
 
 BOARD_EGL_CFG := device/motorola/umts_sholes/egl.cfg
 BOARD_NO_RGBX_8888 := true
-#TARGET_USES_16BPPSURFACE_FOR_OPAQUE := true
 
 BOARD_BOOTIMAGE_PARTITION_SIZE := 0x00380000
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x00480000
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 0x0afa0000   # limited so we enforce room to grow
+# real value:
+#BOARD_SYSTEMIMAGE_PARTITION_SIZE := 0x0afa0000
+# here we lie about the system partition size so it can be used to max
+# (squisher will change the size of files anyway)
+# the size of system content in the final update zip package
+# needs to be veryfied manually before flashing
+# (considering also additional gapps size)!
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 0x0bfa0000
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 0x0c520000
 BOARD_FLASH_BLOCK_SIZE := 131072
 
@@ -95,4 +101,6 @@ BOARD_HAS_SMALL_RECOVERY := true
 USE_SHOLES_PROPERTY := true
 
 TARGET_SKIA_USE_MORE_MEMORY := false
+
+WITH_DEXPREOPT := true
 
