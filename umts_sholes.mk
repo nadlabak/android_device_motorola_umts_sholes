@@ -70,6 +70,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/media_profiles.xml:system/etc/media_profiles.xml
 
+# sysctl config
+PRODUCT_COPY_FILES += \
+    device/motorola/umts_sholes/sysctl.conf:system/etc/sysctl.conf
+
 PRODUCT_PACKAGES += \
     librs_jni \
     tiwlan.ini \
