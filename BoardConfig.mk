@@ -104,3 +104,9 @@ TARGET_SKIA_USE_MORE_MEMORY := false
 
 WITH_DEXPREOPT := true
 
+# Custom releasetools
+TARGET_CUSTOM_RELEASETOOL := ./device/motorola/umts_sholes/releasetools/squisher
+TARGET_PROVIDES_RELEASETOOLS := true
+TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := ./device/motorola/umts_sholes/releasetools/umts_sholes_img_from_target_files
+TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := ./device/motorola/umts_sholes/releasetools/umts_sholes_ota_from_target_files
+
