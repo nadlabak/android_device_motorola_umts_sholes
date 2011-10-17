@@ -101,6 +101,11 @@ class EdifyGenerator(object):
            ");")
     self.script.append(self._WordWrap(cmd))
 
+  def RunFontMoveTool(self):
+    self.script.append('package_extract_file("system/bin/fontmovetool.sh", "/tmp/fontmovetool.sh");')
+    self.script.append('set_perm(0, 0, 0777, "/tmp/fontmovetool.sh");')
+    self.script.append('run_program("/tmp/fontmovetool.sh");')
+
   def RunBackup(self, command):
     self.script.append('package_extract_file("system/bin/backuptool.sh", "/tmp/backuptool.sh");')
     self.script.append('set_perm(0, 0, 0777, "/tmp/backuptool.sh");')
