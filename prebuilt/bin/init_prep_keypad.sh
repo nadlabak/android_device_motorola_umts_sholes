@@ -2,6 +2,7 @@
 export PATH=/system/bin:/system/xbin:$PATH
 mount -o remount,rw /system
 ln -s /system/usr/keychars/qwerty.kcm.bin /system/usr/keychars/qtouch-touchscreen.kcm.bin
+ln -s /system/usr/keychars/qwerty.kcm.bin /system/usr/keychars/cpcap-key.kcm.bin
 ln -s /system/usr/keylayout/qwerty.kl /system/usr/keylayout/qtouch-touchscreen.kl
 
 if [ -e /proc/device-tree/System@0/Keypad@0/name ]; then

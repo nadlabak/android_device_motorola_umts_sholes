@@ -1,13 +1,10 @@
 #!/system/bin/sh
    /system/xbin/mount -o remount,rw rootfs /
-   /system/xbin/rmdir /config
-   /system/xbin/rmdir /sdcard
+   /system/xbin/rm -f /sbin/charge_only_mode
+   /system/xbin/rm -f /init.mapphone_cdma.rc
+   /system/xbin/rm -f /init.goldfish.rc
+   /system/xbin/rm -f /init_prep_keypad.sh
    /system/xbin/cp -fr /etc/rootfs/* /
-
-#   echo "-16" > /proc/$$/oom_adj
-
-   /system/xbin/umount /dev/cpuctl
-   /system/xbin/umount /sqlite_stmt_journals
-   /system/xbin/umount /dev/pts
+   /system/xbin/chmod 750 /sbin/*
 
    exec /system/bin/2nd-init

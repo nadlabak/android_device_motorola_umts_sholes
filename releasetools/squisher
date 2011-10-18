@@ -131,8 +131,7 @@ cp $ANDROID_BUILD_TOP/vendor/motorola/umts_sholes/proprietary/boot.img $REPACK/o
 
 # Rootfs stuff
 mkdir -p $REPACK/ota/system/etc/rootfs/sbin
-cp $OUT/root/ueventd.rc $REPACK/ota/system/etc/rootfs/
-cp $OUT/root/init $REPACK/ota/system/etc/rootfs/sbin/ueventd
+cp $OUT/root/sbin/adbd $REPACK/ota/system/etc/rootfs/sbin/adbd
 
 # Delete unnecessary binaries
 ( cd $REPACK/ota/system/bin; echo $DELETE_BINS | xargs rm -f; )
