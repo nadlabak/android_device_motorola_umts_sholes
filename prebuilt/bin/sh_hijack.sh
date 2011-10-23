@@ -1,5 +1,6 @@
 #!/system/bin/sh
    /system/xbin/mount -o remount,rw rootfs /
+   /system/xbin/rmdir /config
    /system/xbin/rm -f /sbin/charge_only_mode
    /system/xbin/rm -f /init.mapphone_cdma.rc
    /system/xbin/rm -f /init.goldfish.rc
