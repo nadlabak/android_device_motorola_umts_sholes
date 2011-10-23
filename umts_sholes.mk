@@ -135,7 +135,7 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/bin/2nd-init:/system/bin/2nd-init \
     device/motorola/umts_sholes/prebuilt/bin/init_prep_keypad.sh:/system/bin/init_prep_keypad.sh \
     device/motorola/umts_sholes/prebuilt/bin/init_mount_logger.sh:/system/bin/init_mount_logger.sh \
-    device/motorola/umts_sholes/prebuilt/bin/fontmovetool.sh:/system/bin/fontmovetool.sh \
+    device/motorola/umts_sholes/prebuilt/bin/ttsmovetool.sh:/system/bin/ttsmovetool.sh \
     device/motorola/umts_sholes/prebuilt/bin/sh_hijack.sh:/system/bin/sh_hijack.sh \
     device/motorola/umts_sholes/prebuilt/bin/tcmd:/system/bin/tcmd \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-qwerty.kcm.bin:/system/usr/keychars/sholesp2a-keypad-qwerty.kcm.bin \
