@@ -40,6 +40,8 @@ persist.sys.purgeable_assets=1
 sys.keep_app_1=
 sys.keep_app_2=
 
+ro.sys.keypad_type_prefix=sholesp2a-keypad-
+
 persist.sys.keypad_type=euro_qwerty
 
 persist.sys.qtouch_num=2
