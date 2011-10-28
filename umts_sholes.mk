@@ -117,9 +117,6 @@ PRODUCT_PACKAGES += \
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
 
-# Passion uses high-density artwork where available
-PRODUCT_LOCALES += hdpi
-
 PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/vold.fstab:system/etc/vold.fstab \
     device/motorola/umts_sholes/prebuilt/default.prop:system/default.prop \
@@ -167,16 +164,10 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/lib/modules/nfs.ko:/system/lib/modules/nfs.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/qtouch_num.ko:/system/lib/modules/qtouch_num.ko
 
-$(call inherit-product-if-exists, vendor/motorola/umts_sholes/umts_sholes-vendor.mk)
-
-# media profiles and capabilities spec
-# $(call inherit-product, device/motorola/sholes/media_a1026.mk)
-
-# stuff common to all HTC phones
-#$(call inherit-product, device/htc/common/common.mk)
-
 $(call inherit-product, build/target/product/full_base.mk)
 
+# use high-density artwork where available
+PRODUCT_LOCALES += hdpi
 
 PRODUCT_NAME := umts_sholes
 PRODUCT_DEVICE := umts_sholes
