@@ -40,9 +40,21 @@ persist.sys.purgeable_assets=1
 sys.keep_app_1=
 sys.keep_app_2=
 
-ro.sys.keypad_type_prefix=sholesp2a-keypad-
+# kcm filename prefix
+ro.sys.keypad_prefix=sholesp2a-keypad-
 
+# primary keycharmap
 persist.sys.keypad_type=euro_qwerty
+
+# secondary keycharmap
+persist.sys.keypad_type_sec=none
+
+# max interval for key multipress (ms)
+persist.sys.keypad_multipress_t=500
+
+# alternative keylayout
+# (for russian phones - swapped 'search' and 'lang/menu' buttons)
+persist.sys.keylayout_alt=
 
 persist.sys.qtouch_num=2
 
