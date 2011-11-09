@@ -75,6 +75,7 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/sysctl.conf:system/etc/sysctl.conf
 
 PRODUCT_PACKAGES += \
+    MmParts \
     librs_jni \
     tiwlan.ini \
     dspexec \
