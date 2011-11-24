@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   * Copyright (C) 2007 The Android Open Source Project
+   *
+   * Licensed under the Apache License, Version 2.0 (the "License");
+   * you may not use this file except in compliance with the License.
+   * You may obtain a copy of the License at
+   *
+   *      http://www.apache.org/licenses/LICENSE-2.0
+   *
+   * Unless required by applicable law or agreed to in writing, software
+   * distributed under the License is distributed on an "AS IS" BASIS,
+   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   * See the License for the specific language governing permissions and
+   * limitations under the License.
+  -->
+
+<resources>
+
+  <string-array name="pref_keypad_type_sec_entries">
+    <item>keine</item>
+    <item>arabisch</item>
+    <item>kyrillisch (phonetisch)</item>
+    <item>hebräisch</item>
+    <item>russisch</item>
+    <item>russisch (Prototyp)</item>
+  </string-array>
+
+  <string-array name="pref_keypad_multipress_entries">
+    <item>0 (deaktiviert)</item>
+    <item>200 ms</item>
+    <item>300 ms</item>
+    <item>400 ms</item>
+    <item>500 ms</item>
+    <item>600 ms</item>
+  </string-array>
+
+  <string-array name="pref_keypad_mplang_entries">
+    <item>Automatisch</item>
+    <item>Englisch (deaktiviert)</item>
+    <item>Tschechisch</item>
+    <item>Dänisch</item>
+    <item>Deutsch</item>
+    <item>Deutsch (\u00DF auf B)</item>
+    <item>Spanisch</item>
+    <item>Finnisch</item>
+    <item>Französisch</item>
+    <item>Ungarisch</item>
+    <item>Italienisch</item>
+    <item>Litauisch</item>
+    <item>Niederländisch</item>
+    <item>Norwegisch</item>
+    <item>Polnisch</item>
+    <item>Portugiesisch</item>
+    <item>Romänisch</item>
+    <item>Slovakisch</item>
+    <item>Slovenisch</item>
+    <item>Schwedisch</item>
+  </string-array>
+
+</resources>

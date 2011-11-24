@@ -9,12 +9,75 @@
         </PreferenceScreen>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/other_settings_title">
+    <PreferenceCategory android:title="@string/compass_settings_title">
         <PreferenceScreen android:key="compass_calibrate" android:title="@string/compass_calibrate">
             <intent android:action="android.intent.action.MAIN"
                 android:targetPackage="com.motorola.CompassCalibrate"
                 android:targetClass="com.motorola.CompassCalibrate.CompassCalibrate" />
         </PreferenceScreen>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/keypad_title"
+        android:key="pref_category_keypad_settings">
+        <ListPreference android:key="pref_keypad_type"
+            android:dialogTitle="@string/pref_keypad_type_title"
+            android:title="@string/pref_keypad_type_title"
+            android:summary="@string/pref_keypad_type_summary"
+            android:entries="@array/pref_keypad_type_entries"
+            android:entryValues="@array/pref_keypad_type_values" />
+        <ListPreference android:key="pref_keypad_type_sec"
+            android:dialogTitle="@string/pref_keypad_type_sec_title"
+            android:title="@string/pref_keypad_type_sec_title"
+            android:summary="@string/pref_keypad_type_sec_summary"
+            android:entries="@array/pref_keypad_type_sec_entries"
+            android:entryValues="@array/pref_keypad_type_sec_values" />
+        <ListPreference android:key="pref_keypad_multipress"
+            android:dialogTitle="@string/pref_keypad_multipress_title"
+            android:title="@string/pref_keypad_multipress_title"
+            android:summary="@string/pref_keypad_multipress_summary"
+            android:entries="@array/pref_keypad_multipress_entries"
+            android:entryValues="@array/pref_keypad_multipress_values" />
+        <ListPreference android:key="pref_keypad_mplang"
+            android:dialogTitle="@string/pref_keypad_mplang_title"
+            android:title="@string/pref_keypad_mplang_title"
+            android:summary="@string/pref_keypad_mplang_summary"
+            android:entries="@array/pref_keypad_mplang_entries"
+            android:entryValues="@array/pref_keypad_mplang_values" />
+        <CheckBoxPreference android:key="pref_keypad_keylayout"
+            android:title="@string/pref_keypad_keylayout_title"
+            android:summary="@string/pref_keypad_keylayout_summary" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/qtouch_title"
+        android:key="pref_category_qtouch_settings">
+        <ListPreference android:key="pref_qtouch_num"
+            android:dialogTitle="@string/pref_qtouch_num_title"
+            android:title="@string/pref_qtouch_num_title"
+            android:summary="@string/pref_qtouch_num_summary"
+            android:entries="@array/pref_qtouch_num_entries"
+            android:entryValues="@array/pref_qtouch_num_values" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/battery_title"
+        android:key="pref_category_battery_settings">
+        <CheckBoxPreference android:key="pref_status_bar_oneperc_battery"
+            android:title="@string/ui_status_bar_oneperc_battery_title"
+            android:summary="@string/ui_status_bar_oneperc_battery_summary"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/dock_title"
+        android:key="pref_category_dock_settings">
+        <CheckBoxPreference android:key="pref_dock_observer_off"
+            android:title="@string/pref_dock_observer_off_title"
+            android:summary="@string/pref_dock_observer_off_summary" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/debug_title">
+        <!-- aplogd pref -->
+        <CheckBoxPreference android:key="pref_logger"
+            android:title="@string/pref_logger_title"
+            android:summary="@string/pref_logger_summary" />
     </PreferenceCategory>
 
 </PreferenceScreen>

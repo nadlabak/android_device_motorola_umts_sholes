@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ -->
+
+<resources>
+
+    <string-array name="pref_keypad_type_entries">
+        <item>azerty</item>
+        <item>euro-qwerty</item>
+        <item>qwerty</item>
+        <item>qwertz</item>
+        <item>swe-qwerty</item>
+    </string-array>
+
+    <string-array name="pref_keypad_type_values" translatable="false">
+        <item>azerty</item>
+        <item>euro_qwerty</item>
+        <item>qwerty</item>
+        <item>qwertz</item>
+        <item>swe_qwerty</item>
+    </string-array>
+
+    <string-array name="pref_keypad_type_sec_entries">
+        <item>none</item>
+        <item>Arabic</item>
+        <item>Cyrillic (phonetic)</item>
+        <item>Hebrew</item>
+        <item>Russian</item>
+        <item>Russian (prototype)</item>
+    </string-array>
+
+    <string-array name="pref_keypad_type_sec_values" translatable="false">
+        <item>none</item>
+        <item>arabic</item>
+        <item>cyrillic</item>
+        <item>hebrew</item>
+        <item>russian2</item>
+        <item>russian</item>
+    </string-array>
+
+    <string-array name="pref_keypad_multipress_entries">
+        <item>0 (disabled)</item>
+        <item>200ms</item>
+        <item>300ms</item>
+        <item>400ms</item>
+        <item>500ms</item>
+        <item>600ms</item>
+    </string-array>
+
+    <string-array name="pref_keypad_multipress_values" translatable="false">
+        <item>0</item>
+        <item>200</item>
+        <item>300</item>
+        <item>400</item>
+        <item>500</item>
+        <item>600</item>
+    </string-array>
+
+    <string-array name="pref_keypad_mplang_entries">
+        <item>automatic</item>
+        <item>English (disabled)</item>
+        <item>Czech</item>
+        <item>Danish</item>
+        <item>German</item>
+        <item>German (\u00DF on B)</item>
+        <item>Spanish</item>
+        <item>Finnish</item>
+        <item>French</item>
+        <item>Hungarian</item>
+        <item>Italian</item>
+        <item>Lithuanian</item>
+        <item>Dutch</item>
+        <item>Norwegian</item>
+        <item>Polish</item>
+        <item>Portuguese</item>
+        <item>Romanian</item>
+        <item>Slovak</item>
+        <item>Slovenian</item>
+        <item>Swedish</item>
+    </string-array>
+
+    <string-array name="pref_keypad_mplang_values" translatable="false">
+        <item>auto</item>
+        <item>en</item>
+        <item>cs</item>
+        <item>da</item>
+        <item>de</item>
+        <item>de2</item>
+        <item>es</item>
+        <item>fi</item>
+        <item>fr</item>
+        <item>hu</item>
+        <item>it</item>
+        <item>lt</item>
+        <item>nl</item>
+        <item>no</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>sk</item>
+        <item>sl</item>
+        <item>sv</item>
+    </string-array>
+
+    <string-array name="pref_qtouch_num_entries">
+        <item>2</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="pref_qtouch_num_values" translatable="false">
+        <item>2</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+</resources>

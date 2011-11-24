@@ -1,11 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MM-Einstellungen</string>
+    <string name="app_name">Milestone-Einstellungen</string>
 
-    <string name="audio_settings_title">Ton-Einstellungen</string>
-    <string name="audio_effects">Audio-Effekte</string>
+    <string name="dock_title">Dockingstation</string>
+    <string name="keypad_title">Tastatur</string>
+    <string name="qtouch_title">Touchscreen</string>
+    <string name="debug_title">Debugging</string>
+    <string name="battery_title">Batterie</string>
 
-    <string name="other_settings_title">Andere Einstellungen</string>
+    <string name="pref_dock_observer_off_title">Erkennung von Dockingstationen deaktivieren</string>
+    <string name="pref_dock_observer_off_summary">Keine Aktion bei Magnetfeldern. Nützlich bei Telefonhüllen mit magetischem Verschluss</string>
+    <string name="pref_keypad_type_title">Zeichentabelle Tastatur</string>
+    <string name="pref_keypad_type_summary">Zeichentabelle für Hardware-Tastatur.\nMomentan: %s</string>
+    <string name="pref_keypad_type_sec_title">Sekundäre Zeichentabelle </string>
+    <string name="pref_keypad_type_sec_summary">Sekundäre Zeichentabelle für Hardware-Tastatur.\nMomentan: %s</string>
+    <string name="pref_keypad_keylayout_title">Tastaturbelegung</string>
+    <string name="pref_keypad_keylayout_summary">Tausche Such- und Menü/Sprache-Taste - Russische Tastatur (erfordert Neustart)</string>
+    <string name="pref_keypad_multipress_title">Intervall für mehrfachen Tastendruck</string>
+    <string name="pref_keypad_multipress_summary">Alternative Zeichen können direkt durch mehrfachen Tastendruck innerhalb dieses Intervalls eingegeben werden.\nMomentan: %s</string>
+    <string name="pref_keypad_mplang_title">Sprache für mehrfachen Tastendruck</string>
+    <string name="pref_keypad_mplang_summary">Auswahl der Sprache, um durch mehrfachen Tastendruck alternative Zeichen einzugeben.\nMomentan: %s</string>
+    <string name="pref_qtouch_num_title">Multitouch</string>
+    <string name="pref_qtouch_num_summary">Festlegen der Anzahl der erkannten Touchpunkte</string>
+
+    <string name="pref_logger_title">Ereignisprotokollierung aktivieren</string>
+    <string name="pref_logger_summary">Schreiben der Protokolldaten nach /cache/logger</string>
+
+    <string name="audio_settings_title">Ton</string>
+    <string name="audio_effects">Moto Audio-Effekte</string>
+
+    <string name="compass_settings_title">Kompass</string>
     <string name="compass_calibrate">Kompasskalibrierung</string>
+
+    <string name="ui_status_bar_oneperc_battery_title">Batterie in 1% Schritten</string>
+    <string name="ui_status_bar_oneperc_battery_summary">Zeigt den Ladezustand der Batterie in 1% Schritten. Kann Probleme mit Batterien und Ladegeräten von Fremdherstellern verursachen. (erfordert Neustart)</string>
+
+
 </resources>

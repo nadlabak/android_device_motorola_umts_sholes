@@ -1,12 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MM Settings</string>
+    <string name="app_name">Milestone Settings</string>
 
-    <string name="audio_settings_title">Audio Settings</string>
-    <string name="audio_effects">Audio Effects and DSP</string>
+    <string name="dock_title">Dock</string>
+    <string name="keypad_title">Keyboard</string>
+    <string name="qtouch_title">Touchscreen</string>
+    <string name="debug_title">Debugging</string>
+    <string name="battery_title">Battery</string>
 
-    <string name="other_settings_title">Other settings</string>
+    <string name="pref_dock_observer_off_title">Disable dock observer</string>
+    <string name="pref_dock_observer_off_summary">No action on magnets, useful for users of carrying cases with magnetic closure</string>
+    <string name="pref_keypad_type_title">Keyboard char-map</string>
+    <string name="pref_keypad_type_summary">Hardware keyboard character map.\nCurrently set to: %s</string>
+    <string name="pref_keypad_type_sec_title">Secondary char-map</string>
+    <string name="pref_keypad_type_sec_summary">Secondary hardware keyboard character map.\nCurrently set to: %s</string>
+    <string name="pref_keypad_keylayout_title">Keyboard layout</string>
+    <string name="pref_keypad_keylayout_summary">Switch Search and Menu/Lang buttons - Russian keypad (requires reboot)</string>
+    <string name="pref_keypad_multipress_title">Multipress interval</string>
+    <string name="pref_keypad_multipress_summary">Subsequent key presses within this interval can be used to directly enter alternate characters.\nCurrently set to: %s</string>
+    <string name="pref_keypad_mplang_title">Multipress language</string>
+    <string name="pref_keypad_mplang_summary">Language selection for entering alternate characters via multipress feature.\nCurrently set to: %s</string>
+    <string name="pref_qtouch_num_title">Multitouch</string>
+    <string name="pref_qtouch_num_summary">Set number of distinct touches to be recognized by touchscreen</string>
+    <string name="pref_logger_title">Enable logger</string>
+    <string name="pref_logger_summary">Enable logging to /cache/logger</string>
+
+    <string name="audio_settings_title">Audio</string>
+    <string name="audio_effects">Moto Audio Effects</string>
+
+    <string name="compass_settings_title">Compass</string>
     <string name="compass_calibrate">Compass calibrator</string>
+
+    <string name="ui_status_bar_oneperc_battery_title">1% battery steps</string>
+    <string name="ui_status_bar_oneperc_battery_summary">Show battery percentage in 1% steps. May cause issues with third party batteries and AC adapters. (Requires reboot)</string>
 
 </resources>
