@@ -292,12 +292,6 @@ on property:sys.chargeonly.mode=1
     start console
     exec /system/bin/charge_only_mode
 
-on property:persist.sys.omap_dss_mode=0
-    write /sys/devices/omapdss/display0/update_mode 2
-
-on property:persist.sys.omap_dss_mode=1
-    write /sys/devices/omapdss/display0/update_mode 1
-
 on property:persist.sys.qtouch_num=2
     write /proc/qtouch/num_touch 2
 
