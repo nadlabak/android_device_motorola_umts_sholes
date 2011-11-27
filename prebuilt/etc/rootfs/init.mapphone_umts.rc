@@ -572,8 +572,10 @@ service secclkd /system/bin/secclkd
     group system radio
     oneshot 
 
-# bugreport is triggered by the KEY_LEFTSHIFT and KEY_MENU keycodes
+# bugreport is triggered by the KEY_LEFTSHIFT and KEY_DEL keycodes
 service bugreport /system/bin/dumpstate -d -v -o /sdcard/bugreports/bugreport
     disabled
+    user root
     oneshot
-    keycodes 42 139
+    keycodes 42 14
+
