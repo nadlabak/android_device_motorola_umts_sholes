@@ -126,6 +126,7 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/etc/init.d/07app2ext:/system/etc/init.d/07app2ext \
     device/motorola/umts_sholes/prebuilt/etc/init.d/60autoboot_or:/system/etc/init.d/60autoboot_or \
     device/motorola/umts_sholes/prebuilt/etc/location.cfg:/system/etc/location.cfg \
+    device/motorola/umts_sholes/prebuilt/etc/powervr.ini:/system/etc/powervr.ini \
     device/motorola/umts_sholes/prebuilt/etc/rootfs/default.prop:/system/etc/rootfs/default.prop \
     device/motorola/umts_sholes/prebuilt/etc/rootfs/init.rc:/system/etc/rootfs/init.rc \
     device/motorola/umts_sholes/prebuilt/etc/rootfs/init.mapphone_umts.rc:/system/etc/rootfs/init.mapphone_umts.rc \
