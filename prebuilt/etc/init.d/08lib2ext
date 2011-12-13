@@ -1,0 +1,156 @@
+#!/system/bin/sh
+#
+# /system/etc/init.d/08lib2ext
+#
+# Move and symlink every /data/data/{APP}/lib to /sd-ext/lib/{APP}
+# This will perform on boot if enabled. Disabling it won't revert them.
+#
+# touch/rm this path to enable/disable lib2ext manually
+FLAG=/data/.lib2ext
+# symlink the script to /system/xbin/lib2ext for command line operation
+HELP="Move and symlink every /data/data/{APP}/lib to /sd-ext/lib/{APP}
+Usage: $(basename $0) [1|0]
+	1 - Enable  - Perform lib2ext on boot
+	0 - Disable - Do not perfrom lib2ext on boot"
+
+
+# command line mode
+#
+LIB2EXT=`basename $0`
+if [ $LIB2EXT = lib2ext ]; then
+	if [ $# -gt 0 ]; then
+		case $1 in
+			1)
+				touch $FLAG
+				if [ -e $FLAG ]; then
+					echo "$LIB2EXT will be performed on next boot."
+				else
+					echo "Cannot enable $LIB2EXT"
+				fi
+			;;
+			0)
+				rm -f $FLAG
+				if [ ! -e $FLAG ]; then
+					echo "$LIB2EXT disabled."
+				else
+					echo "Cannot disable $LIB2EXT"
+				fi
+			;;
+			*) echo "$HELP" ;;
+		esac
+	else
+		echo "$HELP"
+		if [ -f $FLAG ]; then
+			echo "$LIB2EXT is currently enabled."
+		else
+			echo "$LIB2EXT is currently disabled."
+		fi
+	fi
+	return
+fi
+
+
+# init.d script
+#
+SDEXT=$SD_EXT_DIRECTORY
+[ -z "$SDEXT" ] && SDEXT=/sd-ext
+SDLIB=$SDEXT/lib
+LOGI="log -p i -t lib2ext"
+LOGW="log -p w -t lib2ext"
+LOGE="log -p e -t lib2ext"
+
+if mount | grep $SDEXT; then
+	# scan for clean up
+	if [ -d $SDLIB ]; then
+		$LOGI "Cleaning up $SDLIB ..."
+		ls $SDLIB | while read APP; do
+			DATA=/data/data/$APP
+			EXT=$SDLIB/$APP
+			if [ ! -d $DATA ]; then
+				$LOGI "$APP uninstalled, removing..."
+				rm -rf $EXT
+			elif [ ! -h $DATA/lib ]; then
+				$LOGI "$APP lib found not symlinked, removing..."
+				rm -rf $EXT
+			elif [ "$(readlink $DATA/lib)" != "$EXT" ]; then
+				$LOGI "$APP symlinked but not referring to sd-ext, removing..."
+				rm -rf $EXT
+			fi
+		done
+		$LOGI "Done cleaning up."
+	fi
+	# perfrom lib2ext
+	if [ -f $FLAG ]; then
+		busybox mkdir -m 0777 -p $SDLIB
+		$LOGI "Flag found. Finding lib not symlinked..."
+		find /data/data -type d -name lib | while read LIB; do
+			APP=`basename $(dirname $LIB)`
+			if [ "/data/data/$APP/lib" != "$LIB" ] || [ -h $LIB ]; then
+				continue
+			fi
+			# preparing lib dir in sd-ext
+			EXT=$SDLIB/$APP
+			if [ -f $EXT ] && !(rm -f $EXT); then
+				$LOGE "Cannot remove file $EXT"
+				$LOGE "$APP (failed)"
+				continue
+			fi
+			if [ -d $EXT ]; then
+				$LOGW "$EXT already exists, removing libs inside..."
+				rm -f $EXT/*
+			elif ! busybox mkdir -m 0755 $EXT; then
+				$LOGE "Cannot create $EXT"
+				$LOGE "$APP (failed)"
+				continue
+			elif ! chown system:system $EXT; then
+				$LOGE "Cannot chown $EXT"
+				$LOGE "$APP (failed)"
+				rmdir $EXT
+				continue
+			fi
+			# moving libs to sd-ext
+			if [ "$(ls $LIB)" ]; then
+				if cp -p $LIB/* $EXT/; then
+					rm -rf $LIB
+				else
+					$LOGE "Cannot copy files to $EXT"
+					$LOGE "$APP (failed)"
+					rm -rf $EXT
+					continue
+				fi
+			else
+				rmdir $LIB
+			fi
+			if [ -d $LIB ]; then
+				$LOGE "Cannot remove $LIB"
+				$LOGE "$APP (failed)"
+				rm -rf $EXT
+				continue
+			fi
+			# symlinking lib dir to sd-ext
+			if ln -s $EXT $LIB; then
+				if ! chown -h system:system $LIB; then
+					$LOGW "Cannont chown $LIB"
+				fi
+			else
+				$LOGE "Cannot symlink to $EXT"
+				if cp -pr $EXT $LIB; then
+					$LOGW "Restored $LIB"
+					$LOGE "$APP (failed)"
+				else
+					$LOGE "Cannot restore $LIB"
+					$LOGE "$APP (failed, needs re-install)"
+				fi
+				rm -rf $EXT
+				continue
+			fi
+			$LOGI "$APP (succeeded)"
+		done
+		$LOGI "Done."
+	else
+		$LOGI "Flag not found. Exit."
+		#TODO: move /sd-ext/lib/{APP} back to /data/data/{APP}/lib
+	fi
+else
+	$LOGE "$SDEXT is not mounted."
+fi

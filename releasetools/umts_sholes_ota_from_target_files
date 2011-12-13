@@ -400,6 +400,8 @@ def WriteFullOTAPackage(input_zip, output_zip):
   symlinks = CopySystemFiles(input_zip, output_zip)
   script.MakeSymlinks(symlinks)
 
+  script.AddLib2extSymlink()
+
 #  boot_img = common.File("boot.img", common.BuildBootableImage(
 #      os.path.join(OPTIONS.input_tmp, "BOOT")))
 #  recovery_img = common.File("recovery.img", common.BuildBootableImage(
