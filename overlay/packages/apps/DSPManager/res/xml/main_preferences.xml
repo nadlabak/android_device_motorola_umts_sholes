@@ -15,10 +15,10 @@
 		android:targetPackage="com.motorola.android.AudioEffectSettings"
 		android:targetClass="com.motorola.android.AudioEffectSettings.DeviceListActivity" />
 	</PreferenceScreen>
-	<PreferenceCategory android:title="@string/global_opt_title">
+<!--	<PreferenceCategory android:title="@string/global_opt_title">
 		<CheckBoxPreference android:key="dsp.compression.allow"
 			android:title="@string/pref_compression_allow_title"
 			android:summary="@string/pref_compression_allow_summary">
 		</CheckBoxPreference>
-	</PreferenceCategory>
+	</PreferenceCategory> -->
 </PreferenceScreen>

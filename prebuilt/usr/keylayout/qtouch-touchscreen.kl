@@ -1,0 +1,7 @@
+key	102	HOME	VIRTUAL
+#why does menu key get lost?
+key	139	MENU	VIRTUAL
+key	158	BACK	VIRTUAL    
+key	217	SEARCH	VIRTUAL
+#key	258 ???
+#key	330 ???

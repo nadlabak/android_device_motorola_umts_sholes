@@ -109,6 +109,9 @@ class EdifyGenerator(object):
   def AddLib2extSymlink(self):
     self.script.append('symlink("/system/etc/init.d/08lib2ext", "/system/xbin/lib2ext");')
 
+  def AddLiba2dpSymlink(self):
+    self.script.append('symlink("/system/lib/hw/audio.a2dp.default.so", "/system/lib/liba2dp.so");')
+
   def RunBackup(self, command):
     self.script.append('package_extract_file("system/bin/backuptool.sh", "/tmp/backuptool.sh");')
     self.script.append('set_perm(0, 0, 0777, "/tmp/backuptool.sh");')
@@ -196,12 +199,12 @@ class EdifyGenerator(object):
     fstab = self.info.get("fstab", None)
     if fstab:
       p = fstab[partition]
-      self.script.append('format("%s", "%s", "%s");' %
+      self.script.append('format("%s", "%s", "%s", 0);' %
                          (p.fs_type, common.PARTITION_TYPES[p.fs_type], p.device))
     else:
       # older target-files without per-partition types
       partition = self.info.get("partition_path", "") + partition.lstrip("/")
-      self.script.append('format("%s", "%s", "%s");' %
+      self.script.append('format("%s", "%s", "%s", 0);' %
                          (self.info["fs_type"], self.info["partition_type"],
                           partition))
 

@@ -54,14 +54,14 @@ TARGET_BOOTLOADER_BOARD_NAME := sholes
 # Wifi related defines
 BOARD_WPA_SUPPLICANT_DRIVER := CUSTOM
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := libCustomWifi
-WPA_SUPPLICANT_VERSION      := VER_0_6_X
-BOARD_WLAN_DEVICE           := tiwlan0
-# BOARD_SOFTAP_DEVICE         := tiwlan0
-WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/tiwlan_drv.ko"
-BOARD_WLAN_TI_STA_DK_ROOT   := system/wlan/ti/wilink_6_1
-WIFI_DRIVER_MODULE_ARG      := ""
-WIFI_DRIVER_MODULE_NAME     := "tiwlan_drv"
-WIFI_FIRMWARE_LOADER        := "wlan_loader"
+WPA_SUPPLICANT_VERSION := VER_0_6_X
+BOARD_WLAN_DEVICE := tiwlan0
+# BOARD_SOFTAP_DEVICE := tiwlan0
+WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/tiwlan_drv.ko"
+BOARD_WLAN_TI_STA_DK_ROOT := system/wlan/ti/wilink_6_1
+WIFI_DRIVER_MODULE_ARG := ""
+WIFI_DRIVER_MODULE_NAME := "tiwlan_drv"
+WIFI_FIRMWARE_LOADER := "wlan_loader"
 
 BOARD_USES_GENERIC_AUDIO := false
 
@@ -111,7 +111,16 @@ USE_SHOLES_PROPERTY := true
 
 TARGET_SKIA_USE_MORE_MEMORY := false
 
-WITH_DEXPREOPT := true
+COMMON_GLOBAL_CFLAGS += -DMISSING_EGL_EXTERNAL_IMAGE -DMISSING_EGL_PIXEL_FORMAT_YV12 -DMISSING_GRALLOC_BUFFERS
+
+BOARD_MASS_STORAGE_FILE_PATH := "/sys/devices/platform/usb_mass_storage/lun0/file"
+
+ENABLE_SENSORS_COMPAT := true
+BOARD_USES_AUDIO_LEGACY := true
+TARGET_PROVIDES_LIBAUDIO := true
+BOARD_USE_LEGACY_TOUCHSCREEN := true
+
+# WITH_DEXPREOPT := true
 
 # Custom releasetools
 TARGET_CUSTOM_RELEASETOOL := ./device/motorola/umts_sholes/releasetools/squisher

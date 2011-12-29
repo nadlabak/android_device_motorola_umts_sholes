@@ -17,15 +17,8 @@
 # The gps config appropriate for this device
 $(call inherit-product, device/common/gps/gps_eu.mk)
 
-## (1) First, the most specific values, i.e. the aspects that are specific to GSM
+$(call inherit-product-if-exists, vendor/motorola/umts_sholes/device-vendor.mk)
 
-PRODUCT_COPY_FILES += \
-    device/motorola/umts_sholes/init.mapphone_umts.rc:root/init.mapphone_umts.rc
-
-## (2) Also get non-open-source GSM-specific aspects if available
-$(call inherit-product-if-exists, vendor/motorola/umts_sholes/umts_sholes-vendor.mk)
-
-## (3)  Finally, the least specific parts, i.e. the non-GSM-specific aspects
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.com.android.wifi-watchlist=GoogleGuest \
 	ro.error.receiver.system.apps=com.google.android.feedback \
@@ -74,13 +67,18 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/sysctl.conf:system/etc/sysctl.conf
 
+# ICS sound
+PRODUCT_PACKAGES += \
+hcitool hciattach hcidump \
+libaudioutils audio.a2dp.default audio_policy.sholes \
+libaudiohw_legacy audio.primary.omap3
+
 PRODUCT_PACKAGES += \
     MmParts \
     librs_jni \
     tiwlan.ini \
     dspexec \
     libbridge \
-    overlay.omap3 \
     wlan_cu \
     libtiOsLib \
     wlan_loader \
@@ -102,7 +100,6 @@ PRODUCT_PACKAGES += \
     gps.sholes \
     sensors.sholes \
     lights.sholes \
-    libaudiopolicy \
     Usb \
     mot_boot_mode \
     charge_only_mode
@@ -145,7 +142,14 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-azerty.kcm.bin:/system/usr/keychars/sholesp2a-keypad-azerty.kcm.bin \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-swe_qwerty.kcm.bin:/system/usr/keychars/sholesp2a-keypad-swe_qwerty.kcm.bin \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-cyrillic.kcm.bin:/system/usr/keychars/sholesp2a-keypad-cyrillic.kcm.bin \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholes-keypad.kcm:/system/usr/keychars/sholes-keypad.kcm \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/cpcap-key.kcm:/system/usr/keychars/cpcap-key.kcm \
     device/motorola/umts_sholes/prebuilt/usr/keylayout/sholesp2a-keypad-russian.kl:/system/usr/keylayout/sholesp2a-keypad-russian.kl \
+    device/motorola/umts_sholes/prebuilt/usr/keylayout/sholes-keypad.kl:/system/usr/keylayout/sholes-keypad.kl \
+    device/motorola/umts_sholes/prebuilt/usr/keylayout/cpcap-key.kl:/system/usr/keylayout/cpcap-key.kl \
+    device/motorola/umts_sholes/prebuilt/usr/keylayout/qtouch-touchscreen.kl:/system/usr/keylayout/qtouch-touchscreen.kl \
+    device/motorola/umts_sholes/prebuilt/usr/idc/qtouch-touchscreen.idc:/system/usr/idc/qtouch-touchscreen.idc \
+    device/motorola/umts_sholes/prebuilt/usr/idc/sholes-keypad.idc:/system/usr/idc/sholes-keypad.idc \
     device/motorola/umts_sholes/prebuilt/lib/libgki.so:/system/lib/libgki.so \
     device/motorola/umts_sholes/prebuilt/lib/modules/symsearch.ko:/system/lib/modules/symsearch.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/mot_usb.ko:/system/lib/modules/mot_usb.ko \

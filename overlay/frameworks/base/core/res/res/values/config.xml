@@ -53,13 +53,15 @@
     <!-- An Array of "[Connection name],[ConnectivityManager connection type],
          [associated radio-type],[priority]  -->
     <string-array translatable="false" name="networkAttributes">
-        <item>"wifi,1,1,1"</item>
-        <item>"mobile,0,0,0"</item>
-        <item>"mobile_mms,2,0,2"</item>
-	<item>"mobile_supl,3,0,2"</item>
-        <item>"mobile_dun,4,0,4"</item>
-        <item>"mobile_hipri,5,0,3"</item>
-    </string-array>
+        <item>"wifi,1,1,1,-1,true"</item>
+        <item>"mobile,0,0,0,-1,true"</item>
+        <item>"mobile_mms,2,0,2,60000,true"</item>
+        <item>"mobile_supl,3,0,2,60000,true"</item>
+        <item>"mobile_dun,4,0,2,60000,true"</item>
+        <item>"mobile_hipri,5,0,3,60000,true"</item>
+        <item>"mobile_bluetooth,7,7,1,-1,true"</item>
+        <item>"wifi_p2p,13,1,0,-1,true"</item>
+     </string-array>
 
     <!-- This string array should be overridden by the device to present a list of radio
          attributes.  This is used by the connectivity manager to decide which networks can coexist
@@ -69,7 +71,18 @@
     <string-array translatable="false" name="radioAttributes">
         <item>"1,1"</item>
         <item>"0,1"</item>
+        <item>"4,1"</item>
+        <item>"7,1"</item>
     </string-array>
+
+    <!-- Array of ConnectivityManager.TYPE_xxxx values allowable for tethering -->
+    <!-- Common options are [1, 4] for TYPE_WIFI and TYPE_MOBILE_DUN or
+    <!== [0,1,5,7] for TYPE_MOBILE, TYPE_WIFI, TYPE_MOBILE_HIPRI and TYPE_BLUETOOTH -->
+    <integer-array translatable="false" name="config_tether_upstream_types">
+        <item>0</item>
+        <item>1</item>
+        <item>4</item>
+    </integer-array>
 
     <!-- List of regexpressions describing the interface (if any) that represent tetherable
          USB interfaces.  If the device doesn't want to support tething over USB this should
@@ -82,7 +95,7 @@
          Wifi interfaces.  If the device doesn't want to support tethering over Wifi this
          should be empty.  An example would be "softap.*" -->
     <string-array translatable="false" name="config_tether_wifi_regexs">
-<!--        <item>"tiap\\d"</item> -->
+        <item>"tiap\\d"</item>
     </string-array>
 
     <!-- Dhcp range (min, max) to use for tethering purposes -->
@@ -91,16 +104,16 @@
 
     <!-- Regex array of allowable upstream ifaces for tethering - for example if you want
          tethering on a new interface called "foo2" add <item>"foo\\d"</item> to the array -->
-    <string-array translatable="false" name="config_tether_upstream_regexs">
+<!--    <string-array translatable="false" name="config_tether_upstream_regexs">
         <item>rmnet\\d</item>
         <item>tiwlan\\d</item>
-    </string-array>
+    </string-array> -->
 
     <!-- Boolean indicating if we require the use of DUN on mobile for tethering.
          Note that this defaults to false so that if you move to a carrier that
          hasn't configured anything tethering will still work.  If you'd rather
          make the device untetherable on unconfigured devices, set to true -->
-    <bool translatable="false" name="config_tether_dun_required">false</bool>
+<!--    <bool translatable="false" name="config_tether_dun_required">false</bool> -->
 
     <!-- String containing the apn value for tethering.  May be overriden by secure settings
          TETHER_DUN_APN.  Value is a comma separated series of strings:
@@ -297,12 +310,12 @@
          and should not be enabled for any others.  Hopefully in the future
          it will be removed when the lower-level touch driver generates better
          data. -->
-    <bool name="config_filterTouchEvents">false</bool>
+<!--    <bool name="config_filterTouchEvents">false</bool> -->
 
     <!-- Enables special filtering code in the framework for raw touch events
          from the touch driver. This code exists for one particular device,
          and should not be enabled for any others. -->
-    <bool name="config_filterJumpyTouchEvents">false</bool>
+<!--    <bool name="config_filterJumpyTouchEvents">false</bool> -->
     
     <!-- Component name of the default wallpaper. This will be ImageWallpaper if not 
          specified -->
@@ -328,7 +341,7 @@
     <integer name="config_datause_throttle_kbitsps">300</integer>
 
     <!-- The default iface on which to monitor data use -->
-    <string name="config_datause_iface">ppp0</string>
+    <string name="config_datause_iface">rmnet0</string>
 
     <!-- The default reduced-datarate notification mask -->
     <!-- 2 means give warning -->
@@ -337,9 +350,9 @@
     <bool name="config_animateScreenLights">true</bool>
 
     <!-- Allows the light sensor to be ignored when flashlight is on -->
-    <bool name="config_flashlight_affects_lightsensor">true</bool>
+<!--    <bool name="config_flashlight_affects_lightsensor">true</bool> -->
 
-    <string-array name="config_vendorServices">
+<!--    <string-array name="config_vendorServices">
        <item>/system/framework/com.motorola.android.location.jar:com.android.server.LocationProxyService</item>
-    </string-array>
+    </string-array> -->
 </resources>
