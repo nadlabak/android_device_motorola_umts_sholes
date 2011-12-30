@@ -355,4 +355,7 @@
 <!--    <string-array name="config_vendorServices">
        <item>/system/framework/com.motorola.android.location.jar:com.android.server.LocationProxyService</item>
     </string-array> -->
+
+    <!-- Use legacy USB device manager. -->
+    <bool name="config_usesLegacyUsbDeviceManager">true</bool>
 </resources>
