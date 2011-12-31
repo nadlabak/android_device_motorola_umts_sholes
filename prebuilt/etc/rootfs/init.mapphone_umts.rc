@@ -92,6 +92,8 @@ setprop ro.sys.atvc_allow_efem 0
     insmod /system/lib/modules/slow-work.ko
     insmod /system/lib/modules/nls_utf8.ko
     insmod /system/lib/modules/xt_multiport.ko
+    insmod /system/lib/modules/xt_quota2.ko
+    insmod /system/lib/modules/xt_owner2.ko
     insmod /system/lib/modules/tun.ko
     insmod /system/lib/modules/cpufreq_interactive.ko
     insmod /system/lib/modules/cpufreq_conservative.ko
@@ -148,6 +150,7 @@ on boot
     mkdir /data/system 0771 system system
     # wifi dirs
     mkdir /data/misc/wifi 0770 wifi wifi
+    mkdir /data/misc/wifi/hostapd.sockets 0770 wifi wifi
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     mkdir /data/misc/dhcp 0770 dhcp dhcp
     chown dhcp dhcp /data/misc/dhcp
@@ -156,6 +159,8 @@ on boot
     mkdir /data/gki 0770 radio radio
     mkdir /tmp/commdrv 0770 radio radio
 
+    # copy hostapd configuration
+    copy /system/etc/wifi/softap/hostapd.conf /data/misc/wifi/hostapd.conf
 
     # bluetooth power up/down interface
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
@@ -501,6 +506,15 @@ service wlan_loader /system/bin/wlan_loader \
     disabled
     oneshot
 
+service wlan_ap_loader /system/bin/logwrapper /system/bin/tiap_loader -f /system/etc/wifi/fw_tiwlan_ap.bin -i /system/etc/wifi/tiwlan_ap.ini -e /pds/wifi/nvs_map.bin
+    disabled
+    oneshot
+
+service hostapd /system/bin/logwrapper /system/bin/hostap -d /data/misc/wifi/hostapd.conf
+    post-zygote_services
+    disabled
+    oneshot
+
 service wpa_supplicant /system/bin/wpa_supplicant \
     -Dtiwlan0 -itiwlan0 -c/data/misc/wifi/wpa_supplicant.conf
     class post-zygote_services
@@ -571,7 +585,12 @@ service secclkd /system/bin/secclkd
     class post-zygote_services
     user system
     group system radio
-    oneshot 
+    oneshot
+
+service motolocation /system/bin/sh /system/bin/am startservice -n com.motorola.android.location/com.motorola.android.locationproxy.LocationProxyService
+    class post-zygote_services
+    disabled
+    oneshot
 
 # bugreport is triggered by the KEY_LEFTSHIFT and KEY_DEL keycodes
 service bugreport /system/bin/dumpstate -d -v -o /sdcard/bugreports/bugreport

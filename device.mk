@@ -41,8 +41,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
         ro.com.google.gmsversion=2.3_r4
 
 # Enable TI HotSpot
-#PRODUCT_PROPERTY_OVERRIDES += \
-#    wifi.hotspot.ti=1
+PRODUCT_PROPERTY_OVERRIDES += \
+    wifi.hotspot.ti=1
 
 DEVICE_PACKAGE_OVERLAYS += device/motorola/umts_sholes/overlay
 
@@ -85,6 +85,10 @@ PRODUCT_PACKAGES += \
     libCustomWifi \
     wpa_supplicant.conf \
     dhcpcd.conf \
+    iwmulticall \
+    hostap \
+    hostapd.conf \
+    libhostapdcli \
     libOMX.TI.AAC.decode \
     libOMX.TI.AAC.encode \
     libOMX.TI.AMR.decode \
@@ -101,6 +105,7 @@ PRODUCT_PACKAGES += \
     sensors.sholes \
     lights.sholes \
     Usb \
+    Torch \
     mot_boot_mode \
     charge_only_mode
 
@@ -157,6 +162,8 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/lib/modules/dsifix.ko:/system/lib/modules/dsifix.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/slow-work.ko:/system/lib/modules/slow-work.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/xt_multiport.ko:/system/lib/modules/xt_multiport.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/xt_quota2.ko:/system/lib/modules/xt_quota2.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/xt_owner2.ko:/system/lib/modules/xt_owner2.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/overclock.ko:/system/lib/modules/overclock.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/cpufreq_interactive.ko:/system/lib/modules/cpufreq_interactive.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/cpufreq_smartass.ko:/system/lib/modules/cpufreq_smartass.ko \
