@@ -10,6 +10,9 @@ ro.sf.lcd_density=240
 # 3 -> GSM/WCDMA (auto mode, according to PRL)
 ro.telephony.default_network=3
 
+# fix data
+ro.telephony.ril.v3=skipbrokendatacall,signalstrength
+
 wifi.interface = tiwlan0
 # Time between scans in seconds. Keep it high to minimize battery drain.
 # This only affects the case in which there are remembered access points,
