@@ -536,6 +536,16 @@ service iprenew_tiwlan0 /system/bin/dhcpcd -n
     disabled
     oneshot
 
+service dhcpcd_rmnet0 /system/bin/dhcpcd -ABKL
+    class post-zygote_services
+    disabled
+    oneshot
+
+service iprenew_rmnet0 /system/bin/dhcpcd -n
+    class post-zygote_services
+    disabled
+    oneshot
+
 service hciattach /system/bin/hciattach \
     -n -t 10 /dev/ttyS1 texasalt 3000000 flow
     class post-zygote_services
@@ -585,11 +595,6 @@ service secclkd /system/bin/secclkd
     class post-zygote_services
     user system
     group system radio
-    oneshot
-
-service motolocation /system/bin/sh /system/bin/am startservice -n com.motorola.android.location/com.motorola.android.locationproxy.LocationProxyService
-    class post-zygote_services
-    disabled
     oneshot
 
 # bugreport is triggered by the KEY_LEFTSHIFT and KEY_DEL keycodes

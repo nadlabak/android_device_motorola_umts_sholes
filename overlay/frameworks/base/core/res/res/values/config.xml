@@ -95,7 +95,7 @@
          Wifi interfaces.  If the device doesn't want to support tethering over Wifi this
          should be empty.  An example would be "softap.*" -->
     <string-array translatable="false" name="config_tether_wifi_regexs">
-        <item>"tiap\\d"</item>
+<!--     <item>"tiap\\d"</item> -->
     </string-array>
 
     <!-- Dhcp range (min, max) to use for tethering purposes -->
@@ -352,9 +352,9 @@
     <!-- Allows the light sensor to be ignored when flashlight is on -->
 <!--    <bool name="config_flashlight_affects_lightsensor">true</bool> -->
 
-<!--    <string-array name="config_vendorServices">
+    <string-array name="config_vendorServices">
        <item>/system/framework/com.motorola.android.location.jar:com.android.server.LocationProxyService</item>
-    </string-array> -->
+    </string-array>
 
     <!-- Use legacy USB device manager. -->
     <bool name="config_usesLegacyUsbDeviceManager">true</bool>
