@@ -124,6 +124,7 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/default.prop:system/default.prop \
     device/motorola/umts_sholes/prebuilt/etc/apns-conf.xml:system/etc/apns-conf.xml \
     device/motorola/umts_sholes/prebuilt/etc/init.d/10overclock:/system/etc/init.d/10overclock \
+    device/motorola/umts_sholes/prebuilt/etc/init.d/05mountsd:/system/etc/init.d/05mountsd \
     device/motorola/umts_sholes/prebuilt/etc/init.d/07app2ext:/system/etc/init.d/07app2ext \
     device/motorola/umts_sholes/prebuilt/etc/init.d/08lib2ext:/system/etc/init.d/08lib2ext \
     device/motorola/umts_sholes/prebuilt/etc/init.d/60autoboot_or:/system/etc/init.d/60autoboot_or \
