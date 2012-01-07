@@ -10,7 +10,7 @@
    /system/xbin/chmod 750 /init
    /system/xbin/ln -s /init /sbin/ueventd
 
-   echo "msc_adb" > /dev/usb_device_mode
-   echo "usb_mode_msc_adb" > /tmp/usbd_current_state
+#   echo "msc_adb" > /dev/usb_device_mode
+#   echo "usb_mode_msc_adb" > /tmp/usbd_current_state
 
    exec /system/bin/2nd-init
