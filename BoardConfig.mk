@@ -101,7 +101,7 @@ BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x00480000
 # the size of system content in the final update zip package
 # needs to be veryfied manually before flashing
 # (considering also additional gapps size)!
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 0x0bfa0000
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 0x0bff0000
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 0x0c520000
 BOARD_FLASH_BLOCK_SIZE := 131072
 
