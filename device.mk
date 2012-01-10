@@ -74,6 +74,7 @@ libaudioutils audio.a2dp.default audio_policy.sholes \
 libaudiohw_legacy audio.primary.omap3
 
 PRODUCT_PACKAGES += \
+    e2fsck \
     MmParts \
     librs_jni \
     tiwlan.ini \
@@ -179,7 +180,8 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/lib/modules/rpcsec_gss_krb5.ko:/system/lib/modules/rpcsec_gss_krb5.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/sunrpc.ko:/system/lib/modules/sunrpc.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/nfs.ko:/system/lib/modules/nfs.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/qtouch_num.ko:/system/lib/modules/qtouch_num.ko
+    device/motorola/umts_sholes/prebuilt/lib/modules/qtouch_num.ko:/system/lib/modules/qtouch_num.ko \
+    device/motorola/umts_sholes/prebuilt/vendor/app/.holder:/system/vendor/app/.holder
 
 $(call inherit-product, build/target/product/full_base.mk)
 
