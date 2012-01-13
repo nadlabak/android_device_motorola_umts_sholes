@@ -60,7 +60,6 @@
         <item>"mobile_dun,4,0,2,60000,true"</item>
         <item>"mobile_hipri,5,0,3,60000,true"</item>
         <item>"mobile_bluetooth,7,7,1,-1,true"</item>
-        <item>"wifi_p2p,13,1,0,-1,true"</item>
      </string-array>
 
     <!-- This string array should be overridden by the device to present a list of radio
@@ -82,6 +81,8 @@
         <item>0</item>
         <item>1</item>
         <item>4</item>
+        <item>5</item>
+        <item>7</item>
     </integer-array>
 
     <!-- List of regexpressions describing the interface (if any) that represent tetherable
@@ -96,6 +97,13 @@
          should be empty.  An example would be "softap.*" -->
     <string-array translatable="false" name="config_tether_wifi_regexs">
 <!--     <item>"tiap\\d"</item> -->
+    </string-array>
+
+    <!-- List of regexpressions describing the interface (if any) that represent tetherable
+bluetooth interfaces. If the device doesn't want to support tethering over bluetooth this
+should be empty. -->
+    <string-array translatable="false" name="config_tether_bluetooth_regexs">
+        <item>"bnep\\d"</item>
     </string-array>
 
     <!-- Dhcp range (min, max) to use for tethering purposes -->
@@ -356,6 +364,8 @@
        <item>/system/framework/com.motorola.android.location.jar:com.android.server.LocationProxyService</item>
     </string-array>
 
-    <!-- Use legacy USB device manager. -->
-    <bool name="config_usesLegacyUsbDeviceManager">true</bool>
+    <!-- LUN file to be used by legacy USB manager.
+    The existence of this file will be used to determine if the
+    legacy USB manager should be started. -->
+    <string name="config_legacyUmsLunFile">/sys/devices/platform/usb_mass_storage/lun0/file</string>
 </resources>
