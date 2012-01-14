@@ -75,7 +75,7 @@ libaudiohw_legacy audio.primary.omap3
 
 PRODUCT_PACKAGES += \
     e2fsck \
-    MmParts \
+    MilestoneParts \
     librs_jni \
     tiwlan.ini \
     dspexec \

@@ -1,4 +1,4 @@
-package com.cyanogenmod.mmparts;
+package com.cyanogenmod.settings.device;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,7 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
 
-public class SettingsActivity extends PreferenceActivity implements
+public class DeviceSettings extends PreferenceActivity implements
         OnPreferenceChangeListener {
 
     private static final String DOCK_OBSERVER_OFF_PREF = "pref_dock_observer_off";
@@ -164,6 +164,13 @@ public class SettingsActivity extends PreferenceActivity implements
                 .findPreference(PREF_STATUS_BAR_ONEPERC_BATTERY);
         String onepercBattery = SystemProperties.get(ONEPERC_BATT_PERSIST_PROP, ONEPERC_BATT_DEFAULT);
         mStatusBarOnepercBattery.setChecked("1".equals(onepercBattery));
+
+// temporarily remove not yet implemented preferences
+        PreferenceCategory categoryToRemove = (PreferenceCategory)prefSet.findPreference("pref_category_keypad_settings");
+        prefSet.removePreference(categoryToRemove);
+        categoryToRemove = (PreferenceCategory)prefSet.findPreference("pref_category_dock_settings");
+        prefSet.removePreference(categoryToRemove);
+
     }
 
     @Override
