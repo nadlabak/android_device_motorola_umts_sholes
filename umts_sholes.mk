@@ -15,17 +15,11 @@
 #
 
 # The gps config appropriate for this device
-$(call inherit-product, device/common/gps/gps_eu.mk)
+$(call inherit-product, device/common/gps/gps_eu_supl.mk)
 
-## (1) First, the most specific values, i.e. the aspects that are specific to GSM
-
-PRODUCT_COPY_FILES += \
-    device/motorola/umts_sholes/init.mapphone_umts.rc:root/init.mapphone_umts.rc
-
-## (2) Also get non-open-source GSM-specific aspects if available
+## Get non-open-source GSM-specific aspects if available
 $(call inherit-product-if-exists, vendor/motorola/umts_sholes/umts_sholes-vendor.mk)
 
-## (3)  Finally, the least specific parts, i.e. the non-GSM-specific aspects
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.com.android.wifi-watchlist=GoogleGuest \
 	ro.error.receiver.system.apps=com.google.android.feedback \
@@ -46,10 +40,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
         ro.product.multi_touch_enabled=true \
         ro.product.max_num_touch=5 \
         ro.com.google.gmsversion=2.3_r4
-
-# Enable TI HotSpot
-#PRODUCT_PROPERTY_OVERRIDES += \
-#    wifi.hotspot.ti=1
 
 DEVICE_PACKAGE_OVERLAYS += device/motorola/umts_sholes/overlay
 
@@ -110,14 +100,6 @@ PRODUCT_PACKAGES += \
     mot_boot_mode \
     charge_only_mode
 
-# HotSpot
-#PRODUCT_PACKAGES += \
-#    tiap_loader \
-#    tiap_cu \
-#    tiwlan_ap.ini \
-#    hostap \
-#    hostapd.conf
-
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
 
@@ -125,12 +107,17 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/vold.fstab:system/etc/vold.fstab \
     device/motorola/umts_sholes/prebuilt/default.prop:system/default.prop \
     device/motorola/umts_sholes/prebuilt/etc/wifi/dnsmasq.conf:system/etc/wifi/dnsmasq.conf \
+    device/motorola/umts_sholes/prebuilt/etc/wifi/tiwlan_ap.ini:/system/etc/wifi/tiwlan_ap.ini \
+    device/motorola/umts_sholes/prebuilt/etc/wifi/tiwlan.ini:/system/etc/wifi/tiwlan.ini \
+    device/motorola/umts_sholes/prebuilt/etc/wifi/wpa_supplicant.conf:/system/etc/wifi/wpa_supplicant.conf \
     device/motorola/umts_sholes/prebuilt/etc/init.d/10overclock:/system/etc/init.d/10overclock \
     device/motorola/umts_sholes/prebuilt/etc/init.d/07app2ext:/system/etc/init.d/07app2ext \
     device/motorola/umts_sholes/prebuilt/etc/init.d/08lib2ext:/system/etc/init.d/08lib2ext \
     device/motorola/umts_sholes/prebuilt/etc/init.d/60autoboot_or:/system/etc/init.d/60autoboot_or \
     device/motorola/umts_sholes/prebuilt/etc/location.cfg:/system/etc/location.cfg \
     device/motorola/umts_sholes/prebuilt/etc/powervr.ini:/system/etc/powervr.ini \
+    device/motorola/umts_sholes/prebuilt/etc/gpsconfig.xml:/system/etc/gpsconfig.xml \
+    device/motorola/umts_sholes/prebuilt/etc/excluded-input-devices.xml:/system/etc/excluded-input-devices.xml \
     device/motorola/umts_sholes/prebuilt/etc/rootfs/default.prop:/system/etc/rootfs/default.prop \
     device/motorola/umts_sholes/prebuilt/etc/rootfs/init.rc:/system/etc/rootfs/init.rc \
     device/motorola/umts_sholes/prebuilt/etc/rootfs/init.mapphone_umts.rc:/system/etc/rootfs/init.mapphone_umts.rc \
@@ -142,12 +129,25 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/bin/ttsmovetool.sh:/system/bin/ttsmovetool.sh \
     device/motorola/umts_sholes/prebuilt/bin/sh_hijack.sh:/system/bin/sh_hijack.sh \
     device/motorola/umts_sholes/prebuilt/bin/tcmd:/system/bin/tcmd \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp0b-keypad.kcm.bin:/system/usr/keychars/sholesp0b-keypad.kcm.bin \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-arabic.kcm.bin:/system/usr/keychars/sholesp2a-keypad-arabic.kcm.bin \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-hebrew.kcm.bin:/system/usr/keychars/sholesp2a-keypad-hebrew.kcm.bin \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-russian.kcm.bin:/system/usr/keychars/sholesp2a-keypad-russian.kcm.bin \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-russian2.kcm.bin:/system/usr/keychars/sholesp2a-keypad-russian2.kcm.bin \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp1b-keypad.kcm.bin:/system/usr/keychars/sholesp1b-keypad.kcm.bin \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp1a-keypad.kcm.bin:/system/usr/keychars/sholesp1a-keypad.kcm.bin \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/icestorms0a-keypad.kcm.bin:/system/usr/keychars/icestorms0a-keypad.kcm.bin \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-qwerty.kcm.bin:/system/usr/keychars/sholesp2a-keypad-qwerty.kcm.bin \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-euro_qwerty.kcm.bin:/system/usr/keychars/sholesp2a-keypad-euro_qwerty.kcm.bin \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-qwertz.kcm.bin:/system/usr/keychars/sholesp2a-keypad-qwertz.kcm.bin \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-azerty.kcm.bin:/system/usr/keychars/sholesp2a-keypad-azerty.kcm.bin \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-swe_qwerty.kcm.bin:/system/usr/keychars/sholesp2a-keypad-swe_qwerty.kcm.bin \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-cyrillic.kcm.bin:/system/usr/keychars/sholesp2a-keypad-cyrillic.kcm.bin \
+    device/motorola/umts_sholes/prebuilt/usr/keylayout/sholesp1a-keypad.kl:/system/usr/keylayout/sholesp1a-keypad.kl \
+    device/motorola/umts_sholes/prebuilt/usr/keylayout/sholesp0b-keypad.kl:/system/usr/keylayout/sholesp0b-keypad.kl \
+    device/motorola/umts_sholes/prebuilt/usr/keylayout/cpcap-key.kl:/system/usr/keylayout/cpcap-key.kl \
+    device/motorola/umts_sholes/prebuilt/usr/keylayout/sholesp2a-keypad.kl:/system/usr/keylayout/sholesp2a-keypad.kl \
+    device/motorola/umts_sholes/prebuilt/usr/keylayout/sholesp1b-keypad.kl:/system/usr/keylayout/sholesp1b-keypad.kl \
     device/motorola/umts_sholes/prebuilt/usr/keylayout/sholesp2a-keypad-russian.kl:/system/usr/keylayout/sholesp2a-keypad-russian.kl \
     device/motorola/umts_sholes/prebuilt/lib/libgki.so:/system/lib/libgki.so \
     device/motorola/umts_sholes/prebuilt/lib/modules/symsearch.ko:/system/lib/modules/symsearch.ko \
