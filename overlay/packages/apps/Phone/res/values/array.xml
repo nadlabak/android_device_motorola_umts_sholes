@@ -16,12 +16,14 @@
 
 <resources>
     <string-array translatable="false" name="voice_quality_entries">
+        <item>@string/default_preference_summary</item>
         <item>@string/voice_quality_entry_normal</item>
         <item>@string/voice_quality_entry_clear</item>
         <item>@string/voice_quality_entry_crisp</item>
         <item>@string/voice_quality_entry_bright</item>
     </string-array>
     <string-array translatable="false" name="voice_quality_values">
+        <item>-1</item>
         <item>Normal</item>
         <item>Clear</item>
         <item>Crisp</item>
