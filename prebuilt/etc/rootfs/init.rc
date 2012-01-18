@@ -474,31 +474,3 @@ service dumpstate /system/bin/dumpstate -s
     disabled
     oneshot
 
-service ap_fmloader /system/bin/wlan_loader -f /system/etc/wifi/fw_tiwlan_ap.bin -i /system/etc/wifi/tiwlan_ap.ini -e /pds/wifi/nvs_map.bin
-    class post-zygote_services
-    disabled
-    oneshot
-
-service hostapd /system/bin/Hostapd -d /data/misc/wifi/hostapd.conf
-    class post-zygote_services
-    socket hostapd_tiwlan0 dgram 660 wifi wifi
-    disabled
-    oneshot
-
-service dnsmasq /system/bin/logwrapper /system/bin/dnsmasq_mot -C/data/misc/wifi/dns.conf -k
-    class post-zygote_services
-    group wifi
-    disabled
-    oneshot
-
-service mynet_start /system/bin/sh /data/misc/wifi/forward_start.sh
-    class post-zygote_services
-    disabled
-    oneshot
-
-service mynet_stop /system/bin/sh /data/misc/wifi/forward_stop.sh
-    class post-zygote_services
-    disabled
-    oneshot
- 
- 
