@@ -26,4 +26,7 @@
 	<!-- Autofocus parameters -->
 	<string name="touchFocusParameter">mot-areas-to-focus</string>
 	<bool name="touchFocusNeedsRect">true</bool>
+
+        <!-- Autofocus on camcorder start -->
+        <bool name="focusCamcorderAtStart">false</bool>
 </resources>
