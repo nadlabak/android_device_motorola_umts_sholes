@@ -254,8 +254,6 @@ on boot
     chown root system /sys/module/lowmemorykiller/parameters/minfree
     chmod 0664 /sys/module/lowmemorykiller/parameters/minfree
 
-#    write /proc/sys/vm/min_free_kbytes 6144
-
     # Set init its forked children's oom_adj.
     write /proc/1/oom_adj -16
 
