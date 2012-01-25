@@ -162,6 +162,11 @@ on boot
     # copy hostapd configuration
     copy /system/etc/wifi/softap/hostapd.conf /data/misc/wifi/hostapd.conf
 
+    # copy dnsmasq configuration
+    copy /system/etc/wifi/dnsmasq.conf /data/misc/wifi/dns.conf
+    chown wifi wifi /data/misc/wifi/dns.conf
+    chmod 666 /data/misc/wifi/dns.conf
+
     # bluetooth power up/down interface
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
@@ -370,11 +375,6 @@ service atvc /system/bin/dbvc_atvc_property_set
     class pre-zygote_services
     user system
     group system
-    oneshot
-
-service keypadinit /system/bin/sh /system/bin/init_prep_keypad.sh
-    class pre-zygote_services
-    user root
     oneshot
 
 service usbd /system/bin/usbd

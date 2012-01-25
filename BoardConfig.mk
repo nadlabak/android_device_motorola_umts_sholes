@@ -62,7 +62,6 @@ WIFI_DRIVER_MODULE_NAME := tiwlan_drv
 WIFI_DRIVER_FW_STA_PATH := "/system/etc/wifi/fw_wlan1271.bin"
 WIFI_FIRMWARE_LOADER := "wlan_loader"
 PRODUCT_WIRELESS_TOOLS := true
-BOARD_SOFTAP_DEVICE := wl1271
 AP_CONFIG_DRIVER_WILINK := true
 WIFI_DRIVER_FW_AP_PATH := "/system/etc/wifi/fw_tiwlan_ap.bin"
 WPA_SUPPL_APPROX_USE_RSSI := true

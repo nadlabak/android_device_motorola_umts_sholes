@@ -30,15 +30,6 @@
          at performing a blur.  Used by parts of the UI to turn off
          the blur effect where it isn't worth the performance hit. -->
     <bool name="config_sf_slowBlur">true</bool>
-    
-    <!-- The duration (in milliseconds) of a short animation. -->
-    <integer name="config_shortAnimTime">150</integer>
-    
-    <!-- The duration (in milliseconds) of a medium-length animation. -->
-    <integer name="config_mediumAnimTime">300</integer>
-    
-    <!-- The duration (in milliseconds) of a long animation. -->
-    <integer name="config_longAnimTime">400</integer>
 
     <!-- The duration (in milliseconds) that the radio will scan for a signal
          when there's no network connection. If the scan doesn't timeout, use zero -->
@@ -96,7 +87,7 @@
          Wifi interfaces.  If the device doesn't want to support tethering over Wifi this
          should be empty.  An example would be "softap.*" -->
     <string-array translatable="false" name="config_tether_wifi_regexs">
-<!--     <item>"tiap\\d"</item> -->
+        <item>"tiap\\d"</item>
     </string-array>
 
     <!-- List of regexpressions describing the interface (if any) that represent tetherable
@@ -127,7 +118,7 @@ should be empty. -->
          TETHER_DUN_APN.  Value is a comma separated series of strings:
          "name,apn,proxy,port,username,password,server,mmsc,mmsproxy,mmsport,mcc,mnc,auth,type"
          note that empty fields can be ommitted: "name,apn,,,,,,,,,310,260,,DUN" -->
-    <string translatable="false" name="config_tether_apndata">SK telecom,web.sktelecom.com,,,,,,,,,0,0,,DUN</string>
+    <string translatable="false" name="config_tether_apndata"></string>
 
 
     <!-- Flag indicating whether the keyguard should be bypassed when
