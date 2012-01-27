@@ -598,3 +598,10 @@ service bugreport /system/bin/dumpstate -d -v -o /sdcard/bugreports/bugreport
     oneshot
     keycodes 42 14
 
+# generate proximity 'far' event by camera button - workaround for broken proximity sensors
+service proximity /system/bin/sh -c "sendevent /dev/input/event5 3 25 2147483647 && sendevent /dev/input/event5 0 0 0"
+    disabled
+    user root
+    oneshot
+    keycodes 211 212
+
