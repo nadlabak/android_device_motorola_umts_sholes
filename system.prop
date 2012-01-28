@@ -26,8 +26,8 @@ ro.opengles.version = 131072
 # This is a high density device with more memory, so larger vm heaps for it.
 dalvik.vm.heapsize=30m
 
-# store dalvik-cache of everything in /cache
-dalvik.vm.dexopt-cache-only=0
+# store dalvik-cache of everything in /data
+dalvik.vm.dexopt-data-only=1
 
 #proximit sensor screen off delay
 mot.proximity.delay=450
