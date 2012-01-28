@@ -87,6 +87,7 @@ cd $REPACK/ota/system/app
 # Delete unwanted apps
 rm -f CMUpdateNotify.*
 rm -f RomManager.apk
+rm -f CMWallpapers.*
 find ./ -name \*.apk | $XARGS $OPTICHARGER
 )
 
