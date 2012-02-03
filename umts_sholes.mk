@@ -171,6 +171,9 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/lib/modules/rpcsec_gss_krb5.ko:/system/lib/modules/rpcsec_gss_krb5.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/sunrpc.ko:/system/lib/modules/sunrpc.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/nfs.ko:/system/lib/modules/nfs.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/lzo_compress.ko:/system/lib/modules/lzo_compress.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/lzo_decompress.ko:/system/lib/modules/lzo_decompress.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/zram.ko:/system/lib/modules/zram.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/qtouch_num.ko:/system/lib/modules/qtouch_num.ko
 
 $(call inherit-product, build/target/product/full_base.mk)
