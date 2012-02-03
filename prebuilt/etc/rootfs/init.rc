@@ -318,7 +318,7 @@ on boot
 # Run sysinit
     exec /system/bin/sysinit
 
-#    class_start default
+    class_start default
 
 ## Daemon processes to be run by init.
 ##
