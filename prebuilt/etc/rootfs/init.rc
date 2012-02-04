@@ -350,6 +350,12 @@ on property:persist.service.adb.enable=1
 on property:persist.service.adb.enable=0
     stop adbd
 
+on property:service.adb.tcp.port=5555
+    restart adbd
+
+on property:service.adb.tcp.port=-1
+    restart adbd
+
 service servicemanager /system/bin/servicemanager
     class pre-zygote_services
     user system
@@ -375,7 +381,7 @@ service ril-daemon /system/bin/rild
     socket rild stream 660 root radio
     socket rild-debug stream 660 radio system
     user root
-    group radio cache inet misc system audio sdcard_rw net_admin net_raw
+    group radio cache inet misc system audio sdcard_rw net_admin net_raw qcom_oncrpc diag
 
 service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-system-server
     class zygote_services
@@ -436,6 +442,12 @@ service opush /system/bin/sdptool add --channel=12 OPUSH
 
 service pbap /system/bin/sdptool add --channel=19 PBAP
     class post-zygote_services
+    user bluetooth
+    group bluetooth net_bt_admin
+    disabled
+    oneshot
+
+service map /system/bin/sdptool add --channel=16 MAS
     user bluetooth
     group bluetooth net_bt_admin
     disabled
