@@ -22,14 +22,14 @@ wifi.hotspot.ti=1
 # Time between scans in seconds. Keep it high to minimize battery drain.
 # This only affects the case in which there are remembered access points,
 # but none are in range.
-wifi.supplicant_scan_interval=60
+wifi.supplicant_scan_interval=45
 
 # The OpenGL ES API level that is natively supported by this device.
 # This is a 16.16 fixed point number
 ro.opengles.version=131072
 
 # This is a high density device with more memory, so larger vm heaps for it.
-dalvik.vm.heapsize=24m
+dalvik.vm.heapsize=28m
 
 # store dalvik-cache of everything in /cache
 dalvik.vm.dexopt-cache-only=0
