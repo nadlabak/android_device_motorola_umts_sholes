@@ -8,9 +8,14 @@
     <string name="qtouch_title">Touchscreen</string>
     <string name="debug_title">Debugging</string>
     <string name="battery_title">Battery</string>
+    <string name="baseband_title">Baseband</string>
 
     <string name="pref_dock_observer_off_title">Disable dock observer</string>
     <string name="pref_dock_observer_off_summary">No action on magnets, useful for users of carrying cases with magnetic closure</string>
+
+    <string name="pref_baseband_title">Baseband selection</string>
+    <string name="pref_baseband_summary">Choose UMTS bands appropriate for your phone (requires reboot)\nCurrently set to: %s</string>
+
     <string name="pref_keypad_type_title">Keyboard char-map</string>
     <string name="pref_keypad_type_summary">Hardware keyboard character map.\nCurrently set to: %s</string>
     <string name="pref_keypad_type_sec_title">Secondary char-map</string>
@@ -21,6 +26,7 @@
     <string name="pref_keypad_multipress_summary">Subsequent key presses within this interval can be used to directly enter alternate characters.\nCurrently set to: %s</string>
     <string name="pref_keypad_mplang_title">Multipress language</string>
     <string name="pref_keypad_mplang_summary">Language selection for entering alternate characters via multipress feature.\nCurrently set to: %s</string>
+
     <string name="pref_qtouch_num_title">Multitouch</string>
     <string name="pref_qtouch_num_summary">Set number of distinct touches to be recognized by touchscreen</string>
     <string name="pref_logger_title">Enable logger</string>

@@ -17,6 +17,16 @@
         </PreferenceScreen>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/baseband_title"
+        android:key="pref_category_baseband">
+        <ListPreference android:key="pref_baseband"
+            android:dialogTitle="@string/pref_baseband_title"
+            android:title="@string/pref_baseband_title"
+            android:summary="@string/pref_baseband_summary"
+            android:entries="@array/pref_baseband_entries"
+            android:entryValues="@array/pref_baseband_values" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/keypad_title"
         android:key="pref_category_keypad_settings">
         <ListPreference android:key="pref_keypad_type"
