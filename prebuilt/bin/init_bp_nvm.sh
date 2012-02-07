@@ -4,7 +4,7 @@ mount -o remount,rw /system
 BPVARIANT="b1b8"
 BPNVMPROP="/data/property/persist.sys.bp_nvm"
 BPNVMBASE="/system/etc/motorola/"
-if [ -e $BPNVMPROP]
+if [ -e $BPNVMPROP ]
 then
     BPVARIANT=`cat $BPNVMPROP`
 fi
