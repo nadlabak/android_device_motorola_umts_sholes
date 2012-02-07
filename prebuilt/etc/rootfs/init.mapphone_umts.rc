@@ -187,6 +187,9 @@ on boot
     chmod 0770 /cache/logger
     exec /system/bin/sh /system/bin/init_early_bind_mounts.sh
 
+    # symlink the selected bp_nvm files
+    exec /system/bin/sh /system/bin/init_bp_nvm.sh
+
     # create the lost+found directories, so as to enforce our permissions
     mkdir /pds/lost+found 0770
 
