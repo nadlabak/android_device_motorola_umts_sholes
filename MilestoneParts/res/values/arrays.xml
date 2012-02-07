@@ -17,6 +17,38 @@
 
 <resources>
 
+    <string-array name="pref_baseband_entries">
+        <item>2100/900 (default)\nEMEA, APAC</item>
+        <item>2100/1900/850\nArgentina(Personal)</item>
+        <item>2100/1900/850\nBrazil(Claro)</item>
+        <item>2100/1900/850\nBrazil(retail)</item>
+        <item>2100/1900/850\nBrazil(TIM)</item>
+        <item>2100/1900/850\nBrazil(Vivo)</item>
+        <item>2100/1900/850\nCanada(Telus)</item>
+        <item>2100/1900/850\nChina(retail)</item>
+        <item>2100/1900/850\nLatAm(Movistar)</item>
+        <item>2100/1900/850\nLatAm(retail)</item>
+        <item>2100/1900/850\nNew Zealand(retail)</item>
+        <item>2100/1900/850\nThailand(TrueMove)</item>
+        <item>2100/1900/850\nVenezuela(Movilnet)</item>
+    </string-array>
+
+    <string-array name="pref_baseband_values" translatable="false">
+        <item>b1b8</item>
+        <item>b1b2b5_argentina_personal</item>
+        <item>b1b2b5_brazil_claro</item>
+        <item>b1b2b5_brazil_retail</item>
+        <item>b1b2b5_brazil_tim</item>
+        <item>b1b2b5_brazil_vivo</item>
+        <item>b1b2b5_canada_telus</item>
+        <item>b1b2b5_china_retail</item>
+        <item>b1b2b5_latam_movistar</item>
+        <item>b1b2b5_latam_retail</item>
+        <item>b1b2b5_newzealand_retail</item>
+        <item>b1b2b5_thailand_truemove</item>
+        <item>b1b2b5_venezuela_movilnet</item>
+    </string-array>
+
     <string-array name="pref_keypad_type_entries">
         <item>azerty</item>
         <item>euro-qwerty</item>

@@ -26,6 +26,12 @@ public class DeviceSettings extends PreferenceActivity implements
 
     private static final String DOCK_OBSERVER_OFF_DEFAULT = "0";
 
+    private static final String BASEBAND_PREF = "pref_baseband";
+
+    private static final String BASEBAND_PERSIST_PROP = "persist.sys.bp_nvm";
+
+    private static final String BASEBAND_DEFAULT = "b1b8";
+
     private static final String KEYPAD_TYPE_PREF = "pref_keypad_type";
 
     private static final String KEYPAD_PREFIX_PROP = "ro.sys.keypad_prefix";
@@ -80,6 +86,8 @@ public class DeviceSettings extends PreferenceActivity implements
 
     private CheckBoxPreference mDockObserverOffPref;
 
+    private String mBasebandSum;
+
     private String mKeypadPrefix;
 
     private String mKeypadTypeSum;
@@ -89,6 +97,8 @@ public class DeviceSettings extends PreferenceActivity implements
     private String mKeypadMultipressSum;
 
     private String mKeypadMplangSum;
+
+    private ListPreference mBasebandPref;
 
     private ListPreference mKeypadTypePref;
 
@@ -113,6 +123,8 @@ public class DeviceSettings extends PreferenceActivity implements
 
         PreferenceScreen prefSet = getPreferenceScreen();
 
+        mBasebandSum = getString(R.string.pref_baseband_summary);
+
         mKeypadTypeSum = getString(R.string.pref_keypad_type_summary);
         mKeypadTypeSecSum = getString(R.string.pref_keypad_type_sec_summary);
         mKeypadMultipressSum = getString(R.string.pref_keypad_multipress_summary);
@@ -121,6 +133,12 @@ public class DeviceSettings extends PreferenceActivity implements
         mDockObserverOffPref = (CheckBoxPreference) prefSet.findPreference(DOCK_OBSERVER_OFF_PREF);
         String dockObserverOff = SystemProperties.get(DOCK_OBSERVER_OFF_PERSIST_PROP, DOCK_OBSERVER_OFF_DEFAULT);
         mDockObserverOffPref.setChecked("1".equals(dockObserverOff));
+
+        mBasebandPref = (ListPreference) prefSet.findPreference(BASEBAND_PREF);
+        String baseband = SystemProperties.get(BASEBAND_PERSIST_PROP, BASEBAND_DEFAULT);
+        mBasebandPref.setValue(baseband);
+        mBasebandPref.setSummary(String.format(mBasebandSum, mBasebandPref.getEntry()));
+        mBasebandPref.setOnPreferenceChangeListener(this);
 
         mKeypadPrefix = SystemProperties.get(KEYPAD_PREFIX_PROP, "0");
         mKeypadTypePref = (ListPreference) prefSet.findPreference(KEYPAD_TYPE_PREF);
@@ -176,6 +194,7 @@ public class DeviceSettings extends PreferenceActivity implements
     @Override
     public void onResume() {
         super.onResume();
+        mBasebandPref.setSummary(String.format(mBasebandSum, mBasebandPref.getEntry()));
         mKeypadTypePref.setSummary(String.format(mKeypadTypeSum, mKeypadTypePref.getEntry()));
         mKeypadTypeSecPref.setSummary(String.format(mKeypadTypeSecSum, mKeypadTypeSecPref.getEntry()));
         mKeypadMultipressPref.setSummary(String.format(mKeypadMultipressSum, mKeypadMultipressPref.getEntry()));
@@ -223,7 +242,13 @@ public class DeviceSettings extends PreferenceActivity implements
     }
 
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (preference == mKeypadTypePref) {
+        if (preference == mBasebandPref) {
+            String baseband = (String) newValue;
+            SystemProperties.set(BASEBAND_PERSIST_PROP, baseband);
+            mBasebandPref.setSummary(String.format(mBasebandSum,
+                    mBasebandPref.getEntries()[mBasebandPref.findIndexOfValue(baseband)]));
+            return true;
+        } else if (preference == mKeypadTypePref) {
             String keypadType = (String) newValue;
             SystemProperties.set(KEYPAD_TYPE_PERSIST_PROP, keypadType);
             if (!mKeypadPrefix.equals("0")) {
