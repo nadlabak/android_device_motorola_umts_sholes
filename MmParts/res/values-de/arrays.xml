@@ -17,6 +17,22 @@
 
 <resources>
 
+  <string-array name="pref_baseband_entries">
+    <item>2100/900 (standard)\nEMEA, APAC</item>
+    <item>2100/1900/850\nArgentinien(Personal)</item>
+    <item>2100/1900/850\nBrasilien(Claro)</item>
+    <item>2100/1900/850\nBrasilien(retail)</item>
+    <item>2100/1900/850\nBrasilien(TIM)</item>
+    <item>2100/1900/850\nBrasilien(Vivo)</item>
+    <item>2100/1900/850\nKanada(Telus)</item>
+    <item>2100/1900/850\nChina(retail)</item>
+    <item>2100/1900/850\nLatAm(Movistar)</item>
+    <item>2100/1900/850\nLatAm(retail)</item>
+    <item>2100/1900/850\nNeuseeland(retail)</item>
+    <item>2100/1900/850\nThailand(TrueMove)</item>
+    <item>2100/1900/850\nVenezuela(Movilnet)</item>
+  </string-array>
+
   <string-array name="pref_keypad_type_sec_entries">
     <item>keine</item>
     <item>arabisch</item>
