@@ -8,9 +8,14 @@
     <string name="qtouch_title">Touchscreen</string>
     <string name="debug_title">Debugging</string>
     <string name="battery_title">Batterie</string>
+    <string name="baseband_title">Basisband</string>
 
     <string name="pref_dock_observer_off_title">Erkennung von Dockingstationen deaktivieren</string>
     <string name="pref_dock_observer_off_summary">Keine Aktion bei Magnetfeldern. Nützlich bei Telefonhüllen mit magetischem Verschluss</string>
+
+    <string name="pref_baseband_title">Auswahl Basisband</string>
+    <string name="pref_baseband_summary">Auswahl des zum Telefon passenden UMTS Basisbands (erfordert Neustart)\nMomentan: %s</string>
+
     <string name="pref_keypad_type_title">Zeichentabelle Tastatur</string>
     <string name="pref_keypad_type_summary">Zeichentabelle für Hardware-Tastatur.\nMomentan: %s</string>
     <string name="pref_keypad_type_sec_title">Sekundäre Zeichentabelle </string>
@@ -21,6 +26,7 @@
     <string name="pref_keypad_multipress_summary">Alternative Zeichen können direkt durch mehrfachen Tastendruck innerhalb dieses Intervalls eingegeben werden.\nMomentan: %s</string>
     <string name="pref_keypad_mplang_title">Sprache für mehrfachen Tastendruck</string>
     <string name="pref_keypad_mplang_summary">Auswahl der Sprache, um durch mehrfachen Tastendruck alternative Zeichen einzugeben.\nMomentan: %s</string>
+
     <string name="pref_qtouch_num_title">Multitouch</string>
     <string name="pref_qtouch_num_summary">Festlegen der Anzahl der erkannten Touchpunkte</string>
 
