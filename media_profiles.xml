@@ -80,8 +80,8 @@
     <CamcorderProfiles>
 
         <EncoderProfile quality="high" fileFormat="mp4" duration="30">
-            <Video codec="h264"
-                   bitRate="4000000"
+            <Video codec="m4v"
+                   bitRate="3500000"
                    width="720"
                    height="480"
                    frameRate="25" />
@@ -93,11 +93,11 @@
         </EncoderProfile>
 
         <EncoderProfile quality="wide" fileFormat="mp4" duration="30">
-            <Video codec="h264"
+            <Video codec="m4v"
                    bitRate="4000000"
-                   width="720"
-                   height="400"
-                   frameRate="25" />
+                   width="848"
+                   height="480"
+                   frameRate="24" />
 
             <Audio codec="aac"
                    bitRate="96000"
@@ -139,7 +139,7 @@
     -->
     <VideoEncoderCap name="h264" enabled="true"
         minBitRate="64000" maxBitRate="8000000"
-        minFrameWidth="176" maxFrameWidth="720"
+        minFrameWidth="176" maxFrameWidth="848"
         minFrameHeight="144" maxFrameHeight="480"
         minFrameRate="1" maxFrameRate="30" />
 
@@ -151,7 +151,7 @@
 
     <VideoEncoderCap name="m4v" enabled="true"
         minBitRate="64000" maxBitRate="8000000"
-        minFrameWidth="176" maxFrameWidth="720"
+        minFrameWidth="176" maxFrameWidth="848"
         minFrameHeight="144" maxFrameHeight="480"
         minFrameRate="1" maxFrameRate="30" />
 
