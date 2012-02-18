@@ -285,6 +285,7 @@ mount rootfs rootfs / ro remount
     write /sys/block/mmcblk0/bdi/read_ahead_kb 256
 
 # Start services
+on property:cm.mountsd.done=1
     exec /system/bin/mot_boot_mode
 
 # Set core max size (2G)
