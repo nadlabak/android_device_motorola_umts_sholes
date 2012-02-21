@@ -305,7 +305,7 @@ on property:persist.sys.one_percent_batt=1
 
 on property:sys.chargeonly.mode=1
     start console
-    exec /system/bin/charge_only_mode
+    exec /system/bin/charge_only_mode_mm
 
 on property:persist.sys.qtouch_num=2
     write /proc/qtouch/num_touch 2
