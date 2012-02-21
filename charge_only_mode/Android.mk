@@ -14,6 +14,6 @@ LOCAL_STATIC_LIBRARIES := libunz libcutils libc
 
 LOCAL_C_INCLUDES := external/zlib
 LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE:= charge_only_mode
+LOCAL_MODULE:= charge_only_mode_mm
 
 include $(BUILD_EXECUTABLE)

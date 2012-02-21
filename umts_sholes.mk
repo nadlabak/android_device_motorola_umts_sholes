@@ -98,7 +98,7 @@ PRODUCT_PACKAGES += \
     libhostapdcli \
     Usb \
     mot_boot_mode \
-    charge_only_mode
+    charge_only_mode_mm
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
