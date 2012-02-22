@@ -90,7 +90,7 @@ PRODUCT_PACKAGES += \
     libOMX.TI.Video.encoder \
     libVendor_ti_omx \
     sensors.sholes \
-    lights.sholes \
+    lights.omap3 \
     libaudiopolicy \
     iwmulticall \
     hostap \
