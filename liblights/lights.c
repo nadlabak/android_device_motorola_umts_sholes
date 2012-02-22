@@ -18,6 +18,7 @@
 #define LOG_TAG "lights"
 
 #include <cutils/log.h>
+#include <cutils/properties.h>
 
 #include <stdint.h>
 #include <string.h>
@@ -66,11 +67,16 @@ static int blinkstate = 0;
 static unsigned int lastnotificationcolor = 0;
 static int lastnotificationblink = 0;
 static int lowbattery = 0;
+static int charge_only_mode = 0;
 
 void init_globals(void)
 {
+    char value[PROPERTY_VALUE_MAX];
+
     // init the mutex
     pthread_mutex_init(&g_lock, NULL);
+    property_get("sys.chargeonly.mode", value, "0");
+    charge_only_mode = atoi(value);
 }
 
 static int
@@ -220,12 +226,16 @@ set_light_battery(struct light_device_t* dev,
     LOGD("set_light_battery color=%08X, blink=%d****************\n",
             state->color, blink);
 #endif
-    if (state->color == 0xffff0000) {
-        lowbattery = 1;
+    if (charge_only_mode) {
         err = set_light_locked(state->color, blink);
-    } else if (lowbattery == 1) {
-        lowbattery = 0;
-        err = set_light_locked(lastnotificationcolor, lastnotificationblink);
+    } else {
+        if (state->color == 0xffff0000) {
+            lowbattery = 1;
+            err = set_light_locked(state->color, blink);
+        } else if (lowbattery == 1) {
+            lowbattery = 0;
+            err = set_light_locked(lastnotificationcolor, lastnotificationblink);
+        }
     }
 
     return err;
