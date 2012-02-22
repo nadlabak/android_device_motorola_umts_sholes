@@ -2,12 +2,19 @@
 #
 # mount ext partition from sd card
 
+# skip mount if power-up reason is charge only
+if grep -Fq "POWERUPREASON : 0x00000100" /proc/bootinfo
+then
+setprop cm.mountsd.done 1;
+    exit 0;
+fi
+
 BB="logwrapper busybox";
 
 if [ "$SD_EXT_DIRECTORY" = "" ];
 then
     SD_EXT_DIRECTORY=/sd-ext;
-fi;
+fi
 
 # find SD Card
 for MMC_NUM in `seq 0 9`;
@@ -53,3 +60,5 @@ then
         log -p e -t mountsd "Unable to repair filesystem, disabling apps2sd";
     fi
 fi
+setprop cm.mountsd.done 1;
+
