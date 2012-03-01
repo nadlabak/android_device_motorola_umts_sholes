@@ -104,6 +104,7 @@ PRODUCT_PACKAGES += \
     libVendor_ti_omx \
     sensors.sholes \
     lights.sholes \
+    camera.sholes \
     Usb \
     Torch \
     mot_boot_mode \
