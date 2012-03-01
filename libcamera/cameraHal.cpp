@@ -38,13 +38,12 @@
 #include <utils/Errors.h>
 
 /* Prototypes and extern functions. */
-extern "C" android::sp<android::CameraHardwareInterface> HAL_openCameraHardware(int cameraId);
-extern "C" int HAL_getNumberOfCameras();
-extern "C" void HAL_getCameraInfo(int cameraId, struct CameraInfo* cameraInfo);
+extern "C" android::sp<android::CameraHardwareInterface> openCameraHardware(int cameraId);
 
 namespace android {
     int camera_device_open(const hw_module_t* module, const char* name, hw_device_t** device);
     int CameraHAL_GetCam_Info(int camera_id, struct camera_info *info);
+    int CameraHAL_GetNumberOfCameras(void);
 }
 
 static hw_module_methods_t camera_module_methods = {
@@ -63,7 +62,7 @@ camera_module_t HAL_MODULE_INFO_SYM = {
       dso: NULL,
       reserved: {0},
    },
-   get_number_of_cameras: android::HAL_getNumberOfCameras,
+   get_number_of_cameras: android::CameraHAL_GetNumberOfCameras,
    get_camera_info: android::CameraHAL_GetCam_Info,
 };
 
@@ -360,22 +359,18 @@ void CameraHAL_NotifyCb(int32_t msg_type, int32_t ext1, int32_t ext2, void *user
    }
 }
 
+int CameraHAL_GetNumberOfCameras(void)
+{
+   LOGV("CameraHAL_GetNum_Cameras:\n");
+   return 1;
+}
+
 int CameraHAL_GetCam_Info(int camera_id, struct camera_info *info)
 {
-   int rv = 0;
-   LOGV("CameraHAL_GetCam_Info:");
-
-   CameraInfo cam_info;
-   HAL_getCameraInfo(camera_id, &cam_info);
-
-   info->facing = cam_info.facing;
-//   info->orientation = cam_info.orientation;
-   info->orientation = 90; // Milestone2 camera returns 0, but then picture is rotated
-
-   LOGD("%s: id:%i faceing:%i orientation: %i", __FUNCTION__,
-        camera_id, info->facing, info->orientation);
-
-   return rv;
+   LOGV("CameraHAL_GetCam_Info:\n");
+   info->facing = CAMERA_FACING_BACK;
+   info->orientation = 90;
+   return 0;
 }
 
 void CameraHAL_FixupParams(CameraParameters &settings)
@@ -628,7 +623,7 @@ int camera_send_command(struct camera_device * device, int32_t cmd, int32_t arg0
 void camera_release(struct camera_device * device) {
    struct legacy_camera_device *lcdev = to_lcdev(device);
    LOGV("camera_release:\n");
-   lcdev->hwif->release();
+   //lcdev->hwif->release();
 }
 
 int camera_dump(struct camera_device * device, int fd) {
@@ -708,7 +703,7 @@ int camera_device_open(const hw_module_t* module, const char* name, hw_device_t*
    camera_ops->dump                       = camera_dump;
 
    lcdev->id = cameraId;
-   lcdev->hwif = HAL_openCameraHardware(cameraId);
+   lcdev->hwif = openCameraHardware(cameraId);
    if (lcdev->hwif == NULL) {
        ret = -EIO;
        goto err_create_camera_hw;
