@@ -8,5 +8,5 @@ if [ -e $BPNVMPROP ]
 then
     BPVARIANT=`cat $BPNVMPROP`
 fi
-ln -sf $BPNVMBASE$BPVARIANT/* $BPNVMBASE/bp_nvm_default
+busybox ln -sf $BPNVMBASE$BPVARIANT/* $BPNVMBASE/bp_nvm_default
 mount -o remount,ro /system
