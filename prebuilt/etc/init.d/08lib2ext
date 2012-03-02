@@ -68,13 +68,13 @@ if mount | grep $SDEXT; then
 			EXT=$SDLIB/$APP
 			if [ ! -d $DATA ]; then
 				$LOGI "$APP uninstalled, removing..."
-				rm -rf $EXT
+				busybox rm -rf $EXT
 			elif [ ! -h $DATA/lib ]; then
 				$LOGI "$APP lib found not symlinked, removing..."
-				rm -rf $EXT
+				busybox rm -rf $EXT
 			elif [ "$(readlink $DATA/lib)" != "$EXT" ]; then
 				$LOGI "$APP symlinked but not referring to sd-ext, removing..."
-				rm -rf $EXT
+				busybox rm -rf $EXT
 			fi
 		done
 		$LOGI "Done cleaning up."
@@ -111,11 +111,11 @@ if mount | grep $SDEXT; then
 			# moving libs to sd-ext
 			if [ "$(ls $LIB)" ]; then
 				if cp -p $LIB/* $EXT/; then
-					rm -rf $LIB
+					busybox rm -rf $LIB
 				else
 					$LOGE "Cannot copy files to $EXT"
 					$LOGE "$APP (failed)"
-					rm -rf $EXT
+					busybox rm -rf $EXT
 					continue
 				fi
 			else
@@ -124,7 +124,7 @@ if mount | grep $SDEXT; then
 			if [ -d $LIB ]; then
 				$LOGE "Cannot remove $LIB"
 				$LOGE "$APP (failed)"
-				rm -rf $EXT
+				busybox rm -rf $EXT
 				continue
 			fi
 			# symlinking lib dir to sd-ext
@@ -141,7 +141,7 @@ if mount | grep $SDEXT; then
 					$LOGE "Cannot restore $LIB"
 					$LOGE "$APP (failed, needs re-install)"
 				fi
-				rm -rf $EXT
+				busybox rm -rf $EXT
 				continue
 			fi
 			$LOGI "$APP (succeeded)"

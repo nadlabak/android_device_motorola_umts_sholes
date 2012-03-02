@@ -192,6 +192,9 @@ on boot
     # symlink the selected bp_nvm files
     exec /system/bin/sh /system/bin/init_bp_nvm.sh
 
+    # run sysinit
+    exec /system/bin/sysinit
+
     # create the lost+found directories, so as to enforce our permissions
     mkdir /pds/lost+found 0770
 

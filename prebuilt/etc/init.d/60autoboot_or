@@ -2,14 +2,14 @@
 
 if [ ! -d /cache/recovery ]; then
 	mkdir /cache/recovery
-	chown root:root /cache/recovery
+	chown 0:0 /cache/recovery
 	chmod 0777 /cache/recovery
 fi
 
 if [ ! -f /cache/recovery/command ]; then
 	echo "--update_package=SDCARD:update.zip" > /cache/recovery/command
 	sleep 1
-	chown root:root /cache/recovery/command
+	chown 0:0 /cache/recovery/command
 	chmod 0644 /cache/recovery/command
 	sleep 1
 fi
