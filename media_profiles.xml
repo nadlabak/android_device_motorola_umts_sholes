@@ -124,7 +124,7 @@
         <ImageEncoding quality="70" />
         <ImageDecoding memCap="20000000" />
 
-        <Camera previewFrameRate="0" />
+        <Camera previewFrameRate="15" />
 
     </CamcorderProfiles>
 

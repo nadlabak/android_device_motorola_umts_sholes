@@ -96,7 +96,6 @@ PRODUCT_PACKAGES += \
     libOMX.TI.AMR.encode \
     libOMX.TI.WBAMR.decode \
     libOMX.TI.WBAMR.encode \
-    libOMX.TI.JPEG.Encoder \
     libLCML \
     libOMX_Core \
     libOMX.TI.Video.Decoder \
