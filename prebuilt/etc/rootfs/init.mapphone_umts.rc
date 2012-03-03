@@ -257,7 +257,7 @@ mount rootfs rootfs / ro remount
    chown media system /sys/class/leds/torch-flash/flash_light
 
 # flashlight
-   chown media system /sys/class/leds/spotlight/brightness
+   chown media camera /sys/class/leds/spotlight/brightness
    chmod 0660 /sys/class/leds/spotlight/brightness
 
 # Change ownership of vibrator
