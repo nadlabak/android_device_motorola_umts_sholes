@@ -14,10 +14,11 @@ ro.telephony.default_network=3
 ro.telephony.ril.v3=skipbrokendatacall,signalstrength
 
 wifi.interface = tiwlan0
+
 # Time between scans in seconds. Keep it high to minimize battery drain.
 # This only affects the case in which there are remembered access points,
 # but none are in range.
-wifi.supplicant_scan_interval = 60
+wifi.supplicant_scan_interval = 45
 
 # The OpenGL ES API level that is natively supported by this device.
 # This is a 16.16 fixed point number
@@ -68,7 +69,7 @@ persist.sys.one_percent_batt=1
 
 ro.usb.use_custom_service=1
 
-debug.sf.nobootanimation=1
+# debug.sf.nobootanimation=1
 
 # enable 16bit transparency by default
 persist.sys.use_16bpp_alpha=1
