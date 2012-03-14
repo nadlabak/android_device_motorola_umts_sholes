@@ -10,6 +10,8 @@ ro.sf.lcd_density=240
 # 3 -> GSM/WCDMA (auto mode, according to PRL)
 ro.telephony.default_network=3
 
+ro.telephony.ril_class=MotoWrigley3GRIL
+
 # fix data
 ro.telephony.ril.v3=skipbrokendatacall,signalstrength
 
