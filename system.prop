@@ -45,8 +45,8 @@ mot.proximity.distance=100
 # to spare some RAM
 persist.sys.purgeable_assets=1
 
-# force disable scrolling cache value is 3
-persist.sys.scrollingcache=3
+# scrolling cache: 'default disable'
+persist.sys.scrollingcache=2
 
 # apps to be kept in memory (specified by process name)
 # use with caution, RAM is limited!
