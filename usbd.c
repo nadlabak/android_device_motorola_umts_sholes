@@ -259,7 +259,7 @@ int usbd_set_usb_mode(int new_mode)
 	int adb_sts;
 	const char* mode_str;
 	
-	if (new_mode > 0 && new_mode < ARRAY_SIZE(usb_modes))
+	if (new_mode >= 0 && new_mode < ARRAY_SIZE(usb_modes))
 	{		
 		/* Moto gadget driver expects us to append "_adb" for adb on */
 		if (get_adb_enabled_status() == 1)
@@ -267,7 +267,10 @@ int usbd_set_usb_mode(int new_mode)
 		else
 			mode_str = usb_modes[new_mode].kern_mode;
 		
-		write(usb_mode_fd, mode_str, strlen(mode_str) + 1);
+		if (write(usb_mode_fd, mode_str, strlen(mode_str) + 1) < 0)
+			return -1;
+		
+		usb_current_mode = new_mode;
 		return 0;
 	}
 	else
@@ -400,6 +403,56 @@ int usbd_enum_process(int sockfd)
 	
 }
 
+/* socket event */
+int usbd_socket_event(int sockfd)
+{
+	char buffer[1024];
+	int res, new_mode;
+	
+	memset(buffer, 0, sizeof(buffer));
+	res = read(sockfd, buffer, ARRAY_SIZE(buffer);
+	
+	if (res < 0)
+	{
+		LOGE("%s(): Socket Read Failure: %s", __func__, strerror(errno));
+		return -1;
+	}
+	else if (res)
+	{
+		LOGI("%s(): recieved %s\n", __func__, buffer);
+		new_mode = usbd_get_mode_index(buffer, 1);
+		
+		if (new_mode < 0)
+		{
+			LOGE("%s(): %s is not valid usb mode\n", __func__, buffer);
+			return -1;
+		}
+		
+		LOGI("%s(): Matched new usb mode = %d , current mode = %d\n", __func__, usb_current_mode, new_mode);
+		
+		if (new_mode != usb_current_mode)
+		{
+			usbd_set_usb_mode(new_mode);
+			//FIXME: something is written back to sockfd
+		}
+		
+		return 0;
+	}
+	else
+	{
+		LOGI("%s(): Socket Connection Closed\n", __func__);
+		return -1;
+	}
+}
+
+/* Process USB message */
+int process_usb_uevent_message(int sockfd)
+{
+	char buffer[1024];
+	
+	
+}
+
 /* Usbd main */
 int main(int argc, char **argv)
 {
@@ -408,7 +461,7 @@ int main(int argc, char **argv)
 	/* init uevent */
 	LOGI("%s(): Initializing uevent_socket \n", __func__);
 	if (open_uevent_socket())
-		return -1;
+		return 1;
 	
 	/* open device mode */
 	LOGI("%s(): Initializing usb_device_mode \n", __func__);
@@ -417,21 +470,21 @@ int main(int argc, char **argv)
 	if (usb_mode_fd < 0)
 	{
 		LOGE("%s(): Unable to open usb_device_mode '%s'\n", __func__, strerror(errno));
-		return -errno;
+		return 1;
 	}
 	
 	/* init usdb socket */
 	if (init_usdb_socket() < 0)
 	{
 		LOGE("%s(): failed to create socket server '%s'\n", __func__, strerror(errno));
-		return -errno;
+		return 1;
 	}
 	
 	/* init cable status */
 	if (usbd_get_cable_status() < 0)
 	{
 		LOGE("%s(): failed to get cable status (%s)\n", __func__);
-		return -1;
+		return 1;
 	}
 	
 } 
