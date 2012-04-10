@@ -57,6 +57,8 @@
 #define USBD_EVENT_GET_DESCRIPTOR           "get_descriptor"
 #define USBD_EVENT_USB_ENUMERATED           "usb_enumerated"
 
+#define USBD_UEVENT_CABLE_DETACH            "usb_cable_detach"
+
 /* adb status */
 #define USBD_ADB_STATUS_ON                  "usbd_adb_status_on"
 #define USBD_ADB_STATUS_OFF                 "usbd_adb_status_off"
@@ -72,6 +74,11 @@
 
 /* adb suffix */
 #define USB_MODE_ADB_SUFFIX                 "_adb"
+
+/* power supply events */
+#define POWER_SUPPLY_TYPE_EVENT              "POWER_SUPPLY_TYPE="
+#define POWER_SUPPLY_ONLINE_EVENT            "POWER_SUPPLY_ONLINE="
+#define POWER_SUPPLY_MODEL_NAME_EVENT        "POWER_SUPPLY_MODEL_NAME="
 
 /* structure */
 struct usb_mode_info
@@ -181,7 +188,7 @@ int open_uevent_socket(void)
 /* initialize usbd socket */
 int init_usdb_socket()
 {
-	/* FIXME: magic */
+	/* FIXME: /dev/socket via env. var, append usbd, create fd ... :p */
 	if (fd < 0)
 	{
 		LOGE("%s(): Obtaining file descriptor socket 'usbd' failed: %s\n", __func__, strerror(errno));
@@ -374,7 +381,7 @@ int usbd_notify_current_status(int sockfd)
 			return -1;
 		}
 	}
-	//FIXME: check disassembly, there is some vars involved
+	//FIXME: check disassembly, there are some vars involved
 	return 0;
 }
 
@@ -449,6 +456,87 @@ int usbd_socket_event(int sockfd)
 int process_usb_uevent_message(int sockfd)
 {
 	char buffer[1024];
+	char* power_supply_type = NULL;
+	char* power_supply_online = NULL;
+	char* power_supply_model_name = NULL;
+	char* ptr;
+	char* end;
+	
+	int res = recv(sockfd, buffer, ARRAY_SIZE(buffer), 0);
+	
+	if (res <= 0)
+		return 0;
+	
+	ptr = buffer;
+	end = &(buffer + res)
+	
+	if (ptr > end)
+		return 0;	
+	
+	do
+	{
+		if (!strncmp(POWER_SUPPLY_TYPE_EVENT, ptr, strlen(POWER_SUPPLY_TYPE_EVENT)))
+			power_supply_type = ptr + strlen(POWER_SUPPLY_TYPE_EVENT);
+		else if (!strncmp(POWER_SUPPLY_ONLINE_EVENT, ptr, strlen(POWER_SUPPLY_ONLINE_EVENT)))
+			power_supply_online = ptr + strlen(POWER_SUPPLY_ONLINE_EVENT);
+		else if (!strncmp(POWER_SUPPLY_MODEL_NAME_EVENT, ptr, strlen(POWER_SUPPLY_MODEL_NAME_EVENT)))
+			power_supply_model_name = ptr + strlen(POWER_SUPPLY_MODEL_NAME_EVENT);
+		
+		
+		ptr += strlen(ptr) + 1;
+		
+	} while (end > ptr)
+	
+	/* Now check what we got */
+	
+	if (!power_supply_type || strcmp(power_supply_type, "USB"))
+		return 0;
+	
+	if (power_supply_model_name)
+	{
+		if (strcmp(power_supply_model_name, "usb"))
+		{
+			if (!strcmp(power_supply_model_name, "factory")
+				usb_factory_cable = 1;
+		}
+		else
+			usb_factory_cable = 0;
+		
+		LOGI("%s(): cable type: %s\n", __func__, power_supply_model_name);
+	}
+	else
+		LOGI("%s(): cable type not specified in USB Event\n", __func__);
+	
+	if (power_supply_online)
+	{
+		if (!strcmp(power_supply_online, "1"))
+		{
+			LOGI("%s(): USB online\n", __func__);
+			usb_online = 1;
+			return 0;
+		}
+		else if (!strcmp(power_supply_online, "0"))
+		{
+			LOGI("%s(): USB offline\n", __func__);
+			usb_online = 0;
+			write(usb_mode_fd, USBD_UEVENT_CABLE_DETACH, strlen(USBD_UEVENT_CABLE_DETACH) + 1);
+			return 0;
+		}
+		else
+		{
+			LOGE("%s(): Unknown USB State\n", __func__);
+			return 1;
+		}
+	}
+	else
+	{
+		LOGE("%s(): Did not receive USB state\n", __func__);
+		return 1;
+	}
+}
+
+int usb_req_mode_switch(const char* new_mode)
+{
 	
 	
 }
