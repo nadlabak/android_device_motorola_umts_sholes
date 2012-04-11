@@ -83,8 +83,6 @@ unzip $QUIET $OTAPACKAGE
 echo
 cd $REPACK/ota/system/framework
 $OPTICHARGER framework-res.apk
-cd $REPACK/ota/system/media
-rm -Rf video
 cd $REPACK/ota/system/app
 # Delete unwanted apps
 rm -f CMUpdateNotify.*

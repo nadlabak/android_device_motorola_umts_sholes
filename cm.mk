@@ -8,7 +8,7 @@ PRODUCT_RELEASE_NAME := Milestone
 TARGET_BOOTANIMATION_NAME := vertical-480x854
 
 # Inherit some common CM stuff.
-$(call inherit-product, vendor/cm/config/common_full_phone.mk)
+$(call inherit-product, vendor/cm/config/common_mini_phone.mk)
 
 # Inherit device configuration
 $(call inherit-product, device/motorola/umts_sholes/full_umts_sholes.mk)
