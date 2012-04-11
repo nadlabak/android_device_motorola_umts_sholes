@@ -45,11 +45,10 @@
 #define USB_INPUT_CABLE_NORMAL              "usb"
 #define USB_INPUT_CABLE_FACTORY             "factory"
 
-/* usb state */
-#define USBD_STATE_CABLE_DISCONNECTED       0
-#define USBD_STATE_CABLE_CONNECTED          1
-#define USBD_STATE_GET_DESCRIPTOR           2
-#define USBD_STATE_USB_ENUMERATED           3
+/* power supply events */
+#define POWER_SUPPLY_TYPE_EVENT              "POWER_SUPPLY_TYPE="
+#define POWER_SUPPLY_ONLINE_EVENT            "POWER_SUPPLY_ONLINE="
+#define POWER_SUPPLY_MODEL_NAME_EVENT        "POWER_SUPPLY_MODEL_NAME="
 
 /* cable events */
 #define USBD_EVENT_CABLE_DISCONNECTED       "cable_disconnected"
@@ -75,11 +74,6 @@
 /* adb suffix */
 #define USB_MODE_ADB_SUFFIX                 "_adb"
 
-/* power supply events */
-#define POWER_SUPPLY_TYPE_EVENT              "POWER_SUPPLY_TYPE="
-#define POWER_SUPPLY_ONLINE_EVENT            "POWER_SUPPLY_ONLINE="
-#define POWER_SUPPLY_MODEL_NAME_EVENT        "POWER_SUPPLY_MODEL_NAME="
-
 /* structure */
 struct usb_mode_info
 {
@@ -102,6 +96,7 @@ struct usb_mode_info
 .kern_mode_adb =                          kern  USB_MODE_ADB_SUFFIX, \
 }
 
+/* usb get mode namespace */
 enum usb_mode_get_t
 {
 	USBMOD_APK,
@@ -109,6 +104,15 @@ enum usb_mode_get_t
 	USBMOD_APK_REQ_SWITCH,
 	USBMOD_KERN
 };
+
+/* usb state */
+enum usbd_state_t
+{
+	USBDSTAT_CABLE_DISCONNECTED,
+	USBDSTAT_CABLE_CONNECTED,
+	USBDSTAT_GET_DESCRIPTOR,
+	USBDSTAT_USB_ENUMERATED
+}
 
 /* The following defines have matching equivalents in usb.apk
  * and in kernel g_mot_android module (see mot_android.c)
@@ -153,12 +157,15 @@ static struct usb_mode_info usb_modes[] =
 /* File descriptors */
 static int uevent_fd = -1;
 static int listener_fd = -1;
+static int usbd_socket_fd = -1;
+static int usb_device_fd = -1;
 
 /* Status variables */
 static int usb_current_mode = 0;
 static int usb_factory_cable = 0;
-static int usb_state = USBD_STATE_CABLE_DISCONNECTED;
+static usbd_state_t usb_state = USBDSTAT_CABLE_DISCONNECTED;
 static int usb_online = 0;
+static int last_sent_usb_online = 0;
 
 /* Opens uevent socked for usbd */
 static int open_uevent_socket(void)
@@ -197,19 +204,36 @@ static int open_uevent_socket(void)
 static int init_usdb_socket()
 {
 	/* FIXME: /dev/socket via env. var, append usbd, create fd ... :p */
-	if (fd < 0)
+	if (usbd_socket_fd < 0)
 	{
 		LOGE("%s(): Obtaining file descriptor socket 'usbd' failed: %s\n", __func__, strerror(errno));
 		return 1;
 	}
 	
-	if (listen(fd, 4) < 0)
+	if (listen(usbd_socket_fd, 4) < 0)
 	{
-		LOGE("%s(): Unable to listen on fd '%d' for socket 'usbd': %s", __func__, fd, strerror(errno));
+		LOGE("%s(): Unable to listen on fd '%d' for socket 'usbd': %s", __func__, usbd_socket_fd, strerror(errno));
 		return 1;
 	}
 	
 	return 0;
+}
+
+/* Return highest socket fd for select */
+static int get_highest_socket_fd(void)
+{
+	int fd;
+	
+	if (listener_fd > 0)
+		fd = listener_fd;
+	
+	if (usbd_socket_fd > fd)
+		fd = usbd_socket_fd;
+	
+	if (uevent_fd > fd)
+		fd = uevent_fd;
+	
+	return fd;
 }
 
 /* Gets adb status */
@@ -300,8 +324,8 @@ static int usbd_set_usb_mode(int new_mode)
 		else
 			mode_str = usb_modes[new_mode].kern_mode;
 		
-		if (write(usb_mode_fd, mode_str, strlen(mode_str) + 1) < 0)
-			return -1;
+		if (write(usb_device_fd, mode_str, strlen(mode_str) + 1) < 0)
+			return 1;
 		
 		usb_current_mode = new_mode;
 		return 0;
@@ -362,9 +386,15 @@ static int usbd_get_cable_status(void)
 	}
 	
 	if (!strcmp(buf, "1"))
+	{
 		usb_online = 1;
+		usb_state = USBDSTAT_CABLE_CONNECTED;
+	}
 	else
-		usb_online = 0;   
+	{
+		usb_online = 0;
+		usb_state = USBDSTAT_CABLE_DISCONNECTED;
+	}
 	
 	fclose(f);
 	
@@ -381,19 +411,19 @@ static int usbd_notify_current_status(int sockfd)
 	
 	switch(usb_state)
 	{
-		case USBD_STATE_CABLE_DISCONNECTED:
+		case USBDSTAT_CABLE_DISCONNECTED:
 			event_msg = USBD_EVENT_CABLE_DISCONNECTED;
 			break;
 			
-		case USBD_STATE_CABLE_CONNECTED:
+		case USBDSTAT_CABLE_CONNECTED:
 			event_msg = USBD_EVENT_CABLE_CONNECTED;
 			break;
 			
-		case USBD_STATE_GET_DESCRIPTOR:
+		case USBDSTAT_GET_DESCRIPTOR:
 			event_msg = USBD_EVENT_GET_DESCRIPTOR;
 			break;
 			
-		case USBD_STATE_USB_ENUMERATED:
+		case USBDSTAT_USB_ENUMERATED:
 			event_msg = USBD_EVENT_USB_ENUMERATED;
 			break;
 	}
@@ -404,10 +434,11 @@ static int usbd_notify_current_status(int sockfd)
 		if (write(sockfd, event_msg, strlen(event_msg) + 1) < 0)
 		{
 			LOGE("%s(): Write Error : Notifying App with Current Status\n", __func__);
-			return -1;
+			return 1;
 		}
 	}
-	//FIXME: check disassembly, there are some vars involved
+	
+	last_sent_usb_online = usb_online;
 	return 0;
 }
 
@@ -426,7 +457,7 @@ static int usbd_enum_process(int sockfd)
 	if (write(sockfd, mode, strlen(mode) + 1) < 0)
 	{
 		LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
-		return -1;
+		return 1;
 	}
 	else
 	{
@@ -448,7 +479,7 @@ static int usbd_socket_event(int sockfd)
 	if (res < 0)
 	{
 		LOGE("%s(): Socket Read Failure: %s", __func__, strerror(errno));
-		return -1;
+		return 1;
 	}
 	else if (res)
 	{
@@ -458,7 +489,7 @@ static int usbd_socket_event(int sockfd)
 		if (new_mode < 0)
 		{
 			LOGE("%s(): %s is not valid usb mode\n", __func__, buffer);
-			return -1;
+			return 1;
 		}
 		
 		LOGI("%s(): Matched new usb mode = %d , current mode = %d\n", __func__, usb_current_mode, new_mode);
@@ -466,7 +497,7 @@ static int usbd_socket_event(int sockfd)
 		if (new_mode != usb_current_mode)
 		{
 			usbd_set_usb_mode(new_mode);
-			//FIXME: something is written back to sockfd
+			//FIXME: something is written back to sockfd, probably the new mode
 		}
 		
 		return 0;
@@ -474,12 +505,13 @@ static int usbd_socket_event(int sockfd)
 	else
 	{
 		LOGI("%s(): Socket Connection Closed\n", __func__);
-		return -1;
+		close(sockfd);
+		return 1;
 	}
 }
 
 /* Process USB message */
-static int process_usb_uevent_message(int sockfd)
+static int process_usb_uevent_message()
 {
 	char buffer[1024];
 	char* power_supply_type = NULL;
@@ -488,7 +520,7 @@ static int process_usb_uevent_message(int sockfd)
 	char* ptr;
 	char* end;
 	
-	int res = recv(sockfd, buffer, ARRAY_SIZE(buffer), 0);
+	int res = recv(uevent_fd, buffer, ARRAY_SIZE(buffer), 0);
 	
 	if (res <= 0)
 		return 0;
@@ -545,7 +577,7 @@ static int process_usb_uevent_message(int sockfd)
 		{
 			LOGI("%s(): USB offline\n", __func__);
 			usb_online = 0;
-			write(usb_mode_fd, USBD_UEVENT_CABLE_DETACH, strlen(USBD_UEVENT_CABLE_DETACH) + 1);
+			write(usb_device_fd, USBD_UEVENT_CABLE_DETACH, strlen(USBD_UEVENT_CABLE_DETACH) + 1);
 			return 0;
 		}
 		else
@@ -570,12 +602,12 @@ static int usb_req_mode_switch(const char* new_mode)
 	adb_enabled = get_adb_enabled_status();
 	
 	if (adb_enabled < 0)
-		return -1;
+		return 1;
 	
 	new_mode_index = usbd_get_mode_index(new_mode, USBMOD_APK_REQ_SWITCH);
 	
 	if (new_mode_index < 0)
-		return -1;
+		return 1;
 	
 	LOGI("%s(): switch_req=%s\n", __func__, new_mode);
 	
@@ -586,7 +618,10 @@ static int usb_req_mode_switch(const char* new_mode)
 		if (write(listener_fd, usb_modes[new_mode_index].apk_req_switch) < 0)
 		{
 			LOGE("%s(): Socket Write Failure: %s\n", strerror(errno));
+			//FIXME: clean up in main ._.
+			close(listener_fd);
 			listener_fd = -1;
+			return 1;
 		}
 	}
 	
@@ -596,6 +631,9 @@ static int usb_req_mode_switch(const char* new_mode)
 /* Usbd main */
 int main(int argc, char **argv)
 {
+	const char* cable_msg;
+	fd_set socks;
+	
 	LOGI("%s(): Start usbd - version " USBD_VER "\n", __func__);
 	
 	/* init uevent */
@@ -605,15 +643,16 @@ int main(int argc, char **argv)
 	
 	/* open device mode */
 	LOGI("%s(): Initializing usb_device_mode \n", __func__);
-	usb_mode_fd = open("/dev/usb_device_mode", O_RDONLY);
+	usb_device_fd = open("/dev/usb_device_mode", O_RDWR);
 	
-	if (usb_mode_fd < 0)
+	if (usb_device_fd < 0)
 	{
 		LOGE("%s(): Unable to open usb_device_mode '%s'\n", __func__, strerror(errno));
 		return 1;
 	}
 	
 	/* init usdb socket */
+	LOGI("%s(): Initializing usbd socket \n", __func__);
 	if (init_usdb_socket() < 0)
 	{
 		LOGE("%s(): failed to create socket server '%s'\n", __func__, strerror(errno));
@@ -625,6 +664,60 @@ int main(int argc, char **argv)
 	{
 		LOGE("%s(): failed to get cable status (%s)\n", __func__);
 		return 1;
+	}
+	
+	if (usb_online)
+		cable_msg = "Cable Attached";
+	else
+		cable_msg = "Cable Detached";
+	
+	LOGI("%s(): Initial Cable State = %s\n", __func__, cable_msg);
+	
+	while (1)
+	{
+		/* wait for sockets */
+		FD_ZERO(&socks);
+		
+		FD_SET(uevent_fd, &socks);
+		FD_SET(usbd_socket_fd, &socks);
+		
+		if (lisnener_fd >= 0)
+			FD_SET(listener_fd, &socks);
+		
+		select(get_highest_socket_fd() + 1, &socks, NULL, NULL, NULL);
+		
+		/* Check received data */
+		
+		if (FD_ISSET(uevent_fd, &socks) && !process_usb_uevent_message())
+		{
+			/* Factory cable is handled directly in process_usb_uevent_message */
+			
+			if (!usb_factory_cable)
+			{
+				if (last_sent_usb_online == usb_online)
+					LOGI("%s(): Spurious Cable Event, Ignore \n", __func__);
+				else
+				{
+					LOGI("%s(): Cable Status Changed, need to notify Cable Status to App \n", __func__);
+					
+					if (listener_fd < 0)
+						last_sent_usb_online = usb_online;
+					else if (usbd_notify_current_status(listener_fd) < 0)
+					{
+						close(listener_fd);
+						listener_fd = -1;
+						continue;
+					}
+					
+					/* Set default mode if we're disconnected */
+					/* FIXME: ehm, why does usbd do this??? */
+					if (usb_state == USBDSTAT_CABLE_DISCONNECTED)
+						usbd_set_usb_mode(usbd_get_mode_index(USB_KERN_MODE_NET, USBMOD_KERN));
+					
+				}
+			}
+		}
+		
 	}
 	
 } 
