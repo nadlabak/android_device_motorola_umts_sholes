@@ -102,6 +102,7 @@ setprop ro.sys.atvc_allow_efem 0
     insmod /system/lib/modules/overclock.ko
     insmod /system/lib/modules/qtouch_num.ko
     insmod /system/lib/modules/mot_usb.ko
+    insmod /system/lib/modules/dsprecovery.ko
 
 on early-boot
 
@@ -559,6 +560,10 @@ service hciattach /system/bin/hciattach \
     user bluetooth
     group bluetooth net_bt_admin
     disabled
+
+on property:hw.dspbridge.needs_recovery=1
+    start baseimage
+    setprop hw.dspbridge.needs_recovery 0
 
 service baseimage /system/bin/dspexec -v -T /system/lib/dsp/baseimage.dof
     class media_early_init
