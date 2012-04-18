@@ -355,7 +355,7 @@ static int usbd_set_usb_mode(int new_mode)
 /* Get cable status */
 static int usbd_get_cable_status(void)
 {
-	char buf[256];
+	char buffer[256];
 	FILE* f;
 	
 	/* get cable type */
@@ -367,16 +367,21 @@ static int usbd_get_cable_status(void)
 		return -errno;
 	}
 	
-	if (!fgets(buf, ARRAY_SIZE(buf), f))
+	/* Read it */
+	if (!fgets(buffer, ARRAY_SIZE(buffer), f))
 	{
 		fclose(f);
 		LOGE("%s: Unable to read power supply model_name for cable type\n", __func__);
 		return -EIO;
 	}
 	
-	if (!strcmp(buf, USB_INPUT_CABLE_NORMAL))
+	/* Remove linefeed */
+	buffer[strlen(buffer) - 1] = '\0';
+	LOGI("%s(): cable_type = %s\n", __func__, buffer);
+	
+	if (!strcmp(buffer, USB_INPUT_CABLE_NORMAL))
 		usb_factory_cable = 0;
-	else if (!strcmp(buf, USB_INPUT_CABLE_FACTORY))
+	else if (!strcmp(buffer, USB_INPUT_CABLE_FACTORY))
 	{
 		usb_factory_cable = 1;
 		usbd_set_usb_mode(usbd_get_mode_index(USB_KERN_MODE_NET, USBMOD_KERN));
@@ -393,14 +398,17 @@ static int usbd_get_cable_status(void)
 		return -errno;
 	}
 	
-	if (!fgets(buf, ARRAY_SIZE(buf), f))
+	/* Read it */
+	if (!fgets(buffer, ARRAY_SIZE(buffer), f))
 	{
 		fclose(f);
 		LOGE("%s: Unable to read power supply online stat\n", __func__);
 		return -EIO;
 	}
 	
-	if (!strcmp(buf, "1"))
+	/* Remove linefeed */
+	buffer[strlen(buffer) - 1] = '\0';
+	if (!strcmp(buffer, "1"))
 	{
 		usb_online = 1;
 		usb_state = USBDSTAT_CABLE_CONNECTED;
@@ -411,6 +419,7 @@ static int usbd_get_cable_status(void)
 		usb_state = USBDSTAT_CABLE_DISCONNECTED;
 	}
 	
+	LOGI("%s(): current usb_online = %d\n", __func__, usb_online);
 	fclose(f);
 	
 	return 0;
