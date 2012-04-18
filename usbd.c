@@ -56,6 +56,11 @@
 #define USBD_EVENT_GET_DESCRIPTOR           "get_descriptor"
 #define USBD_EVENT_USB_ENUMERATED           "usb_enumerated"
 
+#define USBD_DEV_EVENT_ADB_ENABLE           "adb_enable"
+#define USBD_DEV_EVENT_ADB_DISABLE          "adb_disable"
+#define USBD_DEV_EVENT_GET_DESCRIPTOR       "get_desc"
+#define USBD_DEV_EVENT_USB_ENUMERATED       "enumerated"
+
 #define USBD_UEVENT_CABLE_DETACH            "usb_cable_detach"
 
 /* adb status */
@@ -156,13 +161,14 @@ static struct usb_mode_info usb_modes[] =
 
 /* File descriptors */
 static int uevent_fd = -1;
-static int listener_fd = -1;
+static int usbd_app_fd = -1;
 static int usbd_socket_fd = -1;
 static int usb_device_fd = -1;
 
 /* Status variables */
 static int usb_current_mode = 0;
 static int usb_factory_cable = 0;
+static int usb_got_descriptor = 0;
 static usbd_state_t usb_state = USBDSTAT_CABLE_DISCONNECTED;
 static int usb_online = 0;
 static int last_sent_usb_online = 0;
@@ -224,11 +230,14 @@ static int get_highest_socket_fd(void)
 {
 	int fd;
 	
-	if (listener_fd > 0)
-		fd = listener_fd;
+	if (usbd_app_fd >= 0)
+		fd = usbd_app_fd;
 	
 	if (usbd_socket_fd > fd)
 		fd = usbd_socket_fd;
+	
+	if (usb_device_fd > fd)
+		fd = usb_device_fd;
 	
 	if (uevent_fd > fd)
 		fd = uevent_fd;
@@ -249,21 +258,21 @@ static int get_adb_enabled_status(void)
 	return (!strcmp(buff, "1"));
 }
 
-/* Sends adb status to usb.apk (or other listeners) */
-static int usbd_send_adb_status(int status)
+/* Sends adb status to usb.apk */
+static int usbd_send_adb_status(int sockfd, int status)
 {
 	int ret;
 	
 	if (status == 1)
 	{
 		LOGI("%s(): Send ADB Enable message\n", __func__);
-		ret = send_data(USBD_ADB_STATUS_ON, strlen(USBD_ADB_STATUS_ON) + 1);
+		ret = write(sockfd, USBD_ADB_STATUS_ON, strlen(USBD_ADB_STATUS_ON) + 1);
 		
 	}
 	else
 	{
 		LOGI("%s(): Send ADB Disable message\n", __func__);
-		ret = send_data(USBD_ADB_STATUS_OFF, strlen(USBD_ADB_STATUS_OFF) + 1);
+		ret = write(sockfd, USBD_ADB_STATUS_OFF, strlen(USBD_ADB_STATUS_OFF) + 1);
 	}
 	
 	return ret <= 0; /*1 = fail */
@@ -474,7 +483,7 @@ static int usbd_socket_event(int sockfd)
 	int res, new_mode;
 	
 	memset(buffer, 0, sizeof(buffer));
-	res = read(sockfd, buffer, ARRAY_SIZE(buffer);
+	res = read(sockfd, buffer, ARRAY_SIZE(buffer));
 	
 	if (res < 0)
 	{
@@ -576,6 +585,7 @@ static int process_usb_uevent_message()
 		else if (!strcmp(power_supply_online, "0"))
 		{
 			LOGI("%s(): USB offline\n", __func__);
+			usb_got_descriptor = 0;
 			usb_online = 0;
 			write(usb_device_fd, USBD_UEVENT_CABLE_DETACH, strlen(USBD_UEVENT_CABLE_DETACH) + 1);
 			return 0;
@@ -611,16 +621,16 @@ static int usb_req_mode_switch(const char* new_mode)
 	
 	LOGI("%s(): switch_req=%s\n", __func__, new_mode);
 	
-	if (listener_fd > 0)
+	if (usbd_app_fd >= 0)
 	{
 		LOGI("%s(): usb switch to %s\n", __func__, new_mode);
 		
-		if (write(listener_fd, usb_modes[new_mode_index].apk_req_switch) < 0)
+		if (write(usbd_app_fd, usb_modes[new_mode_index].apk_req_switch) < 0)
 		{
 			LOGE("%s(): Socket Write Failure: %s\n", strerror(errno));
 			//FIXME: clean up in main ._.
-			close(listener_fd);
-			listener_fd = -1;
+			close(usbd_app_fd);
+			usbd_app_fd = -1;
 			return 1;
 		}
 	}
@@ -631,7 +641,15 @@ static int usb_req_mode_switch(const char* new_mode)
 /* Usbd main */
 int main(int argc, char **argv)
 {
+	char pc_switch_buf[32];
+	char adb_enable_buf[32];
+	char enum_buf[32];
+	char buffer[64];
 	const char* cable_msg;
+	const char* pch;
+	struct sockaddr addr;
+	int addr_len;
+	int sockfd;
 	fd_set socks;
 	
 	LOGI("%s(): Start usbd - version " USBD_VER "\n", __func__);
@@ -679,15 +697,17 @@ int main(int argc, char **argv)
 		FD_ZERO(&socks);
 		
 		FD_SET(uevent_fd, &socks);
+		FD_SET(usbd_device_fd, &socks);
 		FD_SET(usbd_socket_fd, &socks);
 		
-		if (lisnener_fd >= 0)
-			FD_SET(listener_fd, &socks);
+		if (usbd_app_fd >= 0)
+			FD_SET(usbd_app_fd, &socks);
 		
 		select(get_highest_socket_fd() + 1, &socks, NULL, NULL, NULL);
 		
 		/* Check received data */
 		
+		/* uevent socket */
 		if (FD_ISSET(uevent_fd, &socks) && !process_usb_uevent_message())
 		{
 			/* Factory cable is handled directly in process_usb_uevent_message */
@@ -700,12 +720,12 @@ int main(int argc, char **argv)
 				{
 					LOGI("%s(): Cable Status Changed, need to notify Cable Status to App \n", __func__);
 					
-					if (listener_fd < 0)
+					if (usbd_app_fd < 0)
 						last_sent_usb_online = usb_online;
-					else if (usbd_notify_current_status(listener_fd) < 0)
+					else if (usbd_notify_current_status(usbd_app_fd) < 0)
 					{
-						close(listener_fd);
-						listener_fd = -1;
+						close(usbd_app_fd);
+						usbd_app_fd = -1;
 						continue;
 					}
 					
@@ -718,6 +738,129 @@ int main(int argc, char **argv)
 			}
 		}
 		
+		/* usb device fd */
+		if (FD_ISSET(usb_device_fd, &socks))
+		{
+			LOGI("%s(): get event from usb_device_fd\n", __func__);
+			memset(buffer, 0, sizeof(buffer));
+			
+			if (read(usb_device_fd, buffer, ARRAY_SIZE(buffer)) > 0 && !usb_factory_cable)
+			{
+				LOGI("%s(): devbuf: %s\nrc: %d usbd_curr_cable_status: %d\n", __func__, buffer, /*FIXME: */, usb_state);
+				
+				/* PC switch buffer */
+				pch = strtok(buffer, ":");
+				
+				if (pch != NULL)
+					strcpy(pc_switch_buf, pch);
+				else
+					memset(pc_switch_buf, 0, sizeof(pc_switch_buf)); 
+				
+				LOGI("%s(): pc_switch_buf = %s\n", __func__, pc_switch_buf);
+				
+				/* ADB enable buffer */
+				pch = strtok(buffer, ":");
+				
+				if (pch != NULL)
+					strcpy(adb_enable_buf, pch);
+				else
+					memset(adb_enable_buf, 0, sizeof(adb_enable_buf)); 
+				
+				LOGI("%s(): adb_enable_buf = %s\n", __func__, adb_enable_buf);
+				
+				/* Remainder */
+				pch = strtok(buffer, ":");
+				
+				if (pch != NULL)
+				{
+					strcpy(enum_buf, pch);
+					LOGI("%s(): enum_buf: %s\n", __func__, enum_buf);
+				}
+				else
+					memset(enum_buf, 0, sizeof(enum_buf));
+				
+				/* Evaluate adb status */
+				if (usbd_app_fd >= 0)
+				{
+					if (!strcmp(adb_enable_buf, USBD_DEV_EVENT_ADB_ENABLE))
+						usbd_send_adb_status(usbd_app_fd, 1);
+					else if (!strcmp(adb_enable_buf, USBD_DEV_EVENT_ADB_DISABLE))
+						usbd_send_adb_status(usbd_app_fd, 0);
+				}
+				
+				if (pc_switch_buf[0] != '\0' && strcmp(pc_switch_buf, "none"))
+					usb_req_mode_switch(pc_switch_buf);
+
+				if (!strncmp(enum_buf, USBD_DEV_EVENT_GET_DESCRIPTOR, strlen(USBD_DEV_EVENT_GET_DESCRIPTOR)))
+				{
+					/* Make sure it is not spurious */
+					usb_got_descriptor++;
+					
+					if (usb_got_descriptor == 1)
+					{
+						usb_state = USBDSTAT_GET_DESCRIPTOR;
+						LOGI("%s(): received get_descriptor, enum in progress\n", __func__);
+						
+						if (usbd_app_fd >= 0)
+						{
+							LOGI("%s(): Notifying Apps that Get_Descriptor was called...\n", __func__);
+							if (write(usbd_app_fd, USBD_EVENT_GET_DESCRIPTOR, strlen(USBD_EVENT_GET_DESCRIPTOR)) < 0)
+							{
+								close(usbd_app_fd);
+								usbd_app_fd = -1;
+							}
+						}
+					}
+				}
+				else if (!strncmp(enum_buf, USBD_DEV_EVENT_USB_ENUMERATED, strlen(USBD_DEV_EVENT_USB_ENUMERATED)))
+				{
+					LOGI("%s(): recieved enumerated\n", __func__);
+					LOGI("%s(): usbd_app_fd  = %d\n", __func__, usbd_app_fd);
+					usb_state = USBDSTAT_USB_ENUMERATED;
+					
+					if (usbd_app_fd >= 0 && usbd_enum_process(usbd_app_fd) < 0)
+					{
+						close(usbd_app_fd);
+						usbd_app_fd = -1;
+					}
+					
+				}
+			}
+		}
+		
+		/* socket */
+		if (FD_ISSET(usbd_socket_fd, &socks))
+		{
+			LOGI("%s(): get event from usbd server fd\n", __func__);
+			
+			sockfd = accept(usbd_socket_fd, &addr, &addr_len);
+			if (sockfd >= 0)
+			{
+				if (usbd_app_fd >= 0)
+				{
+					LOGI("%s(): New socket connection is not supported\n", __func__);
+					close(sockfd);
+				}
+				else
+				{
+					LOGI("%s(): Estabilished socket connection with the App\n", __func__);
+					
+					usbd_app_fd = sockfd;
+					usbd_send_adb_status(usbd_app_fd, get_adb_enabled_status());
+					usbd_notify_current_status(usbd_app_fd);
+				}
+			}
+		}
+		
+		if (usbd_app_fd >= 0 && FD_ISSET(usbd_app_fd, &socks))
+		{
+			LOGI("%s(): Read and handle a pending message from the App\n", __func__);
+			
+			if (usbd_socket_event(usbd_app_fd) < 0)
+			{
+				close(usbd_app_fd);
+				usbd_app_fd = -1;
+			}
+		}
 	}
-	
 } 
