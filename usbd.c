@@ -28,6 +28,9 @@
 #include <linux/netlink.h>
 
 #include <cutils/properties.h>
+#include <cutils/sockets.h>
+
+/* for LOGI, LOGE, etc. */
 #define LOG_TAG "usbd"
 #include <cutils/log.h>
 
@@ -209,7 +212,8 @@ static int open_uevent_socket(void)
 /* initialize usbd socket */
 static int init_usdb_socket()
 {
-	/* FIXME: /dev/socket via env. var, append usbd, create fd ... :p */
+	usbd_socket_fd = android_get_control_socket("usbd");	
+	
 	if (usbd_socket_fd < 0)
 	{
 		LOGE("%s(): Obtaining file descriptor socket 'usbd' failed: %s\n", __func__, strerror(errno));
