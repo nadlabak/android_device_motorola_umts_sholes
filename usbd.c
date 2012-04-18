@@ -783,7 +783,7 @@ int main(int argc, char **argv)
 				LOGI("%s(): pc_switch_buf = %s\n", __func__, pc_switch_buf);
 				
 				/* ADB enable buffer */
-				pch = strtok(buffer, ":");
+				pch = strtok(NULL, ":");
 				
 				if (pch != NULL)
 					strcpy(adb_enable_buf, pch);
@@ -793,7 +793,7 @@ int main(int argc, char **argv)
 				LOGI("%s(): adb_enable_buf = %s\n", __func__, adb_enable_buf);
 				
 				/* Remainder */
-				pch = strtok(buffer, ":");
+				pch = strtok(NULL, ":");
 				
 				if (pch != NULL)
 				{
