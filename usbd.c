@@ -1,5 +1,5 @@
 /*
- C *opyright (C) 2011 - 2012 Skrilax_CZ
+ Copyright (C) 2011 - 2012 Skrilax_CZ
  Based on Motorola Usb daemon
  
  This program is free software; you can redistribute it and/or
