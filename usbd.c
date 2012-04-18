@@ -291,7 +291,6 @@ static int usbd_get_mode_index(const char* mode, usb_mode_get_t usbmod)
 			case USBMOD_APK:
 				if (!strncmp(mode, usb_modes[i].apk_mode), strlen(usb_modes[i].apk_mode))
 					return i;
-				
 				break;
 				
 			case USBMOD_APK_START:
@@ -451,7 +450,7 @@ static int usbd_notify_current_status(int sockfd)
 	return 0;
 }
 
-/* Send usb mode to the Usb.apk */
+/* send usb mode to the Usb.apk */
 static int usbd_enum_process(int sockfd)
 {
 	char* mode;
@@ -480,6 +479,7 @@ static int usbd_enum_process(int sockfd)
 static int usbd_socket_event(int sockfd)
 {
 	char buffer[1024];
+	const char* suffix;
 	int res, new_mode;
 	
 	memset(buffer, 0, sizeof(buffer));
@@ -505,8 +505,15 @@ static int usbd_socket_event(int sockfd)
 		
 		if (new_mode != usb_current_mode)
 		{
-			usbd_set_usb_mode(new_mode);
-			//FIXME: something is written back to sockfd, probably the new mode
+			res = usbd_set_usb_mode(new_mode);
+			
+			if (res)
+				suffix = USBD_RESP_FAIL;
+			else
+				suffix = USBD_RESP_OK;
+			
+			sprintf(buffer, "%s%s", new_mode, suffix);
+			write(sockfd, buffer, strlen(buffer) + 1);
 		}
 		
 		return 0;
@@ -746,7 +753,8 @@ int main(int argc, char **argv)
 			
 			if (read(usb_device_fd, buffer, ARRAY_SIZE(buffer)) > 0 && !usb_factory_cable)
 			{
-				LOGI("%s(): devbuf: %s\nrc: %d usbd_curr_cable_status: %d\n", __func__, buffer, /*FIXME: */, usb_state);
+				LOGI("%s(): devbuf: %s\n"
+				     "rc: %d usbd_curr_cable_status: %d\n", __func__, buffer, /*FIXME: */, usb_state);
 				
 				/* PC switch buffer */
 				pch = strtok(buffer, ":");
