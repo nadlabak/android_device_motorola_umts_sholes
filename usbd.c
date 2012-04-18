@@ -601,6 +601,7 @@ static int process_usb_uevent_message()
 		if (!strcmp(power_supply_online, "1"))
 		{
 			LOGI("%s(): USB online\n", __func__);
+			usb_state = USBDSTAT_CABLE_CONNECTED;
 			usb_online = 1;
 			return 0;
 		}
@@ -608,6 +609,7 @@ static int process_usb_uevent_message()
 		{
 			LOGI("%s(): USB offline\n", __func__);
 			usb_got_descriptor = 0;
+			usb_state = USBDSTAT_CABLE_DISCONNECTED;
 			usb_online = 0;
 			write(usb_device_fd, USBD_UEVENT_CABLE_DETACH, strlen(USBD_UEVENT_CABLE_DETACH) + 1);
 			return 0;
