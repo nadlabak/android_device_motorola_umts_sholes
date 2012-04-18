@@ -1,20 +1,20 @@
 /*
- Copyright (C) 2011 - 2012 Skrilax_CZ
- Based on Motorola Usb daemon
- 
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License
- as published by the Free Software Foundation; either version 2
- of the License, or (at your option) any later version.
- 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
- 
- You should have received a copy of the GNU General Public License
- along with this program; if not, write to the Free Software
- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Copyright (C) 2011 - 2012 Skrilax_CZ
+ * Based on Motorola Usb daemon
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 #include <stdio.h>
@@ -34,6 +34,9 @@
 #define LOG_TAG "usbd"
 #include <cutils/log.h>
 
+#define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
+
+/* Usbd version */
 #define USBD_VER "1.0_CM"
 
 /* The following defines should be general for all Motorola phones */
@@ -96,12 +99,12 @@ struct usb_mode_info
 
 #define USB_MODE_INFO(apk,kern) \
 { \
-.apk_mode =         USB_MODE_PREFIX       apk, \
-.apk_mode_adb =     USB_MODE_PREFIX       apk   USB_MODE_ADB_SUFFIX, \
-.apk_start =        USB_START_PREFIX      apk, \
-.apk_req_switch =   USB_REQ_SWITCH_PREFIX apk, \
-.kern_mode =                              kern, \
-.kern_mode_adb =                          kern  USB_MODE_ADB_SUFFIX, \
+.apk_mode =         USB_MODE_PREFIX        apk, \
+.apk_mode_adb =     USB_MODE_PREFIX        apk   USB_MODE_ADB_SUFFIX, \
+.apk_start =        USBD_START_PREFIX      apk, \
+.apk_req_switch =   USBD_REQ_SWITCH_PREFIX apk, \
+.kern_mode =                               kern, \
+.kern_mode_adb =                           kern  USB_MODE_ADB_SUFFIX, \
 }
 
 /* usb get mode namespace */
@@ -120,7 +123,7 @@ enum usbd_state_t
 	USBDSTAT_CABLE_CONNECTED,
 	USBDSTAT_GET_DESCRIPTOR,
 	USBDSTAT_USB_ENUMERATED
-}
+};
 
 /* The following defines have matching equivalents in usb.apk
  * and in kernel g_mot_android module (see mot_android.c)
@@ -172,7 +175,7 @@ static int usb_device_fd = -1;
 static int usb_current_mode = 0;
 static int usb_factory_cable = 0;
 static int usb_got_descriptor = 0;
-static usbd_state_t usb_state = USBDSTAT_CABLE_DISCONNECTED;
+static enum usbd_state_t usb_state = USBDSTAT_CABLE_DISCONNECTED;
 static int usb_online = 0;
 static int last_sent_usb_online = 0;
 
@@ -284,16 +287,16 @@ static int usbd_send_adb_status(int sockfd, int status)
 }
 
 /* Get usb mode index */
-static int usbd_get_mode_index(const char* mode, usb_mode_get_t usbmod)
+static int usbd_get_mode_index(const char* mode, enum usb_mode_get_t usbmod)
 {
-	int i;
+	size_t i;
 	
 	for (i = 0; i < ARRAY_SIZE(usb_modes); i++)
 	{
 		switch (usbmod)
 		{
 			case USBMOD_APK:
-				if (!strncmp(mode, usb_modes[i].apk_mode), strlen(usb_modes[i].apk_mode))
+				if (!strncmp(mode, usb_modes[i].apk_mode, strlen(usb_modes[i].apk_mode)))
 					return i;
 				break;
 				
@@ -308,11 +311,11 @@ static int usbd_get_mode_index(const char* mode, usb_mode_get_t usbmod)
 				break;
 				
 			case USBMOD_KERN:
-				if (!strncmp(mode, usb_modes[i].kern_mode), strlen(usb_modes[i].kern_mode))
+				if (!strncmp(mode, usb_modes[i].kern_mode, strlen(usb_modes[i].kern_mode)))
 					return i;
 				
 				break;
-			
+				
 			default:
 				LOGE("%s(): %d is not valid usb mode type\n", __func__, usbmod);
 				return -1;
@@ -328,7 +331,7 @@ static int usbd_set_usb_mode(int new_mode)
 	int adb_sts;
 	const char* mode_str;
 	
-	if (new_mode >= 0 && new_mode < ARRAY_SIZE(usb_modes))
+	if (new_mode >= 0 && new_mode < ((int) ARRAY_SIZE(usb_modes)))
 	{		
 		/* Moto gadget driver expects us to append "_adb" for adb on */
 		if (get_adb_enabled_status() == 1)
@@ -457,7 +460,7 @@ static int usbd_notify_current_status(int sockfd)
 /* send usb mode to the Usb.apk */
 static int usbd_enum_process(int sockfd)
 {
-	char* mode;
+	const char* mode;
 	
 	LOGI("%s(): current usb mode = %d\n", __func__, usb_current_mode);
 	
@@ -465,7 +468,7 @@ static int usbd_enum_process(int sockfd)
 		mode = usb_modes[usb_current_mode].apk_mode_adb;
 	else
 		mode = usb_modes[usb_current_mode].apk_mode;
-		
+	
 	if (write(sockfd, mode, strlen(mode) + 1) < 0)
 	{
 		LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
@@ -516,7 +519,7 @@ static int usbd_socket_event(int sockfd)
 			else
 				suffix = USBD_RESP_OK;
 			
-			sprintf(buffer, "%s%s", new_mode, suffix);
+			strcat(buffer, suffix);
 			write(sockfd, buffer, strlen(buffer) + 1);
 		}
 		
@@ -525,7 +528,6 @@ static int usbd_socket_event(int sockfd)
 	else
 	{
 		LOGI("%s(): Socket Connection Closed\n", __func__);
-		close(sockfd);
 		return 1;
 	}
 }
@@ -546,7 +548,7 @@ static int process_usb_uevent_message()
 		return 0;
 	
 	ptr = buffer;
-	end = &(buffer + res);
+	end = &(buffer[res]);
 	
 	if (ptr > end)
 		return 0;	
@@ -563,7 +565,7 @@ static int process_usb_uevent_message()
 		
 		ptr += strlen(ptr) + 1;
 		
-	} while (end > ptr)
+	} while (end > ptr);
 	
 	/* Now check what we got */
 	
@@ -574,7 +576,7 @@ static int process_usb_uevent_message()
 	{
 		if (strcmp(power_supply_model_name, "usb"))
 		{
-			if (!strcmp(power_supply_model_name, "factory")
+			if (!strcmp(power_supply_model_name, "factory"))
 				usb_factory_cable = 1;
 		}
 		else
@@ -636,10 +638,9 @@ static int usb_req_mode_switch(const char* new_mode)
 	{
 		LOGI("%s(): usb switch to %s\n", __func__, new_mode);
 		
-		if (write(usbd_app_fd, usb_modes[new_mode_index].apk_req_switch) < 0)
+		if (write(usbd_app_fd, usb_modes[new_mode_index].apk_req_switch, strlen(usb_modes[new_mode_index].apk_req_switch) + 1) < 0)
 		{
 			LOGE("%s(): Socket Write Failure: %s\n", strerror(errno));
-			//FIXME: clean up in main ._.
 			close(usbd_app_fd);
 			usbd_app_fd = -1;
 			return 1;
@@ -691,7 +692,7 @@ int main(int argc, char **argv)
 	/* init cable status */
 	if (usbd_get_cable_status() < 0)
 	{
-		LOGE("%s(): failed to get cable status (%s)\n", __func__);
+		LOGE("%s(): failed to get cable status\n", __func__);
 		return 1;
 	}
 	
@@ -708,7 +709,7 @@ int main(int argc, char **argv)
 		FD_ZERO(&socks);
 		
 		FD_SET(uevent_fd, &socks);
-		FD_SET(usbd_device_fd, &socks);
+		FD_SET(usb_device_fd, &socks);
 		FD_SET(usbd_socket_fd, &socks);
 		
 		if (usbd_app_fd >= 0)
@@ -758,7 +759,7 @@ int main(int argc, char **argv)
 			if (read(usb_device_fd, buffer, ARRAY_SIZE(buffer)) > 0 && !usb_factory_cable)
 			{
 				LOGI("%s(): devbuf: %s\n"
-				     "rc: %d usbd_curr_cable_status: %d\n", __func__, buffer, /*FIXME: */, usb_state);
+				"rc: %d usbd_curr_cable_status: %d\n", __func__, buffer, /*FIXME: */ 0, usb_state);
 				
 				/* PC switch buffer */
 				pch = strtok(buffer, ":");
@@ -802,7 +803,7 @@ int main(int argc, char **argv)
 				
 				if (pc_switch_buf[0] != '\0' && strcmp(pc_switch_buf, "none"))
 					usb_req_mode_switch(pc_switch_buf);
-
+				
 				if (!strncmp(enum_buf, USBD_DEV_EVENT_GET_DESCRIPTOR, strlen(USBD_DEV_EVENT_GET_DESCRIPTOR)))
 				{
 					/* Make sure it is not spurious */
