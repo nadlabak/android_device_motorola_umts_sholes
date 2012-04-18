@@ -215,7 +215,7 @@ static int open_uevent_socket(void)
 /* initialize usbd socket */
 static int init_usdb_socket()
 {
-	usbd_socket_fd = android_get_control_socket("usbd");	
+	usbd_socket_fd = android_get_control_socket("usbd");
 	
 	if (usbd_socket_fd < 0)
 	{
@@ -640,7 +640,7 @@ static int usb_req_mode_switch(const char* new_mode)
 		
 		if (write(usbd_app_fd, usb_modes[new_mode_index].apk_req_switch, strlen(usb_modes[new_mode_index].apk_req_switch) + 1) < 0)
 		{
-			LOGE("%s(): Socket Write Failure: %s\n", strerror(errno));
+			LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
 			close(usbd_app_fd);
 			usbd_app_fd = -1;
 			return 1;
@@ -683,7 +683,7 @@ int main(int argc, char **argv)
 	
 	/* init usdb socket */
 	LOGI("%s(): Initializing usbd socket \n", __func__);
-	if (init_usdb_socket() < 0)
+	if (init_usdb_socket())
 	{
 		LOGE("%s(): failed to create socket server '%s'\n", __func__, strerror(errno));
 		return 1;
