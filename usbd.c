@@ -115,7 +115,7 @@ struct usb_mode_info
 { \
 .mode =         USB_MODE_PREFIX        usb_mode USB_MODE_ADB_SUFFIX, \
 .start =        USBD_START_PREFIX      usb_mode, \
-.req_switch =   USBD_REQ_SWITCH_PREFIX usb_mode, \
+.req_switch =   "" \
 }
 
 /* usb get mode namespace */
@@ -168,7 +168,7 @@ static struct usb_mode_info usb_modes[] =
 	
 	/* USBNet + Modem */
 	USB_MODE_INFO(USB_MODE_ACM_ETH),
-	USB_MODE_INFO_ADB(USB_MODE_ACM_ETH ),
+	USB_MODE_INFO_ADB(USB_MODE_ACM_ETH),
 	
 	/* USBNet + Modem + Mtp */
 	USB_MODE_INFO(USB_MODE_ACM_ETH_MTP),
