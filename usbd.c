@@ -331,7 +331,6 @@ static int usbd_get_mode_index(const char* mode, enum usb_mode_get_t usbmod)
 			case USBMOD_KERN:
 				if (!strncmp(mode, usb_modes[i].kern_mode, strlen(usb_modes[i].kern_mode)))
 					return i;
-				
 				break;
 				
 			default:
@@ -454,6 +453,7 @@ static int usbd_notify_current_status(int sockfd)
 {
 	const char* event_msg = NULL;
 	
+	/* No, don't send anything in case of factory cable */
 	if (usb_factory_cable)
 		return 0;
 	
@@ -613,12 +613,11 @@ static int process_usb_uevent_message()
 	do
 	{
 		if (!strncmp(POWER_SUPPLY_TYPE_EVENT, ptr, strlen(POWER_SUPPLY_TYPE_EVENT)))
-			power_supply_type = ptr + strlen(POWER_SUPPLY_TYPE_EVENT);
+			power_supply_type = &(ptr[strlen(POWER_SUPPLY_TYPE_EVENT)]);
 		else if (!strncmp(POWER_SUPPLY_ONLINE_EVENT, ptr, strlen(POWER_SUPPLY_ONLINE_EVENT)))
-			power_supply_online = ptr + strlen(POWER_SUPPLY_ONLINE_EVENT);
+			power_supply_online = &(ptr[strlen(POWER_SUPPLY_ONLINE_EVENT)]);
 		else if (!strncmp(POWER_SUPPLY_MODEL_NAME_EVENT, ptr, strlen(POWER_SUPPLY_MODEL_NAME_EVENT)))
-			power_supply_model_name = ptr + strlen(POWER_SUPPLY_MODEL_NAME_EVENT);
-		
+			power_supply_model_name = &(ptr[strlen(POWER_SUPPLY_MODEL_NAME_EVENT)]);
 		
 		ptr += strlen(ptr) + 1;
 		
@@ -626,24 +625,24 @@ static int process_usb_uevent_message()
 	
 	/* Now check what we got */
 	
+	/* Power supply type: can be NULL, Battery or USB */
 	if (!power_supply_type || strcmp(power_supply_type, "USB"))
-		return 0;
+		return 1;
 	
+	/* We got cable, now check if it's factory or not */
 	if (power_supply_model_name)
 	{
-		if (strcmp(power_supply_model_name, "usb"))
-		{
-			if (!strcmp(power_supply_model_name, "factory"))
-				usb_factory_cable = 1;
-		}
-		else
+		if (!strcmp(power_supply_model_name, "usb"))
 			usb_factory_cable = 0;
+		else if (!strcmp(power_supply_model_name, "factory"))
+			usb_factory_cable = 1;
 		
 		LOGI("%s(): cable type: %s\n", __func__, power_supply_model_name);
 	}
 	else
 		LOGI("%s(): cable type not specified in USB Event\n", __func__);
 	
+	/* Check if we have power supply */
 	if (power_supply_online)
 	{
 		if (!strcmp(power_supply_online, "1"))
@@ -783,7 +782,9 @@ int main(int argc, char **argv)
 		{
 			/* Factory cable is handled directly in process_usb_uevent_message */
 			
-			if (!usb_factory_cable)
+			if (usb_factory_cable)
+				usbd_set_usb_mode(usbd_get_mode_index(USB_KERN_MODE_NET, USBMOD_KERN));
+			else
 			{
 				if (last_sent_usb_online == usb_online)
 					LOGI("%s(): Spurious Cable Event, Ignore \n", __func__);
@@ -817,7 +818,7 @@ int main(int argc, char **argv)
 			if (read(usb_device_fd, buffer, ARRAY_SIZE(buffer)) > 0 && !usb_factory_cable)
 			{
 				LOGI("%s(): devbuf: %s\n"
-				"rc: %d usbd_curr_cable_status: %d\n", __func__, buffer, strlen(buffer), usb_state);
+				     "rc: %d usbd_state: %d\n", __func__, buffer, strlen(buffer), usb_state);
 				
 				/* PC switch buffer */
 				pch = strtok(buffer, ":");
