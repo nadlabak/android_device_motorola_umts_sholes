@@ -319,7 +319,7 @@ static int usbd_get_mode_index(const char* mode, enum usb_mode_get_t usbmod)
 				break;
 				
 			case USBMOD_APK_START:
-				if (!strcmp(mode, usb_modes[i].apk_start))
+				if (!strncmp(mode, usb_modes[i].apk_start, strlen(usb_modes[i].apk_start)))
 					return i;
 				break;
 				
