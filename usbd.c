@@ -1002,7 +1002,7 @@ int main(int argc, char **argv)
 		{
 			LOGI("%s(): Read and handle a pending message from the App\n", __func__);
 			
-			if (usbd_socket_event(usbd_app_fd) < 0)
+			if (usbd_socket_event(usbd_app_fd))
 			{
 				close(usbd_app_fd);
 				usbd_app_fd = -1;
