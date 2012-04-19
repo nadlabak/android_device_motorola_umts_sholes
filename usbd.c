@@ -93,7 +93,6 @@
 struct usb_mode_info
 {
 	const char* mode;
-	const char* mode_adb;
 	const char* start;
 	const char* req_switch;
 };
@@ -101,7 +100,6 @@ struct usb_mode_info
 #define USB_MODE_NONE \
 { \
 	.mode =         USB_UNLOAD_DRIVER,  \
-	.mode_adb =     USB_UNLOAD_DRIVER,  \
 	.start =        "",                 \
 	.req_switch =   "",                 \
 }
@@ -109,9 +107,20 @@ struct usb_mode_info
 #define USB_MODE_INFO(usb_mode) \
 { \
 	.mode =         USB_MODE_PREFIX        usb_mode, \
-	.mode_adb =     USB_MODE_PREFIX        usb_mode  USB_MODE_ADB_SUFFIX, \
 	.start =        USBD_START_PREFIX      usb_mode, \
 	.req_switch =   USBD_REQ_SWITCH_PREFIX usb_mode, \
+}, \
+{ \
+	.mode =         USB_MODE_PREFIX        usb_mode  USB_MODE_ADB_SUFFIX, \
+	.start =        USBD_START_PREFIX      usb_mode, \
+	.req_switch =   USBD_REQ_SWITCH_PREFIX usb_mode, \
+}
+
+#define USB_MODE_INFO_NO_ADB(usb_mode) \
+{ \
+.mode =         USB_MODE_PREFIX        usb_mode, \
+.start =        USBD_START_PREFIX      usb_mode, \
+.req_switch =   USBD_REQ_SWITCH_PREFIX usb_mode, \
 }
 
 /* usb get mode namespace */
@@ -154,11 +163,11 @@ enum usbd_state_t
 static struct usb_mode_info usb_modes[] = 
 {
 	USB_MODE_NONE,
-	USB_MODE_INFO(USB_MODE_ETH),
+	USB_MODE_INFO_NO_ADB(USB_MODE_ETH),
 	USB_MODE_INFO(USB_MODE_ACM_ETH),
 	USB_MODE_INFO(USB_MODE_ACM_ETH_MTP),
 	USB_MODE_INFO(USB_MODE_MTP),
-	USB_MODE_INFO(USB_MODE_ACM),
+	USB_MODE_INFO_NO_ADB(USB_MODE_ACM),
 	USB_MODE_INFO(USB_MODE_MSC),
 	USB_MODE_INFO(USB_MODE_RNDIS),
 	USB_MODE_INFO(USB_MODE_CHARGE_ONLY),
@@ -295,7 +304,7 @@ static int usbd_get_mode_index(const char* mode, enum usb_mode_get_t usbmod)
 		switch (usbmod)
 		{
 			case USBMOD_MODE:
-				if (!strncmp(mode, usb_modes[i].mode, strlen(usb_modes[i].mode)))
+				if (!strcmp(mode, usb_modes[i].mode))
 					return i;
 				break;
 				
@@ -315,6 +324,7 @@ static int usbd_get_mode_index(const char* mode, enum usb_mode_get_t usbmod)
 		}
 	}
 	
+	LOGE("%s(): %s is not valid usb mode\n", __func__, mode);
 	return -1;
 }
 
@@ -325,21 +335,18 @@ static int usbd_set_usb_mode(int new_mode)
 	const char* mode_str;
 	
 	if (new_mode > 0 && new_mode < ((int) ARRAY_SIZE(usb_modes)))
-	{		
-		/* Moto gadget driver expects us to append "_adb" for adb on */
-		if (get_adb_enabled_status() == 1)
-			mode_str = usb_modes[new_mode].mode_adb;
-		else
-			mode_str = usb_modes[new_mode].mode;
+	{
+		/* Kernel gadget driver doesn't have usb_mode_ prefix */
+		mode_str = &(usb_modes[new_mode].mode[strlen(USB_MODE_PREFIX)]);
 		
-		if (write(usb_device_fd, &(mode_str[strlen(USB_MODE_PREFIX)]), strlen(mode_str) - strlen(USB_MODE_PREFIX) + 1) < 0)
+		if (write(usb_device_fd, mode_str, strlen(mode_str) + 1) < 0)
 		{
 			LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
 			return 1;
 		}
 		
 		usb_current_mode = new_mode;
-		LOGI("%s(): new_mode: %s\n", __func__, &(mode_str[strlen(USB_MODE_PREFIX)]));
+		LOGI("%s(): new_mode: %s\n", __func__, mode_str);
 		return 0;
 	}
 	else if (new_mode == 0)
