@@ -64,6 +64,8 @@
 
 #define USBD_DEV_EVENT_ADB_ENABLE           "adb_enable"
 #define USBD_DEV_EVENT_ADB_DISABLE          "adb_disable"
+#define USBD_DEV_EVENT_TETHERING_ENABLE     "tethering_enable"
+#define USBD_DEV_EVENT_TETHERING_DISABLE    "tethering_disable"
 #define USBD_DEV_EVENT_GET_DESCRIPTOR       "get_desc"
 #define USBD_DEV_EVENT_USB_ENUMERATED       "enumerated"
 
@@ -73,6 +75,10 @@
 /* adb status */
 #define USBD_ADB_STATUS_ON                  "usbd_adb_status_on"
 #define USBD_ADB_STATUS_OFF                 "usbd_adb_status_off"
+
+/* tethering status */
+#define USBD_TETHERING_STATUS_ON            "usbd_tethering_status_on"
+#define USBD_TETHERING_STATUS_OFF           "usbd_tethering_status_off"
 
 /* event prefixes */
 #define USBD_START_PREFIX                   "usbd_start_"
@@ -113,9 +119,9 @@ struct usb_mode_info
 
 #define USB_MODE_INFO_ADB(usb_mode) \
 { \
-.mode =         USB_MODE_PREFIX        usb_mode USB_MODE_ADB_SUFFIX, \
-.start =        USBD_START_PREFIX      usb_mode, \
-.req_switch =   "" \
+	.mode =         USB_MODE_PREFIX        usb_mode USB_MODE_ADB_SUFFIX, \
+	.start =        USBD_START_PREFIX      usb_mode, \
+	.req_switch =   "", \
 }
 
 /* usb get mode namespace */
@@ -183,7 +189,11 @@ static struct usb_mode_info usb_modes[] =
 	USB_MODE_INFO_ADB(USB_MODE_MSC),
 	
 	/* Charge only mode */
-	USB_MODE_INFO(USB_MODE_CHARGE_ONLY),
+	{ 
+		.mode =         USB_MODE_PREFIX        USB_MODE_CHARGE_ONLY, 
+		.start =        USBD_START_PREFIX      USB_MODE_CHARGE_ONLY, 
+		.req_switch =   "" 
+	},
 	{ 
 		.mode =         USB_MODE_PREFIX        USB_MODE_CHARGE_ADB, 
 		.start =        USBD_START_PREFIX      USB_MODE_CHARGE_ONLY, 
@@ -313,7 +323,26 @@ static int usbd_send_adb_status(int sockfd, int status)
 	}
 	
 	return ret <= 0; /*1 = fail */
+}
+
+/* Sends tethering status to usb.apk */
+static int usbd_send_tethering_status(int sockfd, int status)
+{
+	int ret;
 	
+	if (status == 1)
+	{
+		LOGI("%s(): Send tethering Enable message\n", __func__);
+		ret = write(sockfd, USBD_TETHERING_STATUS_ON, strlen(USBD_TETHERING_STATUS_ON) + 1);
+		
+	}
+	else
+	{
+		LOGI("%s(): Send tethering Disable message\n", __func__);
+		ret = write(sockfd, USBD_TETHERING_STATUS_OFF, strlen(USBD_TETHERING_STATUS_OFF) + 1);
+	}
+	
+	return ret <= 0; /*1 = fail */
 }
 
 /* Get usb mode index */
@@ -354,17 +383,43 @@ static int usbd_get_mode_index(const char* mode, enum usb_mode_get_t usbmod)
 static int usbd_set_usb_mode(int new_mode)
 {
 	int adb_sts;
+	const char* current_mode_str;
 	const char* mode_str;
 	
 	if (new_mode > 0 && new_mode < ((int) ARRAY_SIZE(usb_modes)))
 	{
 		/* Kernel gadget driver doesn't have usb_mode_ prefix */
 		mode_str = &(usb_modes[new_mode].mode[strlen(USB_MODE_PREFIX)]);
+		current_mode_str = &(usb_modes[usb_current_mode].mode[strlen(USB_MODE_PREFIX)]);
+		
+		/* Motorola pigness as usual:
+		 * If we're changing to charge only mode we send mass storage mode to the kernel.
+		 * If we're in mass storage mode and want to change to charge only mode or vice versa
+		 * don't send anything to kernel (no change). The change has to be handled directly by usbd, 
+		 * so return 1 for direct change and send start message right away.
+		 */
+		
+		if ( (!strcmp(mode_str, USB_MODE_CHARGE_ONLY) && !strcmp(current_mode_str, USB_MODE_MSC)) ||
+			(!strcmp(mode_str, USB_MODE_MSC) && !strcmp(current_mode_str, USB_MODE_CHARGE_ONLY)) ||
+			
+			(!strcmp(mode_str, USB_MODE_CHARGE_ADB) && !strcmp(current_mode_str, USB_MODE_MSC USB_MODE_ADB_SUFFIX)) ||
+			(!strcmp(mode_str, USB_MODE_MSC USB_MODE_ADB_SUFFIX) && !strcmp(current_mode_str, USB_MODE_CHARGE_ADB)))
+		{
+			usb_current_mode = new_mode;
+			LOGI("%s(): new_mode: %s\n", __func__, mode_str);
+			LOGI("%s(): handling on my own, not alerting kernel\n", __func__);
+			return 1;
+		}
+		
+		if (!strcmp(mode_str, USB_MODE_CHARGE_ONLY))
+			mode_str = USB_MODE_MSC;
+		else if (!strcmp(mode_str, USB_MODE_CHARGE_ADB))
+			mode_str = USB_MODE_MSC USB_MODE_ADB_SUFFIX;
 		
 		if (write(usb_device_fd, mode_str, strlen(mode_str) + 1) < 0)
 		{
 			LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
-			return 1;
+			return -1;
 		}
 		
 		usb_current_mode = new_mode;
@@ -380,7 +435,7 @@ static int usbd_set_usb_mode(int new_mode)
 	else
 	{
 		LOGE("%s(): Cannot set usb mode to '%d'\n", __func__, new_mode);
-		return 1;
+		return -1;
 	}
 }
 
@@ -566,7 +621,7 @@ static int usbd_socket_event(int sockfd)
 		
 		/* If we're in the same mode, then send start message directly */
 		if (new_mode == usb_current_mode)
-		{			
+		{
 			if (write(sockfd, usb_modes[usb_current_mode].start, strlen(usb_modes[usb_current_mode].start) + 1) < 0)
 			{
 				LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
@@ -575,7 +630,20 @@ static int usbd_socket_event(int sockfd)
 			
 		}
 		else
-			usbd_set_usb_mode(new_mode);
+		{
+			res = usbd_set_usb_mode(new_mode);
+			
+			/* If we are handling it on our own, then it doesn't reenumerate so send the start message right away */
+			if (res == 1)
+			{
+				if (write(sockfd, usb_modes[usb_current_mode].start, strlen(usb_modes[usb_current_mode].start) + 1) < 0)
+				{
+					LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
+					return 1;
+				}
+			}
+				
+		}
 		
 		return 0;
 	}
@@ -674,13 +742,7 @@ static int process_usb_uevent_message()
 /* Request mode switch */
 static int usb_req_mode_switch(const char* new_mode)
 {
-	int adb_enabled;
 	int new_mode_index;
-	
-	adb_enabled = get_adb_enabled_status();
-	
-	if (adb_enabled < 0)
-		return 1;
 	
 	new_mode_index = usbd_get_mode_index(new_mode, USBMOD_REQ_SWITCH);
 	
@@ -710,6 +772,7 @@ int main(int argc, char **argv)
 {
 	char pc_switch_buf[32];
 	char adb_enable_buf[32];
+	char tethering_enable_buf[32];
 	char enum_buf[32];
 	char buffer[64];
 	const char* cable_msg;
@@ -778,7 +841,6 @@ int main(int argc, char **argv)
 		if (FD_ISSET(uevent_fd, &socks) && !process_usb_uevent_message())
 		{
 			/* Factory cable is handled directly in process_usb_uevent_message */
-			
 			if (usb_factory_cable)
 				usbd_set_usb_mode(usbd_get_mode_index(USB_MODE_ETH, USBMOD_MODE));
 			else
@@ -836,7 +898,17 @@ int main(int argc, char **argv)
 				
 				LOGI("%s(): adb_enable_buf = %s\n", __func__, adb_enable_buf);
 				
-				/* Remainder */
+				/* Tethering */
+				pch = strtok(NULL, ":");
+				
+				if (pch != NULL)
+					strcpy(tethering_enable_buf, pch);
+				else
+					memset(tethering_enable_buf, 0, sizeof(tethering_enable_buf)); 
+				
+				LOGI("%s(): tethering_enable_buf = %s\n", __func__, tethering_enable_buf);
+				
+				/* Enumeration */
 				pch = strtok(NULL, ":");
 				
 				if (pch != NULL)
@@ -847,13 +919,19 @@ int main(int argc, char **argv)
 				else
 					memset(enum_buf, 0, sizeof(enum_buf));
 				
-				/* Evaluate adb status */
 				if (usbd_app_fd >= 0)
 				{
+					/* Evaluate adb status */
 					if (!strcmp(adb_enable_buf, USBD_DEV_EVENT_ADB_ENABLE))
 						usbd_send_adb_status(usbd_app_fd, 1);
 					else if (!strcmp(adb_enable_buf, USBD_DEV_EVENT_ADB_DISABLE))
 						usbd_send_adb_status(usbd_app_fd, 0);
+					
+					/* Evaluate tethering status */
+					if (!strcmp(tethering_enable_buf, USBD_DEV_EVENT_TETHERING_ENABLE))
+						usbd_send_tethering_status(usbd_app_fd, 1);
+					else if (!strcmp(tethering_enable_buf, USBD_DEV_EVENT_TETHERING_DISABLE))
+						usbd_send_tethering_status(usbd_app_fd, 0);
 				}
 				
 				if (pc_switch_buf[0] != '\0' && strcmp(pc_switch_buf, "none"))
