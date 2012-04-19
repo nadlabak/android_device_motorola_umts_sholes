@@ -357,9 +357,13 @@ static int usbd_set_usb_mode(int new_mode)
 			mode_str = usb_modes[new_mode].kern_mode;
 		
 		if (write(usb_device_fd, mode_str, strlen(mode_str) + 1) < 0)
+		{
+			LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
 			return 1;
+		}
 		
 		usb_current_mode = new_mode;
+		LOGI("%s(): : new_mode: %s\n", __func__, mode_str);
 		return 0;
 	}
 	else if (new_mode == 0)
