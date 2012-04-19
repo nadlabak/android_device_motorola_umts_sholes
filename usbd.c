@@ -92,45 +92,34 @@
 /* structure */
 struct usb_mode_info
 {
-	const char* apk_mode;
-	const char* apk_mode_adb;
-	const char* apk_start;
-	const char* apk_start_adb;
-	const char* apk_req_switch;
-	
-	const char* kern_mode;
-	const char* kern_mode_adb;
+	const char* mode;
+	const char* mode_adb;
+	const char* start;
+	const char* req_switch;
 };
 
 #define USB_MODE_NONE \
 { \
-	.apk_mode =         USB_UNLOAD_DRIVER,  \
-	.apk_mode_adb =     USB_UNLOAD_DRIVER,  \
-	.apk_start =        "",                 \
-	.apk_start_adb =    "",                 \
-	.apk_req_switch =   "",                 \
-	.kern_mode =        "",                 \
-	.kern_mode_adb =    "",                 \
+	.mode =         USB_UNLOAD_DRIVER,  \
+	.mode_adb =     USB_UNLOAD_DRIVER,  \
+	.start =        "",                 \
+	.req_switch =   "",                 \
 }
 
-#define USB_MODE_INFO(apk,kern) \
+#define USB_MODE_INFO(usb_mode) \
 { \
-	.apk_mode =         USB_MODE_PREFIX        apk, \
-	.apk_mode_adb =     USB_MODE_PREFIX        apk   USB_MODE_ADB_SUFFIX, \
-	.apk_start =        USBD_START_PREFIX      apk, \
-	.apk_start_adb =    USBD_START_PREFIX      apk   USB_MODE_ADB_SUFFIX, \
-	.apk_req_switch =   USBD_REQ_SWITCH_PREFIX apk, \
-	.kern_mode =                               kern, \
-	.kern_mode_adb =                           kern  USB_MODE_ADB_SUFFIX, \
+	.mode =         USB_MODE_PREFIX        usb_mode, \
+	.mode_adb =     USB_MODE_PREFIX        usb_mode  USB_MODE_ADB_SUFFIX, \
+	.start =        USBD_START_PREFIX      usb_mode, \
+	.req_switch =   USBD_REQ_SWITCH_PREFIX usb_mode, \
 }
 
 /* usb get mode namespace */
 enum usb_mode_get_t
 {
-	USBMOD_APK,
-	USBMOD_APK_START,
-	USBMOD_APK_REQ_SWITCH,
-	USBMOD_KERN
+	USBMOD_MODE,
+	USBMOD_START,
+	USBMOD_REQ_SWITCH,
 };
 
 /* usb state */
@@ -151,36 +140,28 @@ enum usbd_state_t
  * in a module mot_usb.ko.
  */
 
-/* usb modes for Usb.apk */
-#define USB_APK_MODE_NGP              "ngp"
-#define USB_APK_MODE_NGP_MTP          "ngp_mtp"
-#define USB_APK_MODE_MTP              "mtp"
-#define USB_APK_MODE_MODEM            "acm"
-#define USB_APK_MODE_MSC              "msc"
-#define USB_APK_MODE_RNDIS            "rndis"
-#define USB_APK_MODE_CHARGE_ONLY      "charge_only"
-
-/* usb modes for kernel */
-#define USB_KERN_MODE_NET             "eth"
-#define USB_KERN_MODE_NGP             "acm_eth"
-#define USB_KERN_MODE_NGP_MTP         "acm_eth_mtp"
-#define USB_KERN_MODE_MTP             "mtp"
-#define USB_KERN_MODE_MODEM           "acm"
-#define USB_KERN_MODE_MSC             "msc"
-#define USB_KERN_MODE_RNDIS           "rndis"
-#define USB_KERN_MODE_CHARGE_ONLY     "charge_only"
+/* usb modes */
+#define USB_MODE_ETH                  "eth"
+#define USB_MODE_ACM_ETH              "acm_eth"
+#define USB_MODE_ACM_ETH_MTP          "acm_eth_mtp"
+#define USB_MODE_MTP                  "mtp"
+#define USB_MODE_ACM                  "acm"
+#define USB_MODE_MSC                  "msc"
+#define USB_MODE_RNDIS                "rndis"
+#define USB_MODE_CHARGE_ONLY          "charge_only"
 
 /* available modes */
 static struct usb_mode_info usb_modes[] = 
 {
 	USB_MODE_NONE,
-	USB_MODE_INFO(USB_APK_MODE_NGP,         USB_KERN_MODE_NGP),
-	USB_MODE_INFO(USB_APK_MODE_NGP_MTP,     USB_KERN_MODE_NGP_MTP),
-	USB_MODE_INFO(USB_APK_MODE_MTP,         USB_KERN_MODE_MTP),
-	USB_MODE_INFO(USB_APK_MODE_MODEM,       USB_KERN_MODE_MODEM),
-	USB_MODE_INFO(USB_APK_MODE_MSC,         USB_KERN_MODE_MSC),
-	USB_MODE_INFO(USB_APK_MODE_RNDIS,       USB_KERN_MODE_RNDIS),
-	USB_MODE_INFO(USB_APK_MODE_CHARGE_ONLY, USB_KERN_MODE_CHARGE_ONLY),
+	USB_MODE_INFO(USB_MODE_ETH),
+	USB_MODE_INFO(USB_MODE_ACM_ETH),
+	USB_MODE_INFO(USB_MODE_ACM_ETH_MTP),
+	USB_MODE_INFO(USB_MODE_MTP),
+	USB_MODE_INFO(USB_MODE_ACM),
+	USB_MODE_INFO(USB_MODE_MSC),
+	USB_MODE_INFO(USB_MODE_RNDIS),
+	USB_MODE_INFO(USB_MODE_CHARGE_ONLY),
 };
 
 /* File descriptors */
@@ -313,23 +294,18 @@ static int usbd_get_mode_index(const char* mode, enum usb_mode_get_t usbmod)
 	{
 		switch (usbmod)
 		{
-			case USBMOD_APK:
-				if (!strncmp(mode, usb_modes[i].apk_mode, strlen(usb_modes[i].apk_mode)))
+			case USBMOD_MODE:
+				if (!strncmp(mode, usb_modes[i].mode, strlen(usb_modes[i].mode)))
 					return i;
 				break;
 				
-			case USBMOD_APK_START:
-				if (!strncmp(mode, usb_modes[i].apk_start, strlen(usb_modes[i].apk_start)))
+			case USBMOD_START:
+				if (!strcmp(mode, usb_modes[i].start))
 					return i;
 				break;
 				
-			case USBMOD_APK_REQ_SWITCH:
-				if (!strcmp(mode, usb_modes[i].apk_req_switch))
-					return i;		
-				break;
-				
-			case USBMOD_KERN:
-				if (!strncmp(mode, usb_modes[i].kern_mode, strlen(usb_modes[i].kern_mode)))
+			case USBMOD_REQ_SWITCH:
+				if (!strcmp(mode, usb_modes[i].req_switch))
 					return i;
 				break;
 				
@@ -352,18 +328,18 @@ static int usbd_set_usb_mode(int new_mode)
 	{		
 		/* Moto gadget driver expects us to append "_adb" for adb on */
 		if (get_adb_enabled_status() == 1)
-			mode_str = usb_modes[new_mode].kern_mode_adb;
+			mode_str = usb_modes[new_mode].mode_adb;
 		else
-			mode_str = usb_modes[new_mode].kern_mode;
+			mode_str = usb_modes[new_mode].mode;
 		
-		if (write(usb_device_fd, mode_str, strlen(mode_str) + 1) < 0)
+		if (write(usb_device_fd, &(mode_str[strlen(USB_MODE_PREFIX)]), strlen(mode_str) - strlen(USB_MODE_PREFIX) + 1) < 0)
 		{
 			LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
 			return 1;
 		}
 		
 		usb_current_mode = new_mode;
-		LOGI("%s(): : new_mode: %s\n", __func__, mode_str);
+		LOGI("%s(): new_mode: %s\n", __func__, &(mode_str[strlen(USB_MODE_PREFIX)]));
 		return 0;
 	}
 	else if (new_mode == 0)
@@ -411,7 +387,7 @@ static int usbd_get_cable_status(void)
 	else if (!strcmp(buffer, USB_INPUT_CABLE_FACTORY))
 	{
 		usb_factory_cable = 1;
-		usbd_set_usb_mode(usbd_get_mode_index(USB_KERN_MODE_NET, USBMOD_KERN));
+		usbd_set_usb_mode(usbd_get_mode_index(USB_MODE_ETH, USBMOD_MODE));
 	}
 	
 	fclose(f);
@@ -496,24 +472,17 @@ static int usbd_notify_current_status(int sockfd)
 
 /* send usb mode to the Usb.apk */
 static int usbd_enum_process(int sockfd)
-{
-	const char* mode;
-	
+{	
 	LOGI("%s(): current usb mode = %d\n", __func__, usb_current_mode);
 	
-	if (get_adb_enabled_status() == 1)
-		mode = usb_modes[usb_current_mode].apk_start_adb;
-	else
-		mode = usb_modes[usb_current_mode].apk_start;
-	
-	if (write(sockfd, mode, strlen(mode) + 1) < 0)
+	if (write(sockfd, usb_modes[usb_current_mode].start, strlen(usb_modes[usb_current_mode].start) + 1) < 0)
 	{
 		LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
 		return 1;
 	}
 	else
 	{
-		LOGE("%s(): enum done\n", __func__);
+		LOGI("%s(): enum done\n", __func__);
 		return 0;
 	}
 	
@@ -524,7 +493,6 @@ static int usbd_socket_event(int sockfd)
 {
 	char buffer[1024];
 	const char* suffix;
-	const char* start_msg;
 	int res, new_mode;
 	
 	memset(buffer, 0, sizeof(buffer));
@@ -538,7 +506,7 @@ static int usbd_socket_event(int sockfd)
 	else if (res)
 	{
 		LOGI("%s(): recieved %s\n", __func__, buffer);
-		new_mode = usbd_get_mode_index(buffer, USBMOD_APK);
+		new_mode = usbd_get_mode_index(buffer, USBMOD_MODE);
 		
 		if (new_mode < 0)
 		{
@@ -559,30 +527,26 @@ static int usbd_socket_event(int sockfd)
 		else
 			suffix = USBD_RESP_OK;
 		
-		sprintf(buffer, "%s%s", usb_modes[new_mode].apk_mode, suffix);
+		sprintf(buffer, "%s%s", usb_modes[new_mode].mode, suffix);
 		
 		if (write(sockfd, buffer, strlen(buffer) + 1) < 0)
 		{
 			LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
 			return 1;
 		}
-			
-		if (new_mode != usb_current_mode)
-		{
-			usbd_set_usb_mode(new_mode);
-			
-			if (get_adb_enabled_status() == 1)
-				start_msg = usb_modes[usb_current_mode].apk_start_adb;
-			else
-				start_msg = usb_modes[usb_current_mode].apk_start;
-			
-			if (write(sockfd, start_msg, strlen(start_msg) + 1) < 0)
+		
+		/* If we're in the same mode, then send start message directly */
+		if (new_mode == usb_current_mode)
+		{			
+			if (write(sockfd, usb_modes[usb_current_mode].start, strlen(usb_modes[usb_current_mode].start) + 1) < 0)
 			{
 				LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
 				return 1;
 			}
 			
 		}
+		else
+			usbd_set_usb_mode(new_mode);
 		
 		return 0;
 	}
@@ -689,7 +653,7 @@ static int usb_req_mode_switch(const char* new_mode)
 	if (adb_enabled < 0)
 		return 1;
 	
-	new_mode_index = usbd_get_mode_index(new_mode, USBMOD_APK_REQ_SWITCH);
+	new_mode_index = usbd_get_mode_index(new_mode, USBMOD_REQ_SWITCH);
 	
 	if (new_mode_index < 0)
 		return 1;
@@ -700,7 +664,7 @@ static int usb_req_mode_switch(const char* new_mode)
 	{
 		LOGI("%s(): usb switch to %s\n", __func__, new_mode);
 		
-		if (write(usbd_app_fd, usb_modes[new_mode_index].apk_req_switch, strlen(usb_modes[new_mode_index].apk_req_switch) + 1) < 0)
+		if (write(usbd_app_fd, usb_modes[new_mode_index].req_switch, strlen(usb_modes[new_mode_index].req_switch) + 1) < 0)
 		{
 			LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
 			close(usbd_app_fd);
@@ -787,7 +751,7 @@ int main(int argc, char **argv)
 			/* Factory cable is handled directly in process_usb_uevent_message */
 			
 			if (usb_factory_cable)
-				usbd_set_usb_mode(usbd_get_mode_index(USB_KERN_MODE_NET, USBMOD_KERN));
+				usbd_set_usb_mode(usbd_get_mode_index(USB_MODE_ETH, USBMOD_MODE));
 			else
 			{
 				if (last_sent_usb_online == usb_online)
