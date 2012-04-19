@@ -357,9 +357,13 @@ static int usbd_set_usb_mode(int new_mode)
 			mode_str = usb_modes[new_mode].kern_mode;
 		
 		if (write(usb_device_fd, mode_str, strlen(mode_str) + 1) < 0)
+		{
+			LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
 			return 1;
+		}
 		
 		usb_current_mode = new_mode;
+		LOGI("%s(): : new_mode: %s\n", __func__, mode_str);
 		return 0;
 	}
 	else if (new_mode == 0)
@@ -542,7 +546,7 @@ static int usbd_socket_event(int sockfd)
 			return 1;
 		}
 		
-		LOGI("%s(): Matched new usb mode = %d , current mode = %d\n", __func__, usb_current_mode, new_mode);
+		LOGI("%s(): Matched new usb mode = %d , current mode = %d\n", __func__, new_mode, usb_current_mode);
 		
 		if (!new_mode)
 		{
@@ -798,7 +802,6 @@ int main(int argc, char **argv)
 					{
 						close(usbd_app_fd);
 						usbd_app_fd = -1;
-						continue;
 					}
 					
 					/* Set to no mode if we're disconnected */
