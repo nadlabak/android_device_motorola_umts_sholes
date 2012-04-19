@@ -184,7 +184,11 @@ static struct usb_mode_info usb_modes[] =
 	
 	/* Charge only mode */
 	USB_MODE_INFO(USB_MODE_CHARGE_ONLY),
-	USB_MODE_INFO_ADB(USB_MODE_CHARGE_ADB),
+	{ 
+		.mode =         USB_MODE_PREFIX        USB_MODE_CHARGE_ADB, 
+		.start =        USBD_START_PREFIX      USB_MODE_CHARGE_ONLY, 
+		.req_switch =   "" 
+	},
 	
 	/* RNDIS */
 	USB_MODE_INFO(USB_MODE_RNDIS),
