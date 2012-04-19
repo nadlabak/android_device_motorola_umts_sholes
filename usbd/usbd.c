@@ -879,7 +879,7 @@ int main(int argc, char **argv)
 						if (usbd_app_fd >= 0)
 						{
 							LOGI("%s(): Notifying Apps that Get_Descriptor was called...\n", __func__);
-							if (write(usbd_app_fd, USBD_EVENT_GET_DESCRIPTOR, strlen(USBD_EVENT_GET_DESCRIPTOR)) < 0)
+							if (write(usbd_app_fd, USBD_EVENT_GET_DESCRIPTOR, strlen(USBD_EVENT_GET_DESCRIPTOR) + 1) < 0)
 							{
 								close(usbd_app_fd);
 								usbd_app_fd = -1;
