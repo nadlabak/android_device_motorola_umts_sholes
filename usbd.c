@@ -109,16 +109,11 @@ struct usb_mode_info
 	.mode =         USB_MODE_PREFIX        usb_mode, \
 	.start =        USBD_START_PREFIX      usb_mode, \
 	.req_switch =   USBD_REQ_SWITCH_PREFIX usb_mode, \
-}, \
-{ \
-	.mode =         USB_MODE_PREFIX        usb_mode  USB_MODE_ADB_SUFFIX, \
-	.start =        USBD_START_PREFIX      usb_mode, \
-	.req_switch =   USBD_REQ_SWITCH_PREFIX usb_mode, \
 }
 
-#define USB_MODE_INFO_NO_ADB(usb_mode) \
+#define USB_MODE_INFO_ADB(usb_mode) \
 { \
-.mode =         USB_MODE_PREFIX        usb_mode, \
+.mode =         USB_MODE_PREFIX        usb_mode USB_MODE_ADB_SUFFIX, \
 .start =        USBD_START_PREFIX      usb_mode, \
 .req_switch =   USBD_REQ_SWITCH_PREFIX usb_mode, \
 }
@@ -158,19 +153,42 @@ enum usbd_state_t
 #define USB_MODE_MSC                  "msc"
 #define USB_MODE_RNDIS                "rndis"
 #define USB_MODE_CHARGE_ONLY          "charge_only"
+#define USB_MODE_CHARGE_ADB           "charge_adb"
 
 /* available modes */
 static struct usb_mode_info usb_modes[] = 
 {
 	USB_MODE_NONE,
-	USB_MODE_INFO_NO_ADB(USB_MODE_ETH),
+	
+	/* Factory */
+	USB_MODE_INFO(USB_MODE_ETH),
+	
+	/* Modem */
+	USB_MODE_INFO(USB_MODE_ACM),
+	
+	/* USBNet + Modem */
 	USB_MODE_INFO(USB_MODE_ACM_ETH),
+	USB_MODE_INFO_ADB(USB_MODE_ACM_ETH ),
+	
+	/* USBNet + Modem + Mtp */
 	USB_MODE_INFO(USB_MODE_ACM_ETH_MTP),
+	USB_MODE_INFO_ADB(USB_MODE_ACM_ETH_MTP),
+	
+	/* Mtp */
 	USB_MODE_INFO(USB_MODE_MTP),
-	USB_MODE_INFO_NO_ADB(USB_MODE_ACM),
+	USB_MODE_INFO_ADB(USB_MODE_MTP),
+	
+	/* Mass storage mode */
 	USB_MODE_INFO(USB_MODE_MSC),
-	USB_MODE_INFO(USB_MODE_RNDIS),
+	USB_MODE_INFO_ADB(USB_MODE_MSC),
+	
+	/* Charge only mode */
 	USB_MODE_INFO(USB_MODE_CHARGE_ONLY),
+	USB_MODE_INFO_ADB(USB_MODE_CHARGE_ADB),
+	
+	/* RNDIS */
+	USB_MODE_INFO(USB_MODE_RNDIS),
+	USB_MODE_INFO_ADB(USB_MODE_RNDIS),
 };
 
 /* File descriptors */
