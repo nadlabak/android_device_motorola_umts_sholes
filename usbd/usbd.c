@@ -67,6 +67,7 @@
 #define USBD_DEV_EVENT_GET_DESCRIPTOR       "get_desc"
 #define USBD_DEV_EVENT_USB_ENUMERATED       "enumerated"
 
+#define USBD_UEVENT_CABLE_ATTACH            "usb_cable_attach"
 #define USBD_UEVENT_CABLE_DETACH            "usb_cable_detach"
 
 /* adb status */
@@ -85,26 +86,42 @@
 /* adb suffix */
 #define USB_MODE_ADB_SUFFIX                 "_adb"
 
+/* unload event */
+#define USB_UNLOAD_DRIVER                   "usb_unload_driver"
+
 /* structure */
 struct usb_mode_info
 {
 	const char* apk_mode;
 	const char* apk_mode_adb;
 	const char* apk_start;
+	const char* apk_start_adb;
 	const char* apk_req_switch;
 	
 	const char* kern_mode;
 	const char* kern_mode_adb;
 };
 
+#define USB_MODE_NONE \
+{ \
+	.apk_mode =         USB_UNLOAD_DRIVER,  \
+	.apk_mode_adb =     USB_UNLOAD_DRIVER,  \
+	.apk_start =        "",                 \
+	.apk_start_adb =    "",                 \
+	.apk_req_switch =   "",                 \
+	.kern_mode =        "",                 \
+	.kern_mode_adb =    "",                 \
+}
+
 #define USB_MODE_INFO(apk,kern) \
 { \
-.apk_mode =         USB_MODE_PREFIX        apk, \
-.apk_mode_adb =     USB_MODE_PREFIX        apk   USB_MODE_ADB_SUFFIX, \
-.apk_start =        USBD_START_PREFIX      apk, \
-.apk_req_switch =   USBD_REQ_SWITCH_PREFIX apk, \
-.kern_mode =                               kern, \
-.kern_mode_adb =                           kern  USB_MODE_ADB_SUFFIX, \
+	.apk_mode =         USB_MODE_PREFIX        apk, \
+	.apk_mode_adb =     USB_MODE_PREFIX        apk   USB_MODE_ADB_SUFFIX, \
+	.apk_start =        USBD_START_PREFIX      apk, \
+	.apk_start_adb =    USBD_START_PREFIX      apk   USB_MODE_ADB_SUFFIX, \
+	.apk_req_switch =   USBD_REQ_SWITCH_PREFIX apk, \
+	.kern_mode =                               kern, \
+	.kern_mode_adb =                           kern  USB_MODE_ADB_SUFFIX, \
 }
 
 /* usb get mode namespace */
@@ -156,6 +173,7 @@ enum usbd_state_t
 /* available modes */
 static struct usb_mode_info usb_modes[] = 
 {
+	USB_MODE_NONE,
 	USB_MODE_INFO(USB_APK_MODE_NGP,         USB_KERN_MODE_NGP),
 	USB_MODE_INFO(USB_APK_MODE_NGP_MTP,     USB_KERN_MODE_NGP_MTP),
 	USB_MODE_INFO(USB_APK_MODE_MTP,         USB_KERN_MODE_MTP),
@@ -301,7 +319,7 @@ static int usbd_get_mode_index(const char* mode, enum usb_mode_get_t usbmod)
 				break;
 				
 			case USBMOD_APK_START:
-				if (!strcmp(mode, usb_modes[i].apk_start))
+				if (!strncmp(mode, usb_modes[i].apk_start, strlen(usb_modes[i].apk_start)))
 					return i;
 				break;
 				
@@ -313,7 +331,6 @@ static int usbd_get_mode_index(const char* mode, enum usb_mode_get_t usbmod)
 			case USBMOD_KERN:
 				if (!strncmp(mode, usb_modes[i].kern_mode, strlen(usb_modes[i].kern_mode)))
 					return i;
-				
 				break;
 				
 			default:
@@ -331,7 +348,7 @@ static int usbd_set_usb_mode(int new_mode)
 	int adb_sts;
 	const char* mode_str;
 	
-	if (new_mode >= 0 && new_mode < ((int) ARRAY_SIZE(usb_modes)))
+	if (new_mode > 0 && new_mode < ((int) ARRAY_SIZE(usb_modes)))
 	{		
 		/* Moto gadget driver expects us to append "_adb" for adb on */
 		if (get_adb_enabled_status() == 1)
@@ -343,6 +360,12 @@ static int usbd_set_usb_mode(int new_mode)
 			return 1;
 		
 		usb_current_mode = new_mode;
+		return 0;
+	}
+	else if (new_mode == 0)
+	{
+		/* Unloaded */
+		usb_current_mode = 0;
 		return 0;
 	}
 	else
@@ -430,6 +453,7 @@ static int usbd_notify_current_status(int sockfd)
 {
 	const char* event_msg = NULL;
 	
+	/* No, don't send anything in case of factory cable */
 	if (usb_factory_cable)
 		return 0;
 	
@@ -474,9 +498,9 @@ static int usbd_enum_process(int sockfd)
 	LOGI("%s(): current usb mode = %d\n", __func__, usb_current_mode);
 	
 	if (get_adb_enabled_status() == 1)
-		mode = usb_modes[usb_current_mode].apk_mode_adb;
+		mode = usb_modes[usb_current_mode].apk_start_adb;
 	else
-		mode = usb_modes[usb_current_mode].apk_mode;
+		mode = usb_modes[usb_current_mode].apk_start;
 	
 	if (write(sockfd, mode, strlen(mode) + 1) < 0)
 	{
@@ -496,6 +520,7 @@ static int usbd_socket_event(int sockfd)
 {
 	char buffer[1024];
 	const char* suffix;
+	const char* start_msg;
 	int res, new_mode;
 	
 	memset(buffer, 0, sizeof(buffer));
@@ -519,17 +544,40 @@ static int usbd_socket_event(int sockfd)
 		
 		LOGI("%s(): Matched new usb mode = %d , current mode = %d\n", __func__, usb_current_mode, new_mode);
 		
+		if (!new_mode)
+		{
+			usbd_set_usb_mode(0);
+			return 0;
+		}
+		
+		if (new_mode == -1)
+			suffix = USBD_RESP_FAIL;
+		else
+			suffix = USBD_RESP_OK;
+		
+		sprintf(buffer, "%s%s", usb_modes[new_mode].apk_mode, suffix);
+		
+		if (write(sockfd, buffer, strlen(buffer) + 1) < 0)
+		{
+			LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
+			return 1;
+		}
+			
 		if (new_mode != usb_current_mode)
 		{
-			res = usbd_set_usb_mode(new_mode);
+			usbd_set_usb_mode(new_mode);
 			
-			if (res)
-				suffix = USBD_RESP_FAIL;
+			if (get_adb_enabled_status() == 1)
+				start_msg = usb_modes[usb_current_mode].apk_start_adb;
 			else
-				suffix = USBD_RESP_OK;
+				start_msg = usb_modes[usb_current_mode].apk_start;
 			
-			strcat(buffer, suffix);
-			write(sockfd, buffer, strlen(buffer) + 1);
+			if (write(sockfd, start_msg, strlen(start_msg) + 1) < 0)
+			{
+				LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
+				return 1;
+			}
+			
 		}
 		
 		return 0;
@@ -565,12 +613,11 @@ static int process_usb_uevent_message()
 	do
 	{
 		if (!strncmp(POWER_SUPPLY_TYPE_EVENT, ptr, strlen(POWER_SUPPLY_TYPE_EVENT)))
-			power_supply_type = ptr + strlen(POWER_SUPPLY_TYPE_EVENT);
+			power_supply_type = &(ptr[strlen(POWER_SUPPLY_TYPE_EVENT)]);
 		else if (!strncmp(POWER_SUPPLY_ONLINE_EVENT, ptr, strlen(POWER_SUPPLY_ONLINE_EVENT)))
-			power_supply_online = ptr + strlen(POWER_SUPPLY_ONLINE_EVENT);
+			power_supply_online = &(ptr[strlen(POWER_SUPPLY_ONLINE_EVENT)]);
 		else if (!strncmp(POWER_SUPPLY_MODEL_NAME_EVENT, ptr, strlen(POWER_SUPPLY_MODEL_NAME_EVENT)))
-			power_supply_model_name = ptr + strlen(POWER_SUPPLY_MODEL_NAME_EVENT);
-		
+			power_supply_model_name = &(ptr[strlen(POWER_SUPPLY_MODEL_NAME_EVENT)]);
 		
 		ptr += strlen(ptr) + 1;
 		
@@ -578,24 +625,24 @@ static int process_usb_uevent_message()
 	
 	/* Now check what we got */
 	
+	/* Power supply type: can be NULL, Battery or USB */
 	if (!power_supply_type || strcmp(power_supply_type, "USB"))
-		return 0;
+		return 1;
 	
+	/* We got cable, now check if it's factory or not */
 	if (power_supply_model_name)
 	{
-		if (strcmp(power_supply_model_name, "usb"))
-		{
-			if (!strcmp(power_supply_model_name, "factory"))
-				usb_factory_cable = 1;
-		}
-		else
+		if (!strcmp(power_supply_model_name, "usb"))
 			usb_factory_cable = 0;
+		else if (!strcmp(power_supply_model_name, "factory"))
+			usb_factory_cable = 1;
 		
 		LOGI("%s(): cable type: %s\n", __func__, power_supply_model_name);
 	}
 	else
 		LOGI("%s(): cable type not specified in USB Event\n", __func__);
 	
+	/* Check if we have power supply */
 	if (power_supply_online)
 	{
 		if (!strcmp(power_supply_online, "1"))
@@ -735,7 +782,9 @@ int main(int argc, char **argv)
 		{
 			/* Factory cable is handled directly in process_usb_uevent_message */
 			
-			if (!usb_factory_cable)
+			if (usb_factory_cable)
+				usbd_set_usb_mode(usbd_get_mode_index(USB_KERN_MODE_NET, USBMOD_KERN));
+			else
 			{
 				if (last_sent_usb_online == usb_online)
 					LOGI("%s(): Spurious Cable Event, Ignore \n", __func__);
@@ -752,10 +801,9 @@ int main(int argc, char **argv)
 						continue;
 					}
 					
-					/* Set default mode if we're disconnected */
-					/* FIXME: ehm, why does usbd do this??? */
+					/* Set to no mode if we're disconnected */
 					if (usb_state == USBDSTAT_CABLE_DISCONNECTED)
-						usbd_set_usb_mode(usbd_get_mode_index(USB_KERN_MODE_NET, USBMOD_KERN));
+						usbd_set_usb_mode(0);
 					
 				}
 			}
@@ -770,7 +818,7 @@ int main(int argc, char **argv)
 			if (read(usb_device_fd, buffer, ARRAY_SIZE(buffer)) > 0 && !usb_factory_cable)
 			{
 				LOGI("%s(): devbuf: %s\n"
-				"rc: %d usbd_curr_cable_status: %d\n", __func__, buffer, strlen(buffer), 0, usb_state);
+				     "rc: %d usbd_state: %d\n", __func__, buffer, strlen(buffer), usb_state);
 				
 				/* PC switch buffer */
 				pch = strtok(buffer, ":");
