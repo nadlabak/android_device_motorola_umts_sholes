@@ -542,7 +542,7 @@ static int usbd_socket_event(int sockfd)
 			return 1;
 		}
 		
-		LOGI("%s(): Matched new usb mode = %d , current mode = %d\n", __func__, usb_current_mode, new_mode);
+		LOGI("%s(): Matched new usb mode = %d , current mode = %d\n", __func__, new_mode, usb_current_mode);
 		
 		if (!new_mode)
 		{
@@ -798,7 +798,6 @@ int main(int argc, char **argv)
 					{
 						close(usbd_app_fd);
 						usbd_app_fd = -1;
-						continue;
 					}
 					
 					/* Set to no mode if we're disconnected */
