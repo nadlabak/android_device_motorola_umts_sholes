@@ -770,7 +770,7 @@ int main(int argc, char **argv)
 			if (read(usb_device_fd, buffer, ARRAY_SIZE(buffer)) > 0 && !usb_factory_cable)
 			{
 				LOGI("%s(): devbuf: %s\n"
-				"rc: %d usbd_curr_cable_status: %d\n", __func__, buffer, /*FIXME: */ 0, usb_state);
+				"rc: %d usbd_curr_cable_status: %d\n", __func__, buffer, strlen(buffer), 0, usb_state);
 				
 				/* PC switch buffer */
 				pch = strtok(buffer, ":");
