@@ -589,7 +589,7 @@ static int usbd_socket_event(int sockfd)
 	}
 	else if (res)
 	{
-		LOGI("%s(): recieved %s\n", __func__, buffer);
+		LOGI("%s(): received %s\n", __func__, buffer);
 		new_mode = usbd_get_mode_index(buffer, USBMOD_MODE);
 		
 		if (new_mode < 0)
@@ -960,11 +960,11 @@ int main(int argc, char **argv)
 				}
 				else if (!strncmp(enum_buf, USBD_DEV_EVENT_USB_ENUMERATED, strlen(USBD_DEV_EVENT_USB_ENUMERATED)))
 				{
-					LOGI("%s(): recieved enumerated\n", __func__);
+					LOGI("%s(): received enumerated\n", __func__);
 					LOGI("%s(): usbd_app_fd  = %d\n", __func__, usbd_app_fd);
 					usb_state = USBDSTAT_USB_ENUMERATED;
 					
-					if (usbd_app_fd >= 0 && usbd_enum_process(usbd_app_fd) < 0)
+					if (usbd_app_fd >= 0 && usbd_enum_process(usbd_app_fd))
 					{
 						close(usbd_app_fd);
 						usbd_app_fd = -1;
