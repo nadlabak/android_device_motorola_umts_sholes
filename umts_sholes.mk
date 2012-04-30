@@ -174,7 +174,8 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/lib/modules/sunrpc.ko:/system/lib/modules/sunrpc.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/nfs.ko:/system/lib/modules/nfs.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/qtouch_num.ko:/system/lib/modules/qtouch_num.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/dsprecovery.ko:/system/lib/modules/dsprecovery.ko
+    device/motorola/umts_sholes/prebuilt/lib/modules/dsprecovery.ko:/system/lib/modules/dsprecovery.ko \
+    device/motorola/umts_sholes/prebuilt/fonts/DroidSansFallbackFull.ttf:/system/fonts/DroidSansFallback.ttf
 
 $(call inherit-product, build/target/product/full_base.mk)
 
