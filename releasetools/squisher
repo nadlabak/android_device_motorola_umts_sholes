@@ -88,6 +88,7 @@ cd $REPACK/ota/system/app
 rm -f CMUpdateNotify.*
 rm -f RomManager.apk
 rm -f VideoEditor.apk
+rm -f CMWallpapers.apk
 find ./ -name \*.apk | $XARGS $OPTICHARGER
 )
 
