@@ -95,7 +95,7 @@
         <EncoderProfile quality="480p" fileFormat="mp4" duration="30">
             <Video codec="m4v"
                    bitRate="3000000"
-                   width="640"
+                   width="720"
                    height="480"
                    frameRate="24" />
 
