@@ -16,6 +16,8 @@ ro.telephony.ril_class=MotoWrigley3GRIL
 ro.telephony.ril.v3=skipbrokendatacall,signalstrength
 
 wifi.interface = tiwlan0
+wifi.ap.interface = tiap0
+wifi.hotspot.ti = 1
 
 # Time between scans in seconds. Keep it high to minimize battery drain.
 # This only affects the case in which there are remembered access points,
