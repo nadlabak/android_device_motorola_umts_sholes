@@ -40,10 +40,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
         ro.product.max_num_touch=5 \
         ro.com.google.gmsversion=2.3_r4
 
-# Enable TI HotSpot
-PRODUCT_PROPERTY_OVERRIDES += \
-    wifi.hotspot.ti=1
-
 DEVICE_PACKAGE_OVERLAYS += device/motorola/umts_sholes/overlay
 
 PRODUCT_COPY_FILES += \
@@ -76,7 +72,6 @@ libaudiohw_legacy audio.primary.omap3
 PRODUCT_PACKAGES += \
     e2fsck \
     MilestoneParts \
-    Toggle2G \
     librs_jni \
     tiwlan.ini \
     dspexec \
