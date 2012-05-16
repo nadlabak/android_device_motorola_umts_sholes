@@ -86,6 +86,8 @@ PRODUCT_PACKAGES += \
     hostap \
     hostapd.conf \
     libhostapdcli \
+    tiap_loader \
+    tiap_cu \
     libOMX.TI.AAC.decode \
     libOMX.TI.AAC.encode \
     libOMX.TI.AMR.decode \
@@ -96,12 +98,13 @@ PRODUCT_PACKAGES += \
     libOMX_Core \
     libOMX.TI.Video.Decoder \
     libOMX.TI.Video.encoder \
-    libVendor_ti_omx \
+    libOMX.TI.JPEG.Encoder \
     sensors.sholes \
     lights.sholes \
     camera.sholes \
     Usb \
     Torch \
+    FileManager \
     mot_boot_mode \
     charge_only_mode \
     usbd
