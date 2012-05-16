@@ -494,12 +494,12 @@ on property:tcmd.bt_mod=1
 on property:tcmd.bt_mod=0
     exec /system/bin/rmmod wl127x_test
 
-#service panic_daemon /system/bin/panic_daemon
-#    class post-zygote_services
-#    user radio
-#    group radio system graphics
-#    socket panic_daemon stream 660 radio radio
-#    onrestart exec /system/bin/reboot
+service panic_daemon /system/bin/panic_daemon
+    class post-zygote_services
+    user radio
+    group radio system graphics
+    socket panic_daemon stream 660 radio radio
+    onrestart exec /system/bin/reboot
 
 # Ecompass daemon
 service akmd2 /system/bin/akmd2
@@ -515,11 +515,6 @@ service wlan_loader /system/bin/wlan_loader \
     oneshot
 
 service wlan_ap_loader /system/bin/logwrapper /system/bin/tiap_loader -f /system/etc/wifi/fw_tiwlan_ap.bin -i /system/etc/wifi/tiwlan_ap.ini -e /pds/wifi/nvs_map.bin
-    disabled
-    oneshot
-
-service hostapd /system/bin/logwrapper /system/bin/hostap -d /data/misc/wifi/hostapd.conf
-    post-zygote_services
     disabled
     oneshot
 
