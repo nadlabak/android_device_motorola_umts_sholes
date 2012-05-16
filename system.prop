@@ -39,7 +39,7 @@ hwui.blacklist=com.google.android.gallery3d_com.google.android.music:ui
 dalvik.vm.heapsize=30m
 
 # store dalvik-cache of everything in /data
-dalvik.vm.dexopt-data-only=1
+dalvik.vm.dexopt-data-only=0
 
 #proximit sensor screen off delay
 mot.proximity.delay=450
