@@ -154,6 +154,7 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/lib/modules/dsifix.ko:/system/lib/modules/dsifix.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/slow-work.ko:/system/lib/modules/slow-work.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/xt_multiport.ko:/system/lib/modules/xt_multiport.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/xt_TCPMSS.ko:/system/lib/modules/xt_TCPMSS.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/xt_quota2.ko:/system/lib/modules/xt_quota2.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/xt_owner2.ko:/system/lib/modules/xt_owner2.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/overclock.ko:/system/lib/modules/overclock.ko \
