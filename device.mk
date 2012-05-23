@@ -104,6 +104,7 @@ PRODUCT_PACKAGES += \
     camera.sholes \
     Usb \
     Torch \
+    Toggle2G \
     FileManager \
     mot_boot_mode \
     charge_only_mode \
