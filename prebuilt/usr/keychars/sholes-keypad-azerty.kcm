@@ -1,15 +1,15 @@
 type ALPHA
 key Q {
-    label:                              'Q'
-    base:                               'q'
-    shift, capslock:                    'Q'
+    label:                              'A'
+    base:                               'a'
+    shift, capslock:                    'A'
     number, alt:                        '1'
     shift+alt:                          '`'
 }
 key W {
-    label:                              'W'
-    base:                               'w'
-    shift, capslock:                    'W'
+    label:                              'Z'
+    base:                               'z'
+    shift, capslock:                    'Z'
     number, alt:                        '2'
     shift+alt:                        none
 }
@@ -26,7 +26,7 @@ key R {
     base:                               'r'
     shift, capslock:                    'R'
     number, alt:                        '4'
-    shift+alt:                     '\u20AC'
+    shift+alt:                          '$'
 }
 key T {
     label:                              'T'
@@ -77,9 +77,9 @@ key P {
 }
 
 key A {
-    label:                              'A'
-    base:                               'a'
-    shift, capslock:                    'A'
+    label:                              'Q'
+    base:                               'q'
+    shift, capslock:                    'Q'
     number:                             '1'
     alt:                           '\u0009'
     shift+alt:                        none
@@ -108,7 +108,7 @@ key F {
     base:                               'f'
     shift, capslock:                    'F'
     number:                             '4'
-    alt:                                '$'
+    alt:                           '\u20AC'
     shift+alt:                     '\u00A5'
 }
 
@@ -158,9 +158,9 @@ key L {
 }
 
 key SEMICOLON {
-    label:                              '?'
-    base:                               '?'
-    shift, capslock:                    ')'
+    label:                              'M'
+    base:                               'm'
+    shift, capslock:                    'M'
     number:                             '0'
     alt:                                ')'
     shift+alt:                     '\u00BF'
@@ -176,9 +176,9 @@ key ENTER {
 }
 
 key Z {
-    label:                              'Z'
-    base:                               'z'
-    shift, capslock:                    'Z'
+    label:                              'W'
+    base:                               'w'
+    shift, capslock:                    'W'
     number:                             '2'
     alt:                                '<'
     shift+alt:                        none
@@ -230,9 +230,9 @@ key N {
 }
 
 key M {
-    label:                              'M'
-    base:                               'm'
-    shift, capslock:                    'M'
+    label:                              '?'
+    base:                               '?'
+    shift, capslock:                    '?'
     number:                             '8'
     alt:                               '\''
     shift+alt:                        none

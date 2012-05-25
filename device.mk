@@ -141,8 +141,14 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/bin/sh_hijack.sh:/system/bin/sh_hijack.sh \
     device/motorola/umts_sholes/prebuilt/bin/tcmd:/system/bin/tcmd \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholes-keypad.kcm:/system/usr/keychars/sholes-keypad.kcm \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholes-keypad-qwerty.kcm:/system/usr/keychars/sholes-keypad-qwerty.kcm \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholes-keypad-euro_qwerty.kcm:/system/usr/keychars/sholes-keypad-euro_qwerty.kcm \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholes-keypad-qwertz.kcm:/system/usr/keychars/sholes-keypad-qwertz.kcm \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholes-keypad-azerty.kcm:/system/usr/keychars/sholes-keypad-azerty.kcm \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholes-keypad-swe_qwerty.kcm:/system/usr/keychars/sholes-keypad-swe_qwerty.kcm \
     device/motorola/umts_sholes/prebuilt/usr/keychars/cpcap-key.kcm:/system/usr/keychars/cpcap-key.kcm \
     device/motorola/umts_sholes/prebuilt/usr/keylayout/sholes-keypad.kl:/system/usr/keylayout/sholes-keypad.kl \
+    device/motorola/umts_sholes/prebuilt/usr/keylayout/sholes-keypad-ru_qwerty.kl:/system/usr/keylayout/sholes-keypad-ru_qwerty.kl \
     device/motorola/umts_sholes/prebuilt/usr/keylayout/cpcap-key.kl:/system/usr/keylayout/cpcap-key.kl \
     device/motorola/umts_sholes/prebuilt/usr/keylayout/qtouch-touchscreen.kl:/system/usr/keylayout/qtouch-touchscreen.kl \
     device/motorola/umts_sholes/prebuilt/usr/idc/qtouch-touchscreen.idc:/system/usr/idc/qtouch-touchscreen.idc \

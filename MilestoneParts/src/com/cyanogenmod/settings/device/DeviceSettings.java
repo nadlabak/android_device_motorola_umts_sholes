@@ -2,6 +2,8 @@ package com.cyanogenmod.settings.device;
 
 import java.util.ArrayList;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +33,8 @@ public class DeviceSettings extends PreferenceActivity implements
     private static final String BASEBAND_PERSIST_PROP = "persist.sys.bp_nvm";
 
     private static final String BASEBAND_DEFAULT = "b1b8";
+
+    private static final String KEYLAYOUT = "sholes-keypad,sholes-keypad-";
 
     private static final String KEYPAD_TYPE_PREF = "pref_keypad_type";
 
@@ -184,7 +188,7 @@ public class DeviceSettings extends PreferenceActivity implements
         mStatusBarOnepercBattery.setChecked("1".equals(onepercBattery));
 
 // temporarily remove not yet implemented preferences
-        PreferenceCategory categoryToRemove = (PreferenceCategory)prefSet.findPreference("pref_category_keypad_settings");
+        PreferenceCategory categoryToRemove = (PreferenceCategory)prefSet.findPreference("pref_category_keypad_settings2");
         prefSet.removePreference(categoryToRemove);
         categoryToRemove = (PreferenceCategory)prefSet.findPreference("pref_category_dock_settings");
         prefSet.removePreference(categoryToRemove);
@@ -251,12 +255,14 @@ public class DeviceSettings extends PreferenceActivity implements
         } else if (preference == mKeypadTypePref) {
             String keypadType = (String) newValue;
             SystemProperties.set(KEYPAD_TYPE_PERSIST_PROP, keypadType);
+            Settings.System.putString(getApplicationContext().getContentResolver(),
+                    Settings.System.KEYLAYOUT_OVERRIDES, KEYLAYOUT + keypadType);
             if (!mKeypadPrefix.equals("0")) {
                 SystemProperties.set(KEYPAD_TYPE_HW_PROP, mKeypadPrefix + keypadType);
             }
             mKeypadTypePref.setSummary(String.format(mKeypadTypeSum,
                     mKeypadTypePref.getEntries()[mKeypadTypePref.findIndexOfValue(keypadType)]));
-            keypadChanged();
+            //keypadChanged();
             return true;
         } else if (preference == mKeypadTypeSecPref) {
             String keypadType = (String) newValue;
@@ -289,4 +295,15 @@ public class DeviceSettings extends PreferenceActivity implements
         return false;
     }
 
+    public static class BootCompletedReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction() != Intent.ACTION_BOOT_COMPLETED) {
+                return;
+            }
+            String keypadType = SystemProperties.get(KEYPAD_TYPE_PERSIST_PROP, KEYPAD_TYPE_DEFAULT);
+            Settings.System.putString(context.getContentResolver(),
+                    Settings.System.KEYLAYOUT_OVERRIDES, KEYLAYOUT + keypadType);
+        }
+    }
 }

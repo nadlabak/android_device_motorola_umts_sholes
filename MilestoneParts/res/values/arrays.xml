@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
+<!--
  * Copyright (C) 2007 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -54,6 +54,7 @@
         <item>euro-qwerty</item>
         <item>qwerty</item>
         <item>qwertz</item>
+        <item>rus-qwerty</item>
         <item>swe-qwerty</item>
     </string-array>
 
@@ -62,6 +63,7 @@
         <item>euro_qwerty</item>
         <item>qwerty</item>
         <item>qwertz</item>
+        <item>ru_qwerty</item>
         <item>swe_qwerty</item>
     </string-array>
 

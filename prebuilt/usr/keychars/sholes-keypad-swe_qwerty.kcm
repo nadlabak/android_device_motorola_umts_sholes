@@ -26,7 +26,7 @@ key R {
     base:                               'r'
     shift, capslock:                    'R'
     number, alt:                        '4'
-    shift+alt:                     '\u20AC'
+    shift+alt:                          '$'
 }
 key T {
     label:                              'T'
@@ -81,7 +81,7 @@ key A {
     base:                               'a'
     shift, capslock:                    'A'
     number:                             '1'
-    alt:                           '\u0009'
+    alt:                           '\u20AC'
     shift+alt:                        none
 }
 
@@ -108,7 +108,7 @@ key F {
     base:                               'f'
     shift, capslock:                    'F'
     number:                             '4'
-    alt:                                '$'
+    alt:                           '\u00A3'
     shift+alt:                     '\u00A5'
 }
 
@@ -159,11 +159,11 @@ key L {
 
 key SEMICOLON {
     label:                              '?'
-    base:                               '?'
-    shift, capslock:                    ')'
+    base:                          '\u00E5'
+    shift, capslock:               '\u00C5'
     number:                             '0'
-    alt:                                ')'
-    shift+alt:                     '\u00BF'
+    alt:                                '?'
+    shift+alt:                          ')'
 }
 
 key ENTER {
@@ -240,8 +240,8 @@ key M {
 
 key COMMA {
     label:                              ','
-    base:                               ','
-    shift, capslock:                    ','
+    base:                          '\u00F6'
+    shift, capslock:               '\u00D6'
     number:                             ','
     alt:                                ';'
     shift+alt:                          '|'
@@ -249,8 +249,8 @@ key COMMA {
 
 key PERIOD {
     label:                              '.'
-    base:                               '.'
-    shift, capslock:                    '.'
+    base:                          '\u00E4'
+    shift, capslock:               '\u00C4'
     number:                             '.'
     alt:                                ':'
     shift+alt:                     '\u2026'
@@ -258,8 +258,8 @@ key PERIOD {
 
 key AT {
     label:                              '@'
-    base:                               '@'
-    shift, capslock:                    '~'
+    base:                               '/'
+    shift, capslock:                    '@'
     number:                             '@'
     alt:                                '~'
     shift+alt:                     '\u2022'
@@ -276,8 +276,8 @@ key SPACE {
 
 key SLASH {
     label:                              '/'
-    base:                               '/'
-    shift, capslock:                    '/'
+    base:                               '.'
+    shift, capslock:                    ','
     number:                             '^'
     alt:                                '^'
     shift+alt:                         '\\'

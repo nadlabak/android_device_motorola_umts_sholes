@@ -35,6 +35,9 @@
             android:summary="@string/pref_keypad_type_summary"
             android:entries="@array/pref_keypad_type_entries"
             android:entryValues="@array/pref_keypad_type_values" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/keypad_title"
+        android:key="pref_category_keypad_settings2">
         <ListPreference android:key="pref_keypad_type_sec"
             android:dialogTitle="@string/pref_keypad_type_sec_title"
             android:title="@string/pref_keypad_type_sec_title"

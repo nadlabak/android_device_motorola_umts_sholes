@@ -26,7 +26,7 @@ key R {
     base:                               'r'
     shift, capslock:                    'R'
     number, alt:                        '4'
-    shift+alt:                     '\u20AC'
+    shift+alt:                          '$'
 }
 key T {
     label:                              'T'
@@ -37,9 +37,9 @@ key T {
 }
 
 key Y {
-    label:                              'Y'
-    base:                               'y'
-    shift, capslock:                    'Y'
+    label:                              'Z'
+    base:                               'z'
+    shift, capslock:                    'Z'
     number, alt:                        '6'
     shift+alt:                     '\u00A1'
 }
@@ -108,7 +108,7 @@ key F {
     base:                               'f'
     shift, capslock:                    'F'
     number:                             '4'
-    alt:                                '$'
+    alt:                           '\u20AC'
     shift+alt:                     '\u00A5'
 }
 
@@ -176,9 +176,9 @@ key ENTER {
 }
 
 key Z {
-    label:                              'Z'
-    base:                               'z'
-    shift, capslock:                    'Z'
+    label:                              'Y'
+    base:                               'y'
+    shift, capslock:                    'Y'
     number:                             '2'
     alt:                                '<'
     shift+alt:                        none
