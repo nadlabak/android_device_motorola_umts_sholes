@@ -286,6 +286,8 @@ mount rootfs rootfs / ro remount
     write /sys/block/mmcblk0/bdi/read_ahead_kb 256
 
 # Start services
+class_start pre-zygote_services
+
 on property:cm.mountsd.done=1
     exec /system/bin/mot_boot_mode
 
@@ -303,6 +305,7 @@ on property:persist.sys.one_percent_batt=1
     start batt2d
 
 on property:sys.chargeonly.mode=1
+    class_stop pre-zygote_services
     start console
     exec /system/bin/charge_only_mode
 
