@@ -363,6 +363,11 @@ service ueventd /sbin/ueventd
     class core
     critical
 
+service sysinit /system/bin/sysinit
+    class core
+    user root
+    oneshot
+
 service console /system/bin/sh
     class pre-zygote_services
     console

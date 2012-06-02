@@ -194,9 +194,6 @@ on boot
     # symlink the selected bp_nvm files
     exec /system/bin/sh /system/bin/init_bp_nvm.sh
 
-    # run sysinit
-    exec /system/bin/sysinit
-
     # create the lost+found directories, so as to enforce our permissions
     mkdir /pds/lost+found 0770
 
@@ -292,6 +289,8 @@ mount rootfs rootfs / ro remount
     write /sys/block/mmcblk0/bdi/read_ahead_kb 256
 
 # Start services
+    class_start pre-zygote_services
+
 on property:cm.mountsd.done=1
     exec /system/bin/mot_boot_mode
 
@@ -309,6 +308,7 @@ on property:persist.sys.one_percent_batt=1
     start batt2d
 
 on property:sys.chargeonly.mode=1
+    class_stop pre-zygote_services
     start console
     exec /system/bin/charge_only_mode
 
@@ -495,12 +495,12 @@ on property:tcmd.bt_mod=1
 on property:tcmd.bt_mod=0
     exec /system/bin/rmmod wl127x_test
 
-#service panic_daemon /system/bin/panic_daemon
-#    class post-zygote_services
-#    user radio
-#    group radio system graphics
-#    socket panic_daemon stream 660 radio radio
-#    onrestart exec /system/bin/reboot
+service panic_daemon /system/bin/panic_daemon
+    class post-zygote_services
+    user radio
+    group radio system graphics
+    socket panic_daemon stream 660 radio radio
+    onrestart exec /system/bin/reboot
 
 # Ecompass daemon
 service akmd2 /system/bin/akmd2
