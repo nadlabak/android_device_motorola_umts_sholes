@@ -10,7 +10,8 @@ then
 	exit
 fi
 umount /system/vendor/app
-for dir in app app-private dalvik-cache vendor/app;do
+umount /system/vendor/lib
+for dir in app app-private dalvik-cache vendor/app vendor/lib;do
 	if [ "`egrep -q \"/data/${dir}\" /proc/mounts;echo $?`" != "0" ];
 	then	
 		if [ ! -e "${SD_EXT_DIRECTORY}/${dir}" ];
@@ -36,7 +37,14 @@ for dir in app app-private dalvik-cache vendor/app;do
 				busybox mv ${app} ${SD_EXT_DIRECTORY}/${dir}/
 			done
 		fi
+		if [ "${dir}" = "vendor/lib" ];
+		then
+			for lib in `find /data/${dir} -type f -iname "*.so"`;do
+				busybox mv ${lib} ${SD_EXT_DIRECTORY}/${dir}/
+			done
+		fi
 		mount -o bind ${SD_EXT_DIRECTORY}/${dir}/ /data/${dir}
 	fi
 done
 mount -o bind ${SD_EXT_DIRECTORY}/vendor/app /system/vendor/app
+mount -o bind ${SD_EXT_DIRECTORY}/vendor/lib /system/vendor/lib

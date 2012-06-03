@@ -181,7 +181,8 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/lib/modules/nfs.ko:/system/lib/modules/nfs.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/qtouch_num.ko:/system/lib/modules/qtouch_num.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/dsprecovery.ko:/system/lib/modules/dsprecovery.ko \
-    device/motorola/umts_sholes/prebuilt/vendor/app/.holder:/system/vendor/app/.holder
+    device/motorola/umts_sholes/prebuilt/vendor/app/.holder:/system/vendor/app/.holder \
+    device/motorola/umts_sholes/prebuilt/vendor/lib/.holder:/system/vendor/lib/.holder
 
 # use high-density artwork where available
 PRODUCT_LOCALES += hdpi
