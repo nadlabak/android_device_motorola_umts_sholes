@@ -372,4 +372,6 @@ should be empty. -->
 
     <!-- Dont reload the firmware via the framework, let wifi legacy and tiap_loader do that -->
     <bool name="config_wifi_ap_firmware_reload">false</bool>
+
+    <integer name="config_screenOnAnimation">0</integer>
 </resources>
