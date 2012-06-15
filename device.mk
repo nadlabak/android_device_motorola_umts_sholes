@@ -146,6 +146,10 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholes-keypad-qwertz.kcm:/system/usr/keychars/sholes-keypad-qwertz.kcm \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholes-keypad-azerty.kcm:/system/usr/keychars/sholes-keypad-azerty.kcm \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholes-keypad-swe_qwerty.kcm:/system/usr/keychars/sholes-keypad-swe_qwerty.kcm \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholes-keypad-arabic.kcm:/system/usr/keychars/sholes-keypad-arabic.kcm \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholes-keypad-cyrillic.kcm:/system/usr/keychars/sholes-keypad-cyrillic.kcm \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholes-keypad-hebrew.kcm:/system/usr/keychars/sholes-keypad-hebrew.kcm \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholes-keypad-russian.kcm:/system/usr/keychars/sholes-keypad-russian.kcm \
     device/motorola/umts_sholes/prebuilt/usr/keychars/cpcap-key.kcm:/system/usr/keychars/cpcap-key.kcm \
     device/motorola/umts_sholes/prebuilt/usr/keylayout/sholes-keypad.kl:/system/usr/keylayout/sholes-keypad.kl \
     device/motorola/umts_sholes/prebuilt/usr/keylayout/sholes-keypad-ru_qwerty.kl:/system/usr/keylayout/sholes-keypad-ru_qwerty.kl \

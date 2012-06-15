@@ -29,21 +29,18 @@
 
     <PreferenceCategory android:title="@string/keypad_title"
         android:key="pref_category_keypad_settings">
-        <ListPreference android:key="pref_keypad_type"
-            android:dialogTitle="@string/pref_keypad_type_title"
-            android:title="@string/pref_keypad_type_title"
-            android:summary="@string/pref_keypad_type_summary"
-            android:entries="@array/pref_keypad_type_entries"
-            android:entryValues="@array/pref_keypad_type_values" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/keypad_title"
-        android:key="pref_category_keypad_settings2">
-        <ListPreference android:key="pref_keypad_type_sec"
-            android:dialogTitle="@string/pref_keypad_type_sec_title"
-            android:title="@string/pref_keypad_type_sec_title"
-            android:summary="@string/pref_keypad_type_sec_summary"
-            android:entries="@array/pref_keypad_type_sec_entries"
-            android:entryValues="@array/pref_keypad_type_sec_values" />
+        <ListPreference android:key="pref_keypad_primary"
+            android:dialogTitle="@string/pref_keypad_pri_title"
+            android:title="@string/pref_keypad_pri_title"
+            android:summary="@string/pref_keypad_pri_summary"
+            android:entries="@array/pref_keypad_pri_entries"
+            android:entryValues="@array/pref_keypad_pri_values" />
+        <ListPreference android:key="pref_keypad_secondary"
+            android:dialogTitle="@string/pref_keypad_sec_title"
+            android:title="@string/pref_keypad_sec_title"
+            android:summary="@string/pref_keypad_sec_summary"
+            android:entries="@array/pref_keypad_sec_entries"
+            android:entryValues="@array/pref_keypad_sec_values" />
         <ListPreference android:key="pref_keypad_multipress"
             android:dialogTitle="@string/pref_keypad_multipress_title"
             android:title="@string/pref_keypad_multipress_title"
@@ -56,9 +53,6 @@
             android:summary="@string/pref_keypad_mplang_summary"
             android:entries="@array/pref_keypad_mplang_entries"
             android:entryValues="@array/pref_keypad_mplang_values" />
-        <CheckBoxPreference android:key="pref_keypad_keylayout"
-            android:title="@string/pref_keypad_keylayout_title"
-            android:summary="@string/pref_keypad_keylayout_summary" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/qtouch_title"

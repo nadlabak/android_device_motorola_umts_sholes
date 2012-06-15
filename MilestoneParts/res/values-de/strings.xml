@@ -11,12 +11,10 @@
 
     <string name="pref_dock_observer_off_title">Erkennung von Dockingstationen deaktivieren</string>
     <string name="pref_dock_observer_off_summary">Keine Aktion bei Magnetfeldern. Nützlich bei Telefonhüllen mit magetischem Verschluss</string>
-    <string name="pref_keypad_type_title">Zeichentabelle Tastatur</string>
-    <string name="pref_keypad_type_summary">Zeichentabelle für Hardware-Tastatur.\nMomentan: %s</string>
-    <string name="pref_keypad_type_sec_title">Sekundäre Zeichentabelle </string>
-    <string name="pref_keypad_type_sec_summary">Sekundäre Zeichentabelle für Hardware-Tastatur.\nMomentan: %s</string>
-    <string name="pref_keypad_keylayout_title">Tastaturbelegung</string>
-    <string name="pref_keypad_keylayout_summary">Tausche Such- und Menü/Sprache-Taste - Russische Tastatur (erfordert Neustart)</string>
+    <string name="pref_keypad_pri_title">Zeichentabelle Tastatur</string>
+    <string name="pref_keypad_pri_summary">Zeichentabelle für Hardware-Tastatur.\nMomentan: %s</string>
+    <string name="pref_keypad_sec_title">Sekundäre Zeichentabelle </string>
+    <string name="pref_keypad_sec_summary">Sekundäre Zeichentabelle für Hardware-Tastatur.\nMomentan: %s</string>
     <string name="pref_keypad_multipress_title">Intervall für mehrfachen Tastendruck</string>
     <string name="pref_keypad_multipress_summary">Alternative Zeichen können direkt durch mehrfachen Tastendruck innerhalb dieses Intervalls eingegeben werden.\nMomentan: %s</string>
     <string name="pref_keypad_mplang_title">Sprache für mehrfachen Tastendruck</string>

@@ -16,7 +16,7 @@ key 107   POWER             WAKE_DROPPED
 key 62    ENDCALL           WAKE_DROPPED
 key 229   SEARCH            WAKE_DROPPED
 key 59    MENU              WAKE_DROPPED
-key 217   MENU              WAKE_DROPPED
+key 217   SWITCH_CHARSET    WAKE_DROPPED
 key 228   POUND             WAKE_DROPPED
 key 227   STAR
 key 231   CALL              WAKE_DROPPED
@@ -43,7 +43,7 @@ key 23    I                 WAKE_DROPPED
 key 24    O                 WAKE_DROPPED
 key 25    P                 WAKE_DROPPED
 key 26    LEFT_BRACKET      WAKE_DROPPED
-key 27    RIGHT_BRACKET     WAKE_DROPPED
+key 214   RIGHT_BRACKET     WAKE_DROPPED
 key 43    BACKSLASH         WAKE_DROPPED
 key 30    A                 WAKE_DROPPED
 key 31    S                 WAKE_DROPPED
@@ -54,7 +54,7 @@ key 35    H                 WAKE_DROPPED
 key 36    J                 WAKE_DROPPED
 key 37    K                 WAKE_DROPPED
 key 38    L                 WAKE_DROPPED
-key 214   SEMICOLON         WAKE_DROPPED
+key 39    SEMICOLON         WAKE_DROPPED
 key 40    APOSTROPHE        WAKE_DROPPED
 key 14    DEL               WAKE_DROPPED
 key 44    Z                 WAKE_DROPPED

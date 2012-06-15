@@ -49,7 +49,7 @@
         <item>b1b2b5_venezuela_movilnet</item>
     </string-array>
 
-    <string-array name="pref_keypad_type_entries">
+    <string-array name="pref_keypad_pri_entries">
         <item>azerty</item>
         <item>euro-qwerty</item>
         <item>qwerty</item>
@@ -58,7 +58,7 @@
         <item>swe-qwerty</item>
     </string-array>
 
-    <string-array name="pref_keypad_type_values" translatable="false">
+    <string-array name="pref_keypad_pri_values" translatable="false">
         <item>azerty</item>
         <item>euro_qwerty</item>
         <item>qwerty</item>
@@ -67,21 +67,19 @@
         <item>swe_qwerty</item>
     </string-array>
 
-    <string-array name="pref_keypad_type_sec_entries">
+    <string-array name="pref_keypad_sec_entries">
         <item>none</item>
         <item>Arabic</item>
         <item>Cyrillic (phonetic)</item>
         <item>Hebrew</item>
         <item>Russian</item>
-        <item>Russian (prototype)</item>
     </string-array>
 
-    <string-array name="pref_keypad_type_sec_values" translatable="false">
+    <string-array name="pref_keypad_sec_values" translatable="false">
         <item>none</item>
         <item>arabic</item>
         <item>cyrillic</item>
         <item>hebrew</item>
-        <item>russian2</item>
         <item>russian</item>
     </string-array>
 

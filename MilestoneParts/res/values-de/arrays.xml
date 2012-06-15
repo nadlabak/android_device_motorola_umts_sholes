@@ -17,13 +17,12 @@
 
 <resources>
 
-  <string-array name="pref_keypad_type_sec_entries">
+  <string-array name="pref_keypad_sec_entries">
     <item>keine</item>
     <item>arabisch</item>
     <item>kyrillisch (phonetisch)</item>
     <item>hebräisch</item>
     <item>russisch</item>
-    <item>russisch (Prototyp)</item>
   </string-array>
 
   <string-array name="pref_keypad_multipress_entries">
