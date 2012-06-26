@@ -91,8 +91,15 @@ setprop ro.sys.atvc_allow_efem 0
     insmod /system/lib/modules/dsifix.ko
     insmod /system/lib/modules/slow-work.ko
     insmod /system/lib/modules/nls_utf8.ko
+    insmod /system/lib/modules/iptable_raw.ko
     insmod /system/lib/modules/xt_multiport.ko
+    insmod /system/lib/modules/xt_tcpmss.ko
     insmod /system/lib/modules/xt_TCPMSS.ko
+    insmod /system/lib/modules/ip6_tables.ko
+    insmod /system/lib/modules/ip6t_LOG.ko
+    insmod /system/lib/modules/ip6t_REJECT.ko
+    insmod /system/lib/modules/ip6table_filter.ko
+    insmod /system/lib/modules/ip6table_raw.ko
     insmod /system/lib/modules/xt_quota2.ko
     insmod /system/lib/modules/xt_owner2.ko
     insmod /system/lib/modules/tun.ko
