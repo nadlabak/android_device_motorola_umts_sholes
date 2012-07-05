@@ -29,11 +29,11 @@ wifi.supplicant_scan_interval = 45
 ro.opengles.version = 131072
 
 # limit the usage of hw renderer to the listed processes only (0 - any)
-hwui.whitelist=com.android.browser_com.android.chrome
+hwui.whitelist=0
 
 # disable the usage of hw renderer for the listed processes
 # (unused if whitelist is different from 0)
-hwui.blacklist=com.google.android.gallery3d_com.google.android.music:ui
+hwui.blacklist=none
 
 # This is a high density device with more memory, so larger vm heaps for it.
 dalvik.vm.heapsize=30m
