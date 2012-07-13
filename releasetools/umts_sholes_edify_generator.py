@@ -101,10 +101,10 @@ class EdifyGenerator(object):
            ");")
     self.script.append(self._WordWrap(cmd))
 
-  def RunTtsMoveTool(self):
-    self.script.append('package_extract_file("system/bin/ttsmovetool.sh", "/tmp/ttsmovetool.sh");')
-    self.script.append('set_perm(0, 0, 0777, "/tmp/ttsmovetool.sh");')
-    self.script.append('run_program("/tmp/ttsmovetool.sh");')
+  def RunInstallTool(self):
+    self.script.append('package_extract_file("system/bin/install_tool.sh", "/tmp/install_tool.sh");')
+    self.script.append('set_perm(0, 0, 0777, "/tmp/install_tool.sh");')
+    self.script.append('run_program("/tmp/install_tool.sh");')
 
   def AddLib2extSymlink(self):
     self.script.append('symlink("/system/etc/init.d/08lib2ext", "/system/xbin/lib2ext");')

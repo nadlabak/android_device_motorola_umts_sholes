@@ -417,7 +417,7 @@ def WriteFullOTAPackage(input_zip, output_zip):
 #  common.ZipWriteStr(output_zip, "boot.img", boot_img.data)
   script.ShowProgress(0.2, 0)
 
-  script.RunTtsMoveTool()
+  script.RunInstallTool()
 
   if OPTIONS.backuptool:
     script.ShowProgress(0.2, 10)
