@@ -35,7 +35,8 @@ hwui.whitelist=0
 # (unused if whitelist is different from 0)
 hwui.blacklist=none
 
-# This is a high density device with more memory, so larger vm heaps for it.
+# this is a sub-standard high density phone
+dalvik.vm.heapstartsize=5m
 dalvik.vm.heapsize=30m
 
 # store dalvik-cache of everything in /data

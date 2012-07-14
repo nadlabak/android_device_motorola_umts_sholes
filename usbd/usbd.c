@@ -30,8 +30,8 @@
 #include <cutils/properties.h>
 #include <cutils/sockets.h>
 
-/* for LOGI, LOGE, etc. */
-#define LOG_TAG "usbd"
+/* for ALOGI, ALOGE, etc. */
+#define ALOG_TAG "usbd"
 #include <cutils/log.h>
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
@@ -227,19 +227,19 @@ static int open_uevent_socket(void)
 	uevent_fd = socket(PF_NETLINK, SOCK_DGRAM, NETLINK_KOBJECT_UEVENT);
 	if (uevent_fd < 0)
 	{
-		LOGE("%s(): Unable to create uevent socket '%s'\n", __func__, strerror(errno));
+		ALOGE("%s(): Unable to create uevent socket '%s'\n", __func__, strerror(errno));
 		return -1;
 	}
 	
 	if (setsockopt(uevent_fd, SOL_SOCKET, SO_RCVBUFFORCE, &sz, sizeof(sz)) < 0) 
 	{
-		LOGE("%s(): Unable to set uevent socket options '%s'\n", __func__, strerror(errno));
+		ALOGE("%s(): Unable to set uevent socket options '%s'\n", __func__, strerror(errno));
 		return -1;
 	}
 	
 	if (bind(uevent_fd, (struct sockaddr *) &addr, sizeof(addr)) < 0)
 	{
-		LOGE("%s(): Unable to bind uevent socket '%s'\n", __func__, strerror(errno));
+		ALOGE("%s(): Unable to bind uevent socket '%s'\n", __func__, strerror(errno));
 		return -1;
 	}
 	
@@ -253,13 +253,13 @@ static int init_usdb_socket()
 	
 	if (usbd_socket_fd < 0)
 	{
-		LOGE("%s(): Obtaining file descriptor socket 'usbd' failed: %s\n", __func__, strerror(errno));
+		ALOGE("%s(): Obtaining file descriptor socket 'usbd' failed: %s\n", __func__, strerror(errno));
 		return 1;
 	}
 	
 	if (listen(usbd_socket_fd, 4) < 0)
 	{
-		LOGE("%s(): Unable to listen on fd '%d' for socket 'usbd': %s", __func__, usbd_socket_fd, strerror(errno));
+		ALOGE("%s(): Unable to listen on fd '%d' for socket 'usbd': %s", __func__, usbd_socket_fd, strerror(errno));
 		return 1;
 	}
 	
@@ -306,13 +306,13 @@ static int usbd_send_adb_status(int sockfd, int status)
 	
 	if (status == 1)
 	{
-		LOGI("%s(): Send ADB Enable message\n", __func__);
+		ALOGI("%s(): Send ADB Enable message\n", __func__);
 		ret = write(sockfd, USBD_ADB_STATUS_ON, strlen(USBD_ADB_STATUS_ON) + 1);
 		
 	}
 	else
 	{
-		LOGI("%s(): Send ADB Disable message\n", __func__);
+		ALOGI("%s(): Send ADB Disable message\n", __func__);
 		ret = write(sockfd, USBD_ADB_STATUS_OFF, strlen(USBD_ADB_STATUS_OFF) + 1);
 	}
 	
@@ -344,12 +344,12 @@ static int usbd_get_mode_index(const char* mode, enum usb_mode_get_t usbmod)
 				break;
 				
 			default:
-				LOGE("%s(): %d is not valid usb mode type\n", __func__, usbmod);
+				ALOGE("%s(): %d is not valid usb mode type\n", __func__, usbmod);
 				return -1;
 		}
 	}
 	
-	LOGE("%s(): %s is not valid usb mode\n", __func__, mode);
+	ALOGE("%s(): %s is not valid usb mode\n", __func__, mode);
 	return -1;
 }
 
@@ -380,8 +380,8 @@ static int usbd_set_usb_mode(int new_mode)
 			(!strcmp(mode_str, USB_MODE_MSC USB_MODE_ADB_SUFFIX) && !strcmp(current_mode_str, USB_MODE_CHARGE_ADB)))
 		{
 			usb_current_mode = new_mode;
-			LOGI("%s(): new_mode: %s\n", __func__, mode_str);
-			LOGI("%s(): handling on my own, not alerting kernel\n", __func__);
+			ALOGI("%s(): new_mode: %s\n", __func__, mode_str);
+			ALOGI("%s(): handling on my own, not alerting kernel\n", __func__);
 			return 1;
 		}
 		
@@ -392,12 +392,12 @@ static int usbd_set_usb_mode(int new_mode)
 		
 		if (write(usb_device_fd, mode_str, strlen(mode_str) + 1) < 0)
 		{
-			LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
+			ALOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
 			return -1;
 		}
 		
 		usb_current_mode = new_mode;
-		LOGI("%s(): new_mode: %s\n", __func__, mode_str);
+		ALOGI("%s(): new_mode: %s\n", __func__, mode_str);
 		return 0;
 	}
 	else if (new_mode == 0)
@@ -408,7 +408,7 @@ static int usbd_set_usb_mode(int new_mode)
 	}
 	else
 	{
-		LOGE("%s(): Cannot set usb mode to '%d'\n", __func__, new_mode);
+		ALOGE("%s(): Cannot set usb mode to '%d'\n", __func__, new_mode);
 		return -1;
 	}
 }
@@ -424,7 +424,7 @@ static int usbd_get_cable_status(void)
 	
 	if (!f)
 	{
-		LOGE("%s: Unable to open power_supply model_name file '%s'\n", __func__, strerror(errno));
+		ALOGE("%s: Unable to open power_supply model_name file '%s'\n", __func__, strerror(errno));
 		return -errno;
 	}
 	
@@ -432,13 +432,13 @@ static int usbd_get_cable_status(void)
 	if (!fgets(buffer, ARRAY_SIZE(buffer), f))
 	{
 		fclose(f);
-		LOGE("%s: Unable to read power supply model_name for cable type\n", __func__);
+		ALOGE("%s: Unable to read power supply model_name for cable type\n", __func__);
 		return -EIO;
 	}
 	
 	/* Remove linefeed */
 	buffer[strlen(buffer) - 1] = '\0';
-	LOGI("%s(): cable_type = %s\n", __func__, buffer);
+	ALOGI("%s(): cable_type = %s\n", __func__, buffer);
 	
 	if (!strcmp(buffer, USB_INPUT_CABLE_NORMAL))
 		usb_factory_cable = 0;
@@ -455,7 +455,7 @@ static int usbd_get_cable_status(void)
 	
 	if (!f)
 	{
-		LOGE("%s: Unable to open power_supply online file '%s'\n", __func__, strerror(errno));
+		ALOGE("%s: Unable to open power_supply online file '%s'\n", __func__, strerror(errno));
 		return -errno;
 	}
 	
@@ -463,7 +463,7 @@ static int usbd_get_cable_status(void)
 	if (!fgets(buffer, ARRAY_SIZE(buffer), f))
 	{
 		fclose(f);
-		LOGE("%s: Unable to read power supply online stat\n", __func__);
+		ALOGE("%s: Unable to read power supply online stat\n", __func__);
 		return -EIO;
 	}
 	
@@ -480,7 +480,7 @@ static int usbd_get_cable_status(void)
 		usb_state = USBDSTAT_CABLE_DISCONNECTED;
 	}
 	
-	LOGI("%s(): current usb_online = %d\n", __func__, usb_online);
+	ALOGI("%s(): current usb_online = %d\n", __func__, usb_online);
 	fclose(f);
 	
 	return 0;
@@ -516,10 +516,10 @@ static int usbd_notify_current_status(int sockfd)
 	
 	if (event_msg)
 	{
-		LOGI("%s(): Notifying App with Current Status : %s\n", __func__, event_msg);
+		ALOGI("%s(): Notifying App with Current Status : %s\n", __func__, event_msg);
 		if (write(sockfd, event_msg, strlen(event_msg) + 1) < 0)
 		{
-			LOGE("%s(): Write Error : Notifying App with Current Status\n", __func__);
+			ALOGE("%s(): Write Error : Notifying App with Current Status\n", __func__);
 			return 1;
 		}
 	}
@@ -531,16 +531,16 @@ static int usbd_notify_current_status(int sockfd)
 /* send usb mode to the Usb.apk */
 static int usbd_enum_process(int sockfd)
 {	
-	LOGI("%s(): current usb mode = %d\n", __func__, usb_current_mode);
+	ALOGI("%s(): current usb mode = %d\n", __func__, usb_current_mode);
 	
 	if (write(sockfd, usb_modes[usb_current_mode].start, strlen(usb_modes[usb_current_mode].start) + 1) < 0)
 	{
-		LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
+		ALOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
 		return 1;
 	}
 	else
 	{
-		LOGI("%s(): enum done\n", __func__);
+		ALOGI("%s(): enum done\n", __func__);
 		return 0;
 	}
 	
@@ -558,21 +558,21 @@ static int usbd_socket_event(int sockfd)
 	
 	if (res < 0)
 	{
-		LOGE("%s(): Socket Read Failure: %s", __func__, strerror(errno));
+		ALOGE("%s(): Socket Read Failure: %s", __func__, strerror(errno));
 		return 1;
 	}
 	else if (res)
 	{
-		LOGI("%s(): received %s\n", __func__, buffer);
+		ALOGI("%s(): received %s\n", __func__, buffer);
 		new_mode = usbd_get_mode_index(buffer, USBMOD_MODE);
 		
 		if (new_mode < 0)
 		{
-			LOGE("%s(): %s is not valid usb mode\n", __func__, buffer);
+			ALOGE("%s(): %s is not valid usb mode\n", __func__, buffer);
 			return 1;
 		}
 		
-		LOGI("%s(): Matched new usb mode = %d , current mode = %d\n", __func__, new_mode, usb_current_mode);
+		ALOGI("%s(): Matched new usb mode = %d , current mode = %d\n", __func__, new_mode, usb_current_mode);
 		
 		if (!new_mode)
 		{
@@ -589,7 +589,7 @@ static int usbd_socket_event(int sockfd)
 		
 		if (write(sockfd, buffer, strlen(buffer) + 1) < 0)
 		{
-			LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
+			ALOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
 			return 1;
 		}
 		
@@ -598,7 +598,7 @@ static int usbd_socket_event(int sockfd)
 		{
 			if (write(sockfd, usb_modes[usb_current_mode].start, strlen(usb_modes[usb_current_mode].start) + 1) < 0)
 			{
-				LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
+				ALOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
 				return 1;
 			}
 			
@@ -612,7 +612,7 @@ static int usbd_socket_event(int sockfd)
 			{
 				if (write(sockfd, usb_modes[usb_current_mode].start, strlen(usb_modes[usb_current_mode].start) + 1) < 0)
 				{
-					LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
+					ALOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
 					return 1;
 				}
 			}
@@ -623,7 +623,7 @@ static int usbd_socket_event(int sockfd)
 	}
 	else
 	{
-		LOGI("%s(): Socket Connection Closed\n", __func__);
+		ALOGI("%s(): Socket Connection Closed\n", __func__);
 		return 1;
 	}
 }
@@ -676,24 +676,24 @@ static int process_usb_uevent_message()
 		else if (!strcmp(power_supply_model_name, "factory"))
 			usb_factory_cable = 1;
 		
-		LOGI("%s(): cable type: %s\n", __func__, power_supply_model_name);
+		ALOGI("%s(): cable type: %s\n", __func__, power_supply_model_name);
 	}
 	else
-		LOGI("%s(): cable type not specified in USB Event\n", __func__);
+		ALOGI("%s(): cable type not specified in USB Event\n", __func__);
 	
 	/* Check if we have power supply */
 	if (power_supply_online)
 	{
 		if (!strcmp(power_supply_online, "1"))
 		{
-			LOGI("%s(): USB online\n", __func__);
+			ALOGI("%s(): USB online\n", __func__);
 			usb_state = USBDSTAT_CABLE_CONNECTED;
 			usb_online = 1;
 			return 0;
 		}
 		else if (!strcmp(power_supply_online, "0"))
 		{
-			LOGI("%s(): USB offline\n", __func__);
+			ALOGI("%s(): USB offline\n", __func__);
 			usb_got_descriptor = 0;
 			usb_state = USBDSTAT_CABLE_DISCONNECTED;
 			usb_online = 0;
@@ -702,13 +702,13 @@ static int process_usb_uevent_message()
 		}
 		else
 		{
-			LOGE("%s(): Unknown USB State\n", __func__);
+			ALOGE("%s(): Unknown USB State\n", __func__);
 			return 1;
 		}
 	}
 	else
 	{
-		LOGE("%s(): Did not receive USB state\n", __func__);
+		ALOGE("%s(): Did not receive USB state\n", __func__);
 		return 1;
 	}
 }
@@ -723,15 +723,15 @@ static int usb_req_mode_switch(const char* new_mode)
 	if (new_mode_index < 0)
 		return 1;
 	
-	LOGI("%s(): switch_req=%s\n", __func__, new_mode);
+	ALOGI("%s(): switch_req=%s\n", __func__, new_mode);
 	
 	if (usbd_app_fd >= 0)
 	{
-		LOGI("%s(): usb switch to %s\n", __func__, new_mode);
+		ALOGI("%s(): usb switch to %s\n", __func__, new_mode);
 		
 		if (write(usbd_app_fd, usb_modes[new_mode_index].req_switch, strlen(usb_modes[new_mode_index].req_switch) + 1) < 0)
 		{
-			LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
+			ALOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
 			close(usbd_app_fd);
 			usbd_app_fd = -1;
 			return 1;
@@ -755,35 +755,35 @@ int main(int argc, char **argv)
 	int sockfd;
 	fd_set socks;
 	
-	LOGI("%s(): Start usbd - version " USBD_VER "\n", __func__);
+	ALOGI("%s(): Start usbd - version " USBD_VER "\n", __func__);
 	
 	/* init uevent */
-	LOGI("%s(): Initializing uevent_socket \n", __func__);
+	ALOGI("%s(): Initializing uevent_socket \n", __func__);
 	if (open_uevent_socket())
 		return 1;
 	
 	/* open device mode */
-	LOGI("%s(): Initializing usb_device_mode \n", __func__);
+	ALOGI("%s(): Initializing usb_device_mode \n", __func__);
 	usb_device_fd = open("/dev/usb_device_mode", O_RDWR);
 	
 	if (usb_device_fd < 0)
 	{
-		LOGE("%s(): Unable to open usb_device_mode '%s'\n", __func__, strerror(errno));
+		ALOGE("%s(): Unable to open usb_device_mode '%s'\n", __func__, strerror(errno));
 		return 1;
 	}
 	
 	/* init usdb socket */
-	LOGI("%s(): Initializing usbd socket \n", __func__);
+	ALOGI("%s(): Initializing usbd socket \n", __func__);
 	if (init_usdb_socket())
 	{
-		LOGE("%s(): failed to create socket server '%s'\n", __func__, strerror(errno));
+		ALOGE("%s(): failed to create socket server '%s'\n", __func__, strerror(errno));
 		return 1;
 	}
 	
 	/* init cable status */
 	if (usbd_get_cable_status() < 0)
 	{
-		LOGE("%s(): failed to get cable status\n", __func__);
+		ALOGE("%s(): failed to get cable status\n", __func__);
 		return 1;
 	}
 	
@@ -792,7 +792,7 @@ int main(int argc, char **argv)
 	else
 		cable_msg = "Cable Detached";
 	
-	LOGI("%s(): Initial Cable State = %s\n", __func__, cable_msg);
+	ALOGI("%s(): Initial Cable State = %s\n", __func__, cable_msg);
 	
 	while (1)
 	{
@@ -819,10 +819,10 @@ int main(int argc, char **argv)
 			else
 			{
 				if (last_sent_usb_online == usb_online)
-					LOGI("%s(): Spurious Cable Event, Ignore \n", __func__);
+					ALOGI("%s(): Spurious Cable Event, Ignore \n", __func__);
 				else
 				{
-					LOGI("%s(): Cable Status Changed, need to notify Cable Status to App \n", __func__);
+					ALOGI("%s(): Cable Status Changed, need to notify Cable Status to App \n", __func__);
 					
 					if (usbd_app_fd < 0)
 						last_sent_usb_online = usb_online;
@@ -843,12 +843,12 @@ int main(int argc, char **argv)
 		/* usb device fd */
 		if (FD_ISSET(usb_device_fd, &socks))
 		{
-			LOGI("%s(): get event from usb_device_fd\n", __func__);
+			ALOGI("%s(): get event from usb_device_fd\n", __func__);
 			memset(buffer, 0, sizeof(buffer));
 			
 			if (read(usb_device_fd, buffer, ARRAY_SIZE(buffer)) > 0 && !usb_factory_cable)
 			{
-				LOGI("%s(): devbuf: %s\n"
+				ALOGI("%s(): devbuf: %s\n"
 				     "rc: %d usbd_state: %d\n", __func__, buffer, strlen(buffer), usb_state);
 				
 				/* PC switch buffer */
@@ -859,7 +859,7 @@ int main(int argc, char **argv)
 				else
 					memset(pc_switch_buf, 0, sizeof(pc_switch_buf)); 
 				
-				LOGI("%s(): pc_switch_buf = %s\n", __func__, pc_switch_buf);
+				ALOGI("%s(): pc_switch_buf = %s\n", __func__, pc_switch_buf);
 				
 				/* ADB enable buffer */
 				pch = strtok(NULL, ":");
@@ -869,7 +869,7 @@ int main(int argc, char **argv)
 				else
 					memset(adb_enable_buf, 0, sizeof(adb_enable_buf)); 
 				
-				LOGI("%s(): adb_enable_buf = %s\n", __func__, adb_enable_buf);
+				ALOGI("%s(): adb_enable_buf = %s\n", __func__, adb_enable_buf);
 								
 				/* Enumeration */
 				pch = strtok(NULL, ":");
@@ -877,7 +877,7 @@ int main(int argc, char **argv)
 				if (pch != NULL)
 				{
 					strcpy(enum_buf, pch);
-					LOGI("%s(): enum_buf: %s\n", __func__, enum_buf);
+					ALOGI("%s(): enum_buf: %s\n", __func__, enum_buf);
 				}
 				else
 					memset(enum_buf, 0, sizeof(enum_buf));
@@ -902,11 +902,11 @@ int main(int argc, char **argv)
 					if (usb_got_descriptor == 1)
 					{
 						usb_state = USBDSTAT_GET_DESCRIPTOR;
-						LOGI("%s(): received get_descriptor, enum in progress\n", __func__);
+						ALOGI("%s(): received get_descriptor, enum in progress\n", __func__);
 						
 						if (usbd_app_fd >= 0)
 						{
-							LOGI("%s(): Notifying Apps that Get_Descriptor was called...\n", __func__);
+							ALOGI("%s(): Notifying Apps that Get_Descriptor was called...\n", __func__);
 							if (write(usbd_app_fd, USBD_EVENT_GET_DESCRIPTOR, strlen(USBD_EVENT_GET_DESCRIPTOR) + 1) < 0)
 							{
 								close(usbd_app_fd);
@@ -917,8 +917,8 @@ int main(int argc, char **argv)
 				}
 				else if (!strncmp(enum_buf, USBD_DEV_EVENT_USB_ENUMERATED, strlen(USBD_DEV_EVENT_USB_ENUMERATED)))
 				{
-					LOGI("%s(): received enumerated\n", __func__);
-					LOGI("%s(): usbd_app_fd  = %d\n", __func__, usbd_app_fd);
+					ALOGI("%s(): received enumerated\n", __func__);
+					ALOGI("%s(): usbd_app_fd  = %d\n", __func__, usbd_app_fd);
 					usb_state = USBDSTAT_USB_ENUMERATED;
 					
 					if (usbd_app_fd >= 0 && usbd_enum_process(usbd_app_fd))
@@ -934,19 +934,19 @@ int main(int argc, char **argv)
 		/* socket */
 		if (FD_ISSET(usbd_socket_fd, &socks))
 		{
-			LOGI("%s(): get event from usbd server fd\n", __func__);
+			ALOGI("%s(): get event from usbd server fd\n", __func__);
 			
 			sockfd = accept(usbd_socket_fd, &addr, &addr_len);
 			if (sockfd >= 0)
 			{
 				if (usbd_app_fd >= 0)
 				{
-					LOGI("%s(): New socket connection is not supported\n", __func__);
+					ALOGI("%s(): New socket connection is not supported\n", __func__);
 					close(sockfd);
 				}
 				else
 				{
-					LOGI("%s(): Estabilished socket connection with the App\n", __func__);
+					ALOGI("%s(): Estabilished socket connection with the App\n", __func__);
 					
 					usbd_app_fd = sockfd;
 					usbd_send_adb_status(usbd_app_fd, get_adb_enabled_status());
@@ -957,7 +957,7 @@ int main(int argc, char **argv)
 		
 		if (usbd_app_fd >= 0 && FD_ISSET(usbd_app_fd, &socks))
 		{
-			LOGI("%s(): Read and handle a pending message from the App\n", __func__);
+			ALOGI("%s(): Read and handle a pending message from the App\n", __func__);
 			
 			if (usbd_socket_event(usbd_app_fd))
 			{

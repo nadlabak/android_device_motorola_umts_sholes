@@ -1,4 +1,6 @@
 # Copyright 2005 The Android Open Source Project
+ifeq ($(TARGET_BOOTLOADER_BOARD_NAME),sholes)
+
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
@@ -11,3 +13,5 @@ LOCAL_MODULE := mot_boot_mode
 LOCAL_SHARED_LIBRARIES := libcutils libc
 
 include $(BUILD_EXECUTABLE)
+
+endif
