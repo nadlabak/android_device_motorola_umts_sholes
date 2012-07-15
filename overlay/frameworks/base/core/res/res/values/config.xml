@@ -358,10 +358,6 @@ should be empty. -->
     <!-- Allows the light sensor to be ignored when flashlight is on -->
 <!--    <bool name="config_flashlight_affects_lightsensor">true</bool> -->
 
-    <string-array name="config_vendorServices">
-       <item>/system/framework/com.motorola.android.location.jar:com.android.server.LocationProxyService</item>
-    </string-array>
-
     <!-- LUN file to be used by legacy USB manager.
     The existence of this file will be used to determine if the
     legacy USB manager should be started. -->
