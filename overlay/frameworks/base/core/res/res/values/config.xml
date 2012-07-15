@@ -123,8 +123,8 @@ should be empty. -->
 
     <!-- Flag indicating whether the keyguard should be bypassed when
          the slider is open.  This can be set or unset depending how easily
-         the slider can be opened (for example, in a pocket or purse). -->
-    <bool name="config_bypass_keyguard_if_slider_open">false</bool>
+         the slider can be opened (for example, in a pocket or purse).
+    <bool name="config_bypass_keyguard_if_slider_open">false</bool> -->
     
     <!-- Flag indicating whether the we should enable the automatic brightness in Settings.
          Software implementation will be used if config_hardware_auto_brightness_available is not set -->
@@ -300,8 +300,8 @@ should be empty. -->
     </integer-array>
 
     <!-- Flag indicating whether the button and keyboard backlights need the light
-         sensor always enabled. -->
-    <bool name="config_alwaysEnableLightSensor">true</bool>
+         sensor always enabled.
+    <bool name="config_alwaysEnableLightSensor">true</bool>-->
 
     <!-- Amount of time it takes for the light sensor to warm up in milliseconds.
          For this time after the screen turns on, the Power Manager
