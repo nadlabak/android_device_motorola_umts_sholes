@@ -242,8 +242,8 @@ public class DeviceSettings extends PreferenceActivity implements
             String keypad = (String) newValue;
             SystemProperties.set(KEYPAD_PRI_PERSIST_PROP, keypad);
             SystemProperties.set(KEYPAD_CURRENT_PROP, mKeypadPrefix + keypad);
-            Settings.System.putString(getApplicationContext().getContentResolver(),
-                    Settings.System.KEYLAYOUT_OVERRIDES, KEYLAYOUT + keypad);
+/*            Settings.System.putString(getApplicationContext().getContentResolver(),
+                    Settings.System.KEYLAYOUT_OVERRIDES, KEYLAYOUT + keypad);*/
             mKeypadPriPref.setSummary(String.format(mKeypadPriSum,
                     mKeypadPriPref.getEntries()[mKeypadPriPref.findIndexOfValue(keypad)]));
             keypadChanged();
@@ -286,8 +286,8 @@ public class DeviceSettings extends PreferenceActivity implements
             String keypad = SystemProperties.get(KEYPAD_PRI_PERSIST_PROP, KEYPAD_PRI_DEFAULT);
             mKeypadPrefix = SystemProperties.get(KEYPAD_PREFIX_PROP, KEYPAD_PREFIX_DEFAULT);
             SystemProperties.set(KEYPAD_CURRENT_PROP, mKeypadPrefix + keypad);
-            Settings.System.putString(context.getContentResolver(),
-                    Settings.System.KEYLAYOUT_OVERRIDES, KEYLAYOUT + keypad);
+/*            Settings.System.putString(context.getContentResolver(),
+                    Settings.System.KEYLAYOUT_OVERRIDES, KEYLAYOUT + keypad);*/
         }
     }
 }
