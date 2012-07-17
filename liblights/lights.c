@@ -15,7 +15,7 @@
  */
 
 
-#define ALOG_TAG "lights"
+#define LOG_TAG "lights"
 
 #include <cutils/log.h>
 

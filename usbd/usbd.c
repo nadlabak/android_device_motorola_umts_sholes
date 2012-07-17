@@ -31,7 +31,7 @@
 #include <cutils/sockets.h>
 
 /* for ALOGI, ALOGE, etc. */
-#define ALOG_TAG "usbd"
+#define LOG_TAG "usbd"
 #include <cutils/log.h>
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
