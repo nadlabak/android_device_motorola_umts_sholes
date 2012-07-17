@@ -935,7 +935,8 @@ int main(int argc, char **argv)
 		if (FD_ISSET(usbd_socket_fd, &socks))
 		{
 			ALOGI("%s(): get event from usbd server fd\n", __func__);
-			
+
+			addr_len = sizeof(addr);
 			sockfd = accept(usbd_socket_fd, &addr, &addr_len);
 			if (sockfd >= 0)
 			{
@@ -952,6 +953,8 @@ int main(int argc, char **argv)
 					usbd_send_adb_status(usbd_app_fd, get_adb_enabled_status());
 					usbd_notify_current_status(usbd_app_fd);
 				}
+			} else {
+			    ALOGE("%s(): Socket accept error %s, addr_len: %d\n", __func__, strerror(errno), addr_len);
 			}
 		}
 		
