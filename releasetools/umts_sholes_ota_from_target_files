@@ -425,8 +425,6 @@ def WriteFullOTAPackage(input_zip, output_zip):
 
   script.RunModelidCfg()
 
-  script.RunVerifyCachePartitionSize()
-
   script.ShowProgress(0.2, 10)
   script.WriteRawImage("/boot", "boot.img")
 

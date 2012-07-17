@@ -204,14 +204,15 @@ class EdifyGenerator(object):
     fstab = self.info.get("fstab", None)
     if fstab:
       p = fstab[partition]
-      self.script.append('format("%s", "%s", "%s", 0);' %
-                         (p.fs_type, common.PARTITION_TYPES[p.fs_type], p.device))
+      self.script.append('format("%s", "%s", "%s", "%s", "%s");' %
+                         (p.fs_type, common.PARTITION_TYPES[p.fs_type],
+                          p.device, p.length, p.mount_point))
     else:
       # older target-files without per-partition types
-      partition = self.info.get("partition_path", "") + partition.lstrip("/")
-      self.script.append('format("%s", "%s", "%s", 0);' %
+      partitionstr = self.info.get("partition_path", "") + partition.lstrip("/")
+      self.script.append('format("%s", "%s", "%s", 0, "%s");' %
                          (self.info["fs_type"], self.info["partition_type"],
-                          partition))
+                          partitionstr, partition))
 
   def DeleteFiles(self, file_list):
     """Delete all files in file_list."""
