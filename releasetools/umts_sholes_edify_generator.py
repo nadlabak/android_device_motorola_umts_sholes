@@ -184,8 +184,8 @@ class EdifyGenerator(object):
   def Unmount(self, mount_point):
     """Unmount the partiiton with the given mount_point."""
     if mount_point in self.mounts:
-    self.mounts.remove(mount_point)
-    self.script.append('unmount("%s");' % (mount_point,))
+      self.mounts.remove(mount_point)
+      self.script.append('unmount("%s");' % (mount_point,))
 
   def UnpackPackageDir(self, src, dst):
     """Unpack a given directory from the OTA package into the given
