@@ -54,6 +54,9 @@ cd $REPACK/ota
 printf "Unpacking $OTAPACKAGE..."
 unzip $QUIET $OTAPACKAGE
 echo
+cd $REPACK/ota/system/lib
+# Delete unwanted libs
+rm -f libvideoeditor*
 cd $REPACK/ota/system/framework
 $OPTICHARGER framework-res.apk
 cd $REPACK/ota/system/app
