@@ -111,7 +111,8 @@ PRODUCT_PACKAGES += \
     charge_only_mode \
     usbd \
     HwaSettings \
-    make_ext4fs
+    make_ext4fs \
+    fs_mgr
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
