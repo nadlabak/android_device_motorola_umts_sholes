@@ -64,6 +64,15 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/sysctl.conf:system/etc/sysctl.conf
 
+# TLS enable hack
+# /system/bin/sinsmo - statically compiled toolbox with only insmod tool
+# /system/sbin/mksh - statically compiled mksh (with sh-hijack),
+# used only before 2nd-init to insmod the tls-enable.ko module
+PRODUCT_COPY_FILES += \
+    device/motorola/umts_sholes/prebuilt/sbin/mksh:system/sbin/mksh \
+    device/motorola/umts_sholes/prebuilt/bin/sinsmo:system/bin/sinsmo \
+    device/motorola/umts_sholes/prebuilt/lib/modules/tls-enable.ko:system/lib/modules/tls-enable.ko
+
 # ICS sound
 PRODUCT_PACKAGES += \
 hcitool hciattach hcidump \
