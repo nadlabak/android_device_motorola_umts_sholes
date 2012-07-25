@@ -1,4 +1,7 @@
 #!/system/bin/sh
+   /system/bin/sinsmo /system/lib/modules/tls-enable.ko
+   /system/xbin/mount -t tmpfs -o size=4k tmpfs /system/sbin
+   /system/xbin/ln -s /system/bin/sh.bin /system/sbin/mksh
    /system/xbin/mount -o remount,rw rootfs /
    /system/xbin/rmdir /config
    /system/xbin/rm -f /sbin/charge_only_mode
