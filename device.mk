@@ -77,7 +77,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
 hcitool hciattach hcidump \
 libaudioutils audio.a2dp.default audio_policy.sholes \
-libaudiohw_legacy audio.primary.omap3
+libaudiohw_legacy audio.primary.sholes
 
 PRODUCT_PACKAGES += \
     e2fsck \
