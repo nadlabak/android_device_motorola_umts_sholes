@@ -1,0 +1,9 @@
+type OVERLAY
+
+map key 217 LANGUAGE_SWITCH
+map key 229 SEARCH
+
+key LANGUAGE_SWITCH {
+    alt:                        fallback MENU
+}
+

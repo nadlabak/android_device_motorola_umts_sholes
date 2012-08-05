@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<keyboard-layouts xmlns:android="http://schemas.android.com/apk/res/android">
+    <keyboard-layout android:name="sholes_keypad_arabic"
+            android:label="@string/sholes_keypad_arabic_label"
+            android:keyboardLayout="@raw/sholes_keypad_arabic" />
+
+    <keyboard-layout android:name="sholes_keypad_azerty"
+            android:label="@string/sholes_keypad_azerty_label"
+            android:keyboardLayout="@raw/sholes_keypad_azerty" />
+
+    <keyboard-layout android:name="sholes_keypad_cyrillic"
+            android:label="@string/sholes_keypad_cyrillic_label"
+            android:keyboardLayout="@raw/sholes_keypad_cyrillic" />
+
+    <keyboard-layout android:name="sholes_keypad_euro_qwerty"
+            android:label="@string/sholes_keypad_euro_qwerty_label"
+            android:keyboardLayout="@raw/sholes_keypad_euro_qwerty" />
+
+    <keyboard-layout android:name="sholes_keypad_hebrew"
+            android:label="@string/sholes_keypad_hebrew_label"
+            android:keyboardLayout="@raw/sholes_keypad_hebrew" />
+
+    <keyboard-layout android:name="sholes_keypad_qwerty"
+            android:label="@string/sholes_keypad_qwerty_label"
+            android:keyboardLayout="@raw/sholes_keypad_qwerty" />
+
+    <keyboard-layout android:name="sholes_keypad_qwertz"
+            android:label="@string/sholes_keypad_qwertz_label"
+            android:keyboardLayout="@raw/sholes_keypad_qwertz" />
+
+    <keyboard-layout android:name="sholes_keypad_russian"
+            android:label="@string/sholes_keypad_russian_label"
+            android:keyboardLayout="@raw/sholes_keypad_russian" />
+
+    <keyboard-layout android:name="sholes_keypad_russian_qwerty"
+            android:label="@string/sholes_keypad_russian_qwerty_label"
+            android:keyboardLayout="@raw/sholes_keypad_russian_qwerty" />
+
+    <keyboard-layout android:name="sholes_keypad_swe_qwerty"
+            android:label="@string/sholes_keypad_swe_qwerty_label"
+            android:keyboardLayout="@raw/sholes_keypad_swe_qwerty" />
+</keyboard-layouts>

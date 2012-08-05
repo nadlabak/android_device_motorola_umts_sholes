@@ -1,4 +1,8 @@
-type ALPHA
+type OVERLAY
+
+key LANGUAGE_SWITCH {
+    alt:                        fallback MENU
+}
 
 key 0 {
     label:                              '0'
@@ -109,10 +113,10 @@ key POUND {
 }
 
 key A {
-    label:                              'Q'
+    label:                              'A'
     number:                             '1'
-    base:                               'q'
-    shift, capslock:                    'Q'
+    base:                               'a'
+    shift, capslock:                    'A'
     alt:                                '\t'
     shift+alt, capslock+alt:            none
 }
@@ -217,10 +221,10 @@ key L {
 }
 
 key M {
-    label:                              '?'
+    label:                              'M'
     number:                             '8'
-    base:                               '?'
-    shift, capslock:                    '?'
+    base:                               'm'
+    shift, capslock:                    'M'
     alt:                                '\''
     shift+alt, capslock+alt:            none
 }
@@ -253,10 +257,10 @@ key P {
 }
 
 key Q {
-    label:                              'A'
+    label:                              'Q'
     number:                             '1'
-    base:                               'a'
-    shift, capslock:                    'A'
+    base:                               'q'
+    shift, capslock:                    'Q'
     alt:                                '1'
     shift+alt, capslock+alt:            '\u0300'
 }
@@ -267,7 +271,7 @@ key R {
     base:                               'r'
     shift, capslock:                    'R'
     alt:                                '4'
-    shift+alt, capslock+alt:            '\u20ac'
+    shift+alt, capslock+alt:            '$'
 }
 
 key S {
@@ -307,10 +311,10 @@ key V {
 }
 
 key W {
-    label:                              'Z'
+    label:                              'W'
     number:                             '2'
-    base:                               'z'
-    shift, capslock:                    'Z'
+    base:                               'w'
+    shift, capslock:                    'W'
     alt:                                '2'
     shift+alt, capslock+alt:            none
 }
@@ -325,19 +329,19 @@ key X {
 }
 
 key Y {
-    label:                              'Y'
+    label:                              'Z'
     number:                             '6'
-    base:                               'y'
-    shift, capslock:                    'Y'
+    base:                               'z'
+    shift, capslock:                    'Z'
     alt:                                '6'
     shift+alt, capslock+alt:            '\u00a1'
 }
 
 key Z {
-    label:                              'W'
+    label:                              'Y'
     number:                             '2'
-    base:                               'w'
-    shift, capslock:                    'W'
+    base:                               'y'
+    shift, capslock:                    'Y'
     alt:                                '<'
     shift+alt, capslock+alt:            none
 }
@@ -424,10 +428,10 @@ key LEFT_BRACKET {
 }
 
 key RIGHT_BRACKET {
-    label:                              'M'
+    label:                              '?'
     number:                             '0'
-    base:                               'm'
-    shift, capslock:                    'M'
+    base:                               '?'
+    shift, capslock:                    ')'
     alt:                                ')'
     shift+alt, capslock+alt:            ')'
 }

@@ -34,28 +34,6 @@ public class DeviceSettings extends PreferenceActivity implements
 
     private static final String BASEBAND_DEFAULT = "b1b8";
 
-    private static final String KEYLAYOUT = "sholes-keypad,sholes-keypad-";
-
-    private static final String KEYPAD_PRI_PREF = "pref_keypad_primary";
-
-    private static final String KEYPAD_PREFIX_PROP = "ro.sys.keypad_prefix";
-
-    private static final String KEYPAD_PREFIX_DEFAULT = "sholes-keypad-";
-
-    private static final String KEYPAD_PRI_PERSIST_PROP = "persist.sys.keypad_pri";
-
-    private static final String KEYPAD_CURRENT_PROP = "sys.keypad_current";
-
-    private static final String KEYPAD_PRI_DEFAULT = "euro_qwerty";
-
-    private static final String KEYPAD_SEC_PREF = "pref_keypad_secondary";
-
-    private static final String KEYPAD_SEC_PERSIST_PROP = "persist.sys.keypad_sec";
-
-    private static final String KEYPAD_SEC_DEFAULT = "none";
-
-    private static final String KEYPAD_KEYLAYOUT_DEFAULT = "";
-
     private static final String KEYPAD_MULTIPRESS_PREF = "pref_keypad_multipress";
 
     private static final String KEYPAD_MULTIPRESS_PERSIST_PROP = "persist.sys.keypad_multipress_t";
@@ -102,10 +80,6 @@ public class DeviceSettings extends PreferenceActivity implements
 
     private static ListPreference mBasebandPref;
 
-    private static ListPreference mKeypadPriPref;
-
-    private static ListPreference mKeypadSecPref;
-
     private static ListPreference mKeypadMultipressPref;
 
     private static ListPreference mKeypadMplangPref;
@@ -125,8 +99,6 @@ public class DeviceSettings extends PreferenceActivity implements
 
         mBasebandSum = getString(R.string.pref_baseband_summary);
 
-        mKeypadPriSum = getString(R.string.pref_keypad_pri_summary);
-        mKeypadSecSum = getString(R.string.pref_keypad_sec_summary);
         mKeypadMultipressSum = getString(R.string.pref_keypad_multipress_summary);
         mKeypadMplangSum = getString(R.string.pref_keypad_mplang_summary);
 
@@ -139,19 +111,6 @@ public class DeviceSettings extends PreferenceActivity implements
         mBasebandPref.setValue(baseband);
         mBasebandPref.setSummary(String.format(mBasebandSum, mBasebandPref.getEntry()));
         mBasebandPref.setOnPreferenceChangeListener(this);
-
-        mKeypadPrefix = SystemProperties.get(KEYPAD_PREFIX_PROP, KEYPAD_PREFIX_DEFAULT);
-        mKeypadPriPref = (ListPreference) prefSet.findPreference(KEYPAD_PRI_PREF);
-        String keypad = SystemProperties.get(KEYPAD_PRI_PERSIST_PROP, KEYPAD_PRI_DEFAULT);
-        mKeypadPriPref.setValue(keypad);
-        mKeypadPriPref.setSummary(String.format(mKeypadPriSum, mKeypadPriPref.getEntry()));
-        mKeypadPriPref.setOnPreferenceChangeListener(this);
-
-        mKeypadSecPref = (ListPreference) prefSet.findPreference(KEYPAD_SEC_PREF);
-        keypad = SystemProperties.get(KEYPAD_SEC_PERSIST_PROP, KEYPAD_SEC_DEFAULT);
-        mKeypadSecPref.setValue(keypad);
-        mKeypadSecPref.setSummary(String.format(mKeypadSecSum, mKeypadSecPref.getEntry()));
-        mKeypadSecPref.setOnPreferenceChangeListener(this);
 
         mKeypadMultipressPref = (ListPreference) prefSet.findPreference(KEYPAD_MULTIPRESS_PREF);
         String keypadMultipress = SystemProperties.get(KEYPAD_MULTIPRESS_PERSIST_PROP, KEYPAD_MULTIPRESS_DEFAULT);
@@ -189,8 +148,6 @@ public class DeviceSettings extends PreferenceActivity implements
     public void onResume() {
         super.onResume();
         mBasebandPref.setSummary(String.format(mBasebandSum, mBasebandPref.getEntry()));
-        mKeypadPriPref.setSummary(String.format(mKeypadPriSum, mKeypadPriPref.getEntry()));
-        mKeypadSecPref.setSummary(String.format(mKeypadSecSum, mKeypadSecPref.getEntry()));
         mKeypadMultipressPref.setSummary(String.format(mKeypadMultipressSum, mKeypadMultipressPref.getEntry()));
         mKeypadMplangPref.setSummary(String.format(mKeypadMplangSum, mKeypadMplangPref.getEntry()));
     }
@@ -214,48 +171,12 @@ public class DeviceSettings extends PreferenceActivity implements
         return false;
     }
 
-    private void keypadChanged() {
-
-        class SendBroadcast extends Handler {
-            @Override
-            public void handleMessage(Message msg) {
-                Intent i = new Intent();
-                i.setAction("hw.keycharmap.change");
-                sendBroadcast(i);
-            }
-        }
-
-        Handler broadcastHandler = new SendBroadcast();
-        Message m = new Message();
-        broadcastHandler.sendMessageDelayed(m, 200);
-
-    }
-
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (preference == mBasebandPref) {
             String baseband = (String) newValue;
             SystemProperties.set(BASEBAND_PERSIST_PROP, baseband);
             mBasebandPref.setSummary(String.format(mBasebandSum,
                     mBasebandPref.getEntries()[mBasebandPref.findIndexOfValue(baseband)]));
-            return true;
-        } else if (preference == mKeypadPriPref) {
-            String keypad = (String) newValue;
-            SystemProperties.set(KEYPAD_PRI_PERSIST_PROP, keypad);
-            SystemProperties.set(KEYPAD_CURRENT_PROP, mKeypadPrefix + keypad);
-/*            Settings.System.putString(getApplicationContext().getContentResolver(),
-                    Settings.System.KEYLAYOUT_OVERRIDES, KEYLAYOUT + keypad);*/
-            mKeypadPriPref.setSummary(String.format(mKeypadPriSum,
-                    mKeypadPriPref.getEntries()[mKeypadPriPref.findIndexOfValue(keypad)]));
-            keypadChanged();
-            return true;
-        } else if (preference == mKeypadSecPref) {
-            String keypad = (String) newValue;
-            SystemProperties.set(KEYPAD_SEC_PERSIST_PROP, keypad);
-            SystemProperties.set(KEYPAD_CURRENT_PROP, mKeypadPrefix +
-                    mKeypadPriPref.getValue());
-            mKeypadSecPref.setSummary(String.format(mKeypadSecSum,
-                    mKeypadSecPref.getEntries()[mKeypadSecPref.findIndexOfValue(keypad)]));
-            keypadChanged();
             return true;
         } else if (preference == mKeypadMultipressPref) {
             String keypadMultipress = (String) newValue;
@@ -275,19 +196,5 @@ public class DeviceSettings extends PreferenceActivity implements
             return true;
         }
         return false;
-    }
-
-    public static class BootCompletedReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() != Intent.ACTION_BOOT_COMPLETED) {
-                return;
-            }
-            String keypad = SystemProperties.get(KEYPAD_PRI_PERSIST_PROP, KEYPAD_PRI_DEFAULT);
-            mKeypadPrefix = SystemProperties.get(KEYPAD_PREFIX_PROP, KEYPAD_PREFIX_DEFAULT);
-            SystemProperties.set(KEYPAD_CURRENT_PROP, mKeypadPrefix + keypad);
-/*            Settings.System.putString(context.getContentResolver(),
-                    Settings.System.KEYLAYOUT_OVERRIDES, KEYLAYOUT + keypad);*/
-        }
     }
 }

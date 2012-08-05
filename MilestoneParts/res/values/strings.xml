@@ -16,10 +16,6 @@
     <string name="pref_baseband_title">Baseband selection</string>
     <string name="pref_baseband_summary">Choose UMTS bands appropriate for your phone (requires reboot)\nCurrently set to: %s</string>
 
-    <string name="pref_keypad_pri_title">Keyboard char-map</string>
-    <string name="pref_keypad_pri_summary">Hardware keyboard character map.\nCurrently set to: %s</string>
-    <string name="pref_keypad_sec_title">Secondary char-map</string>
-    <string name="pref_keypad_sec_summary">Secondary hardware keyboard character map.\nCurrently set to: %s</string>
     <string name="pref_keypad_multipress_title">Multipress interval</string>
     <string name="pref_keypad_multipress_summary">Subsequent key presses within this interval can be used to directly enter alternate characters.\nCurrently set to: %s</string>
     <string name="pref_keypad_mplang_title">Multipress language</string>
@@ -39,4 +35,15 @@
     <string name="ui_status_bar_oneperc_battery_title">1% battery steps</string>
     <string name="ui_status_bar_oneperc_battery_summary">Show battery percentage in 1% steps. May cause issues with third party batteries and AC adapters. (Requires reboot)</string>
 
+    <string name="keyboard_layouts_label">Milestone keypad</string>
+    <string name="sholes_keypad_arabic_label">.Arabic</string>
+    <string name="sholes_keypad_azerty_label">.Azerty</string>
+    <string name="sholes_keypad_cyrillic_label">.Cyrillic (phonetic)</string>
+    <string name="sholes_keypad_euro_qwerty_label">.Euro qwerty</string>
+    <string name="sholes_keypad_hebrew_label">.Hebrew</string>
+    <string name="sholes_keypad_qwerty_label">.Qwerty</string>
+    <string name="sholes_keypad_qwertz_label">.Qwertz</string>
+    <string name="sholes_keypad_russian_label">.Russian</string>
+    <string name="sholes_keypad_russian_qwerty_label">.Russian qwerty</string>
+    <string name="sholes_keypad_swe_qwerty_label">.Swedish qwerty</string>
 </resources>

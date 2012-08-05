@@ -1,4 +1,8 @@
-type ALPHA
+type OVERLAY
+
+key LANGUAGE_SWITCH {
+    alt:                        fallback MENU
+}
 
 key 0 {
     label:                              '0'

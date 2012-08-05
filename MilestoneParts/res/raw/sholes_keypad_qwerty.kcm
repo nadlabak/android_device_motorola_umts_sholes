@@ -1,4 +1,8 @@
-type ALPHA
+type OVERLAY
+
+key LANGUAGE_SWITCH {
+    alt:                        fallback MENU
+}
 
 key 0 {
     label:                              '0'
@@ -113,7 +117,7 @@ key A {
     number:                             '1'
     base:                               'a'
     shift, capslock:                    'A'
-    alt:                                '\u20ac'
+    alt:                                '\t'
     shift+alt, capslock+alt:            none
 }
 
@@ -158,7 +162,7 @@ key F {
     number:                             '4'
     base:                               'f'
     shift, capslock:                    'F'
-    alt:                                '\u00a3'
+    alt:                                '$'
     shift+alt, capslock+alt:            '\u00a5'
 }
 
@@ -267,7 +271,7 @@ key R {
     base:                               'r'
     shift, capslock:                    'R'
     alt:                                '4'
-    shift+alt, capslock+alt:            '$'
+    shift+alt, capslock+alt:            '\u20ac'
 }
 
 key S {

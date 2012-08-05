@@ -14,7 +14,7 @@ key 230   SOFT_RIGHT        WAKE
 key 60    SOFT_RIGHT        WAKE
 key 107   POWER             WAKE_DROPPED
 key 62    ENDCALL           WAKE_DROPPED
-key 229   MENU              WAKE_DROPPED
+key 229   LANGUAGE_SWITCH   WAKE_DROPPED
 key 59    MENU              WAKE_DROPPED
 key 217   SEARCH            WAKE_DROPPED
 key 228   POUND             WAKE_DROPPED

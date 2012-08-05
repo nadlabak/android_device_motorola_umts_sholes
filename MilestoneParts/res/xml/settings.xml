@@ -29,18 +29,6 @@
 
     <PreferenceCategory android:title="@string/keypad_title"
         android:key="pref_category_keypad_settings">
-        <ListPreference android:key="pref_keypad_primary"
-            android:dialogTitle="@string/pref_keypad_pri_title"
-            android:title="@string/pref_keypad_pri_title"
-            android:summary="@string/pref_keypad_pri_summary"
-            android:entries="@array/pref_keypad_pri_entries"
-            android:entryValues="@array/pref_keypad_pri_values" />
-        <ListPreference android:key="pref_keypad_secondary"
-            android:dialogTitle="@string/pref_keypad_sec_title"
-            android:title="@string/pref_keypad_sec_title"
-            android:summary="@string/pref_keypad_sec_summary"
-            android:entries="@array/pref_keypad_sec_entries"
-            android:entryValues="@array/pref_keypad_sec_values" />
         <ListPreference android:key="pref_keypad_multipress"
             android:dialogTitle="@string/pref_keypad_multipress_title"
             android:title="@string/pref_keypad_multipress_title"
