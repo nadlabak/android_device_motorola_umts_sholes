@@ -34,13 +34,13 @@ for dir in app app-private dalvik-cache vendor/app vendor/lib;do
 		if [ "${dir}" = "app" ] || [ "${dir}" = "app-private" ] || [ "${dir}" = "vendor/app" ];
 		then
 			for app in `find /data/${dir} -type f -iname "*.apk" -o -iname "*.zip"`;do
-				busybox mv ${app} ${SD_EXT_DIRECTORY}/${dir}/
+				busybox mv -f ${app} ${SD_EXT_DIRECTORY}/${dir}/
 			done
 		fi
 		if [ "${dir}" = "vendor/lib" ];
 		then
 			for lib in `find /data/${dir} -type f -iname "*.so"`;do
-				busybox mv ${lib} ${SD_EXT_DIRECTORY}/${dir}/
+				busybox mv -f ${lib} ${SD_EXT_DIRECTORY}/${dir}/
 			done
 		fi
 		mount -o bind ${SD_EXT_DIRECTORY}/${dir}/ /data/${dir}
