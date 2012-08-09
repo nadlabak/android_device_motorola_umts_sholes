@@ -135,3 +135,8 @@ TARGET_PROVIDES_RELEASETOOLS := true
 TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := ./device/motorola/umts_sholes/releasetools/umts_sholes_img_from_target_files
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := ./device/motorola/umts_sholes/releasetools/umts_sholes_ota_from_target_files
 
+# Boot animation
+TARGET_BOOTANIMATION_USE_RGB565 := true
+TARGET_BOOTANIMATION_PRELOAD := true
+TARGET_BOOTANIMATION_TEXTURE_CACHE := true
+
