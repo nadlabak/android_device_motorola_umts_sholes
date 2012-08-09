@@ -370,8 +370,8 @@ Bluetooth Module -->
     <!-- whether Softap rely on a different interface (beware these flags can be badly understood)
     <bool name="config_wifi_ap_use_single_interface">true</bool>-->
 
-    <!-- Dont reload the firmware via the framework, let wifi legacy and tiap_loader do that -->
-    <bool name="config_wifi_ap_firmware_reload">false</bool>
+    <!-- Dont reload the firmware via the framework, let wifi legacy and tiap_loader do that
+    <bool name="config_wifi_ap_firmware_reload">false</bool> -->
 
     <!-- <integer name="config_screenOnAnimation">0</integer>-->
 </resources>
