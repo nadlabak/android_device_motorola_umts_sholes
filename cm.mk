@@ -5,7 +5,7 @@ $(call inherit-product, vendor/cm/config/gsm.mk)
 PRODUCT_RELEASE_NAME := Milestone
 
 # Boot animation
-TARGET_BOOTANIMATION_NAME := vertical-480x854_240x432
+TARGET_BOOTANIMATION_NAME := vertical-480
 
 # Inherit some common CM stuff.
 $(call inherit-product, vendor/cm/config/common_mini_phone.mk)
