@@ -27,6 +27,8 @@ if [ "$TARGET_BUILD_TYPE" = "debug" ]; then
     OTAPACKAGE=$OUT/${TARGET_PRODUCT}_debug-ota-$TARGET_BUILD_VARIANT.$USER.zip
 elif [ "$TARGET_BUILD_VARIANT" = "userdebug" ]; then
     OTAPACKAGE=$OUT/$TARGET_PRODUCT-ota-eng.$USER.zip
+elif [ "$TARGET_BUILD_VARIANT" = "user" ]; then
+    OTAPACKAGE=$OUT/$TARGET_PRODUCT-ota-eng.$USER.zip
 else
     OTAPACKAGE=$OUT/$TARGET_PRODUCT-ota-$TARGET_BUILD_VARIANT.$USER.zip
 fi
@@ -57,15 +59,27 @@ echo
 cd $REPACK/ota/system/lib
 # Delete unwanted libs
 rm -f libvideoeditor*
-cd $REPACK/ota/system/framework
-$OPTICHARGER framework-res.apk
-cd $REPACK/ota/system/app
 # Delete unwanted apps
+cd $REPACK/ota/system/app
 rm -f CMUpdateNotify.*
 rm -f RomManager.apk
 rm -f VideoEditor.apk
 rm -f CMWallpapers.apk
+# Move all apks to the same directory so xargs can
+# use also with framework-res.apk. This allow process
+# framework-res.apk in parallel with other apks
+mkdir -p $REPACK/parallel
+cd $REPACK/parallel
+cp $REPACK/ota/system/framework/framework-res.apk .
+cp $REPACK/ota/system/app/*.apk .
+# Do optimization in parallel
 find ./ -name \*.apk | $XARGS $OPTICHARGER
+# Move optimized apks to repack directory
+mv -f $REPACK/parallel/framework-res.apk $REPACK/ota/system/framework/framework-res.apk
+mv -f $REPACK/parallel/*.apk $REPACK/ota/system/app/
+# Return to directory
+cd $REPACK/ota
+rm -rf $REPACK/parallel
 )
 
 # Fix build.prop
@@ -86,6 +100,7 @@ cp $OUT/root/init $REPACK/ota/system/etc/rootfs/init
 # move LatinIME to /data/vendor
 mkdir -p $REPACK/ota/data/vendor/app
 mv $REPACK/ota/system/app/LatinIME.apk $REPACK/ota/data/vendor/app/
+mv $REPACK/ota/system/app/Trebuchet.apk $REPACK/ota/data/vendor/app/
 
 # Rename hostap to hostapd
 # mv $REPACK/ota/system/bin/hostap $REPACK/ota/system/bin/hostapd
@@ -112,7 +127,7 @@ echo
 printf "Signing package..."
 SECURITYDIR=$ANDROID_BUILD_TOP/build/target/product/security
 java -Xmx1024m \
-	-jar $ANDROID_BUILD_TOP/out/host/$OUT_TARGET_HOST/framework/signapk.jar \
+	-jar $OUT/../../../host/$OUT_TARGET_HOST/framework/signapk.jar \
 	-w $SECURITYDIR/testkey.x509.pem $SECURITYDIR/testkey.pk8 \
 	$REPACK/update.zip $OUTFILE
 echo
