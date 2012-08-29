@@ -85,9 +85,18 @@ setprop ro.sys.atvc_allow_efem 0
     insmod /system/lib/modules/sec.ko
 
 # Install custom kernel modules
+    insmod /system/lib/modules/symsearch.ko
+    insmod /system/lib/modules/pvr-off.ko
+
+    # workaround the missing omapfb.vram bootarg
+    write /sys/devices/platform/omapdss/overlay0/enabled 0
+    write /sys/devices/platform/omapfb/graphics/fb0/size 4194304
+    write /sys/devices/platform/omapdss/overlay0/enabled 1
+
+    insmod /system/lib/modules/pvrsrvkm.ko
+    insmod /system/lib/modules/omaplfb.ko
     insmod /system/lib/modules/jbd2.ko
     insmod /system/lib/modules/ext4.ko
-    insmod /system/lib/modules/symsearch.ko
     insmod /system/lib/modules/dsifix.ko
     insmod /system/lib/modules/slow-work.ko
     insmod /system/lib/modules/nls_utf8.ko
