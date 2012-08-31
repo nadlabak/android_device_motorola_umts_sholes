@@ -135,9 +135,6 @@ mkdir -p $REPACK/ota/system/etc/rootfs/sbin
 cp $OUT/root/sbin/adbd $REPACK/ota/system/etc/rootfs/sbin/adbd
 cp $OUT/root/init $REPACK/ota/system/etc/rootfs/init
 
-# Rename sh to sh.bin
-mv $REPACK/ota/system/bin/sh $REPACK/ota/system/bin/sh.bin
-
 # Delete unnecessary binaries
 ( cd $REPACK/ota/system/bin; echo $DELETE_BINS | xargs rm -f; )
 
