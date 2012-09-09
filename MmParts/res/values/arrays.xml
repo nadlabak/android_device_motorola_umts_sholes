@@ -68,7 +68,7 @@
     <string-array name="pref_keypad_type_sec_entries">
         <item>none</item>
         <item>Arabic</item>
-        <item>Bulgarian</item>
+        <item>Bulgarian (phonetic)</item>
         <item>Cyrillic (phonetic)</item>
         <item>Hebrew</item>
         <item>Russian</item>
@@ -78,7 +78,7 @@
     <string-array name="pref_keypad_type_sec_values" translatable="false">
         <item>none</item>
         <item>arabic</item>
-        <item>bg_cyrillic</item>
+        <item>bg_phonetic</item>
         <item>cyrillic</item>
         <item>hebrew</item>
         <item>russian2</item>

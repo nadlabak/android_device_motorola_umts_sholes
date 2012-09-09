@@ -157,7 +157,7 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-azerty.kcm.bin:/system/usr/keychars/sholesp2a-keypad-azerty.kcm.bin \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-swe_qwerty.kcm.bin:/system/usr/keychars/sholesp2a-keypad-swe_qwerty.kcm.bin \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-cyrillic.kcm.bin:/system/usr/keychars/sholesp2a-keypad-cyrillic.kcm.bin \
-    device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-bg_cyrillic.kcm.bin:/system/usr/keychars/sholesp2a-keypad-bg_cyrillic.kcm.bin \
+    device/motorola/umts_sholes/prebuilt/usr/keychars/sholesp2a-keypad-bg_phonetic.kcm.bin:/system/usr/keychars/sholesp2a-keypad-bg_phonetic.kcm.bin \
     device/motorola/umts_sholes/prebuilt/usr/keylayout/sholesp1a-keypad.kl:/system/usr/keylayout/sholesp1a-keypad.kl \
     device/motorola/umts_sholes/prebuilt/usr/keylayout/sholesp0b-keypad.kl:/system/usr/keylayout/sholesp0b-keypad.kl \
     device/motorola/umts_sholes/prebuilt/usr/keylayout/cpcap-key.kl:/system/usr/keylayout/cpcap-key.kl \
