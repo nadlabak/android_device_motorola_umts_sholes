@@ -357,7 +357,7 @@ Bluetooth Module -->
     <!-- 2 means give warning -->
     <integer name="config_datause_notification_type">2</integer>
 
-    <bool name="config_animateScreenLights">true</bool>
+    <bool name="config_animateScreenLights">false</bool>
 
     <!-- Allows the light sensor to be ignored when flashlight is on -->
 <!--    <bool name="config_flashlight_affects_lightsensor">true</bool> -->
