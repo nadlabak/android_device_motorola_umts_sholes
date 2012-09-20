@@ -406,6 +406,17 @@ static int usbd_set_usb_mode(int new_mode)
 		usb_current_mode = 0;
 		return 0;
 	}
+	else if (new_mode == -1)
+	{
+		/* cable connected */
+		mode_str = "usb_connected";
+		if (write(usb_device_fd, mode_str, strlen(mode_str) + 1) < 0)
+		{
+			LOGE("%s(): Socket Write Failure: %s\n", __func__, strerror(errno));
+			return -1;
+		}
+		return 0;
+	}
 	else
 	{
 		LOGE("%s(): Cannot set usb mode to '%d'\n", __func__, new_mode);
@@ -473,6 +484,7 @@ static int usbd_get_cable_status(void)
 	{
 		usb_online = 1;
 		usb_state = USBDSTAT_CABLE_CONNECTED;
+		usbd_set_usb_mode(-1);
 	}
 	else
 	{
@@ -835,6 +847,8 @@ int main(int argc, char **argv)
 					/* Set to no mode if we're disconnected */
 					if (usb_state == USBDSTAT_CABLE_DISCONNECTED)
 						usbd_set_usb_mode(0);
+				    else
+				        usbd_set_usb_mode(-1);
 					
 				}
 			}
