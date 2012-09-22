@@ -49,7 +49,9 @@ on init
     mkdir /data/download/mystuff 0775 system system
 
 # enable usb adb mode
-#    write /dev/usb_device_mode msc_adb
+    write /dev/usb_device_mode msc_adb
+    write /tmp/usbd_current_state usb_mode_charge_adb
+    chmod 0666 /tmp/usbd_current_state
 
 # usb permissions
 chmod 0660 /dev/mtp
