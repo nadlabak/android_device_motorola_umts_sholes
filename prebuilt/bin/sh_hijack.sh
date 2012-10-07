@@ -1,16 +1,9 @@
 #!/system/bin/sh
-   /system/bin/sinsmo /system/lib/modules/tls-enable.ko
-   /system/xbin/mount -t tmpfs -o size=4k tmpfs /system/sbin
-   /system/xbin/ln -s /system/bin/sh.bin /system/sbin/mksh
-   /system/xbin/mount -o remount,rw rootfs /
-   /system/xbin/rmdir /config
-   /system/xbin/rm -f /sbin/charge_only_mode
-   /system/xbin/rm -f /init.mapphone_cdma.rc
-   /system/xbin/rm -f /init.goldfish.rc
-   /system/xbin/rm -f /init_prep_keypad.sh
-   /system/xbin/cp -fr /etc/rootfs/* /
-   /system/xbin/chmod 750 /sbin/*
-   /system/xbin/chmod 750 /init
-   /system/xbin/ln -s /init /sbin/ueventd
+    echo 32 > /sys/bus/platform/devices/omapfb/graphics/fb0/bits_per_pixel
+    echo 1 > /sys/bus/platform/devices/omapdss/display0/update_mode
+    cat /data/2ndboot/2ndboot.fb > /dev/graphics/fb0
+    /system/bin/busybox_static insmod /system/lib/modules/2ndboot.ko
+    /system/bin/busybox_static mknod /dev/hbootctrl c 245 0
+    /system/bin/hbootuser /system/etc/hboot.cfg
+    /system/bin/busybox_static sleep 10
 
-   exec /system/bin/2nd-init

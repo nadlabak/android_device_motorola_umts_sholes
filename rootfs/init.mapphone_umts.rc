@@ -48,10 +48,19 @@ on init
     mkdir /data/download 0775 system system
     mkdir /data/download/mystuff 0775 system system
 
+# switch to standard shell
+    mount tmpfs tmpfs /system/sbin size=4k
+    symlink /system/bin/sh.bin /system/sbin/mksh
+
 # enable usb adb mode
-    write /dev/usb_device_mode msc_adb
-    write /tmp/usbd_current_state usb_mode_charge_adb
-    chmod 0666 /tmp/usbd_current_state
+#    write /dev/usb_device_mode msc_adb
+#    write /tmp/usbd_current_state usb_mode_charge_adb
+#    chmod 0666 /tmp/usbd_current_state
+
+# set KSM parameters
+    write /sys/kernel/mm/ksm/sleep_millisecs 4000
+    write /sys/kernel/mm/ksm/pages_to_scan 128
+#    write /sys/kernel/mm/ksm/run 1
 
 # usb permissions
 chmod 0660 /dev/mtp
@@ -82,36 +91,12 @@ setprop ro.sys.atvc_allow_efem 0
     #Start the engine modules for netmux first for other daemons depends on it
     insmod /system/lib/modules/netmux.ko
     insmod /system/lib/modules/netmux_linkdriver.ko
-    insmod /system/lib/modules/sim.ko
     insmod /system/lib/modules/modem_pm_driver.ko
     insmod /system/lib/modules/sec.ko
 
-# Install custom kernel modules
-    insmod /system/lib/modules/symsearch.ko
-    insmod /system/lib/modules/pvr-off.ko
-
-    # workaround the missing omapfb.vram bootarg
-    write /sys/devices/platform/omapdss/overlay0/enabled 0
-    write /sys/devices/platform/omapfb/graphics/fb0/size 4194304
-    write /sys/devices/platform/omapdss/overlay0/enabled 1
-
+# Install GPU kernel modules
     insmod /system/lib/modules/pvrsrvkm.ko
     insmod /system/lib/modules/omaplfb.ko
-    insmod /system/lib/modules/jbd2.ko
-    insmod /system/lib/modules/ext4.ko
-    insmod /system/lib/modules/dsifix.ko
-    insmod /system/lib/modules/slow-work.ko
-    insmod /system/lib/modules/nls_utf8.ko
-    insmod /system/lib/modules/xt_multiport.ko
-    insmod /system/lib/modules/tun.ko
-    insmod /system/lib/modules/cpufreq_interactive.ko
-    insmod /system/lib/modules/cpufreq_conservative.ko
-    insmod /system/lib/modules/cpufreq_smartass.ko
-    insmod /system/lib/modules/cpufreq_stats.ko
-    insmod /system/lib/modules/overclock.ko
-    insmod /system/lib/modules/qtouch_num.ko
-    insmod /system/lib/modules/mot_usb.ko
-    insmod /system/lib/modules/dsprecovery.ko
 
 on early-boot
 
@@ -508,12 +493,12 @@ on property:tcmd.bt_mod=1
 on property:tcmd.bt_mod=0
     exec /system/bin/rmmod wl127x_test
 
-service panic_daemon /system/bin/panic_daemon
-    class post-zygote_services
-    user radio
-    group radio system graphics
-    socket panic_daemon stream 660 radio radio
-    onrestart exec /system/bin/reboot
+#service panic_daemon /system/bin/panic_daemon
+#    class post-zygote_services
+#    user radio
+#    group radio system graphics
+#    socket panic_daemon stream 660 radio radio
+#    onrestart exec /system/bin/reboot
 
 # Ecompass daemon
 service akmd2 /system/bin/akmd2
@@ -529,12 +514,12 @@ service wlan_loader /system/bin/wlan_loader \
     oneshot
 
 service wlan_ap_loader /system/bin/logwrapper /system/bin/tiap_loader -f /system/etc/wifi/fw_tiwlan_ap.bin -i /system/etc/wifi/tiwlan_ap.ini -e /pds/wifi/nvs_map.bin
-    post-zygote_services
+    class post-zygote_services
     disabled
     oneshot
 
 service hostapd /system/bin/logwrapper /system/bin/hostap -d /data/misc/wifi/hostapd.conf
-    post-zygote_services
+    class post-zygote_services
     disabled
     oneshot
 

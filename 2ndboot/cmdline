@@ -1,0 +1,1 @@
+loglevel=10 console=/dev/null console=ttyMTD10 vram=4M omapfb.vram=0:4M rw mem=244M@0x80C00000 init=/init ip=off brdrev=P2A mtdparts=omap2-nand.0:1536k@2176k(pds),384k@4480k(cid),384k@7424k(misc),3584k(boot)ro,4608k@15232k(recovery),8960k(cdrom),179840k@29184k(system),106m@209408k(cache),201856k(userdata),1536k(cust),2m@521728k(kpanic)

@@ -130,10 +130,9 @@ $SED -i \
 # Include prebuilt boot.img
 cp $ANDROID_BUILD_TOP/vendor/motorola/umts_sholes/proprietary/boot.img $REPACK/ota/
 
-# Rootfs stuff
-mkdir -p $REPACK/ota/system/etc/rootfs/sbin
-cp $OUT/root/sbin/adbd $REPACK/ota/system/etc/rootfs/sbin/adbd
-cp $OUT/root/init $REPACK/ota/system/etc/rootfs/init
+# 2ndboot
+mkdir -p $REPACK/ota/data
+cp -r $ANDROID_BUILD_TOP/device/motorola/umts_sholes/2ndboot $REPACK/ota/data/2ndboot
 
 # Rename sh to sh.bin
 mv $REPACK/ota/system/bin/sh $REPACK/ota/system/bin/sh.bin
