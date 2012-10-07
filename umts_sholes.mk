@@ -77,7 +77,11 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/lib/modules/2ndboot.ko:system/lib/modules/2ndboot.ko \
-    device/motorola/umts_sholes/prebuilt/etc/hboot.cfg:system/etc/hboot.cfg
+    device/motorola/umts_sholes/prebuilt/etc/hboot.cfg:system/etc/hboot.cfg \
+    device/motorola/umts_sholes/rootfs/default.prop:root/default.prop \
+    device/motorola/umts_sholes/rootfs/init.mapphone_umts.rc:root/init.mapphone_umts.rc \
+    device/motorola/umts_sholes/rootfs/init.rc:root/init.rc \
+    device/motorola/umts_sholes/rootfs/ueventd.rc:root/ueventd.rc \
 
 PRODUCT_PACKAGES += \
     MmParts \
