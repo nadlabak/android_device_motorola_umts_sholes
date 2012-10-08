@@ -13,7 +13,7 @@ ro.telephony.default_network=3
 ro.telephony.ril_class=MotoWrigley3GRIL
 
 # fix data
-ro.telephony.ril.v3=skipbrokendatacall,signalstrength
+ro.telephony.ril.v3=skipbrokendatacall,signalstrength,skipnullaid
 
 wifi.interface = tiwlan0
 wifi.ap.interface = tiap0
