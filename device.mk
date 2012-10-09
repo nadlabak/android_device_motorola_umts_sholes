@@ -64,18 +64,20 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/sysctl.conf:system/etc/sysctl.conf
 
-# TLS enable hack
-# /system/bin/sinsmo - statically compiled toolbox with only insmod tool
+# 2ndboot + TLS register workaround
+# the stock kernel doesn't allow usage of TLS register, therefore
+# prebuilt binaries are needed before the new kernel with TLS register
+# usage enabled is booted
+#
+# /system/bin/busybox_static - statically compiled busybox
 # /system/sbin/mksh - statically compiled mksh (with sh-hijack),
-#         used only before 2nd-init to insmod the tls-enable.ko module
-# /system/bin/akmd2 - proprietary binary daemon extensively patched
-#         (at 44 places) for compatibility with real TLS register usage
+#         used to run sh_hijack.sh to invoke kernel restart via 2ndboot
+# /system/bin/akmd2 - proprietary binary daemon patched
+#         for compatibility with real TLS register usage
 PRODUCT_COPY_FILES += \
+    device/motorola/umts_sholes/prebuilt/bin/akmd2:system/bin/akmd2 \
     device/motorola/umts_sholes/prebuilt/sbin/mksh:system/sbin/mksh \
-    device/motorola/umts_sholes/prebuilt/bin/akmd2:system/bin/akmd2
-
-PRODUCT_COPY_FILES += \
-    device/motorola/umts_sholes/prebuilt/lib/modules/2ndboot.ko:system/lib/modules/2ndboot.ko \
+    device/motorola/umts_sholes/prebuilt/bin/busybox_static:system/bin/busybox_static \
     device/motorola/umts_sholes/prebuilt/etc/hboot.cfg:system/etc/hboot.cfg \
     device/motorola/umts_sholes/2ndboot/2ndboot.fb:system/etc/2ndboot/2ndboot.fb \
     device/motorola/umts_sholes/2ndboot/boot:system/etc/2ndboot/boot \
@@ -85,7 +87,15 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/rootfs/fstab.sholes:root/fstab.sholes \
     device/motorola/umts_sholes/rootfs/init.mapphone_umts.rc:root/init.mapphone_umts.rc \
     device/motorola/umts_sholes/rootfs/init.rc:root/init.rc \
-    device/motorola/umts_sholes/rootfs/ueventd.rc:root/ueventd.rc \
+    device/motorola/umts_sholes/rootfs/ueventd.rc:root/ueventd.rc
+
+# prebuilt kernel modules
+PRODUCT_COPY_FILES += \
+    device/motorola/umts_sholes/prebuilt/lib/modules/2ndboot.ko:system/lib/modules/2ndboot.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/pvrsrvkm.ko:system/lib/modules/pvrsrvkm.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/omaplfb.ko:system/lib/modules/omaplfb.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/tiwlan_drv.ko:system/lib/modules/tiwlan_drv.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/tiap_drv.ko:system/lib/modules/tiap_drv.ko
 
 # ICS sound
 PRODUCT_PACKAGES += \
