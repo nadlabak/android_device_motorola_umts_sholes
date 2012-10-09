@@ -7,6 +7,10 @@ cp -rp /system/tts/lang_pico /cdrom
 rm /system/tts/lang_pico/*
 ln -s /cdrom/lang_pico/* /system/tts/lang_pico
 
+# move fonts to /sd-ext
+cp -rp /system/fonts /sddata/fonts
+rm -rf /system/fonts/*
+
 # symlink kcm for keypad-ru_qwerty.kl
 ln -s /system/usr/keychars/sholes-keypad-qwerty.kcm /system/usr/keychars/sholes-keypad-ru_qwerty.kcm
 

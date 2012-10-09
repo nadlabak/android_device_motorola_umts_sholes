@@ -29,8 +29,6 @@ USE_CAMERA_STUB := false
 -include vendor/motorola/umts_sholes/BoardConfigVendor.mk
 
 TARGET_NO_BOOTLOADER := true
-TARGET_NO_RECOVERY := true
-TARGET_NO_KERNEL := true
 TARGET_NO_RADIOIMAGE := true
 
 TARGET_BOARD_PLATFORM := omap3
@@ -62,9 +60,11 @@ WIFI_DRIVER_FW_STA_PATH := "/system/etc/wifi/fw_wlan1271.bin"
 WIFI_FIRMWARE_LOADER := "wlan_loader"
 PRODUCT_WIRELESS_TOOLS := true
 AP_CONFIG_DRIVER_WILINK := true
+AP_CONFIG_IEEE80211N := true
 WIFI_DRIVER_FW_AP_PATH := "/system/etc/wifi/fw_tiwlan_ap.bin"
 WPA_SUPPL_APPROX_USE_RSSI := true
-WPA_SUPPL_WITH_SIGNAL_POLL  := true
+WPA_SUPPL_WITH_SIGNAL_POLL  := false
+USES_TI_MAC80211            := true
 # CM9
 WIFI_DRIVER_LOADER_DELAY := 200000
 WIFI_AP_DRIVER_MODULE_PATH := "/system/lib/modules/tiap_drv.ko"
@@ -89,6 +89,7 @@ BOARD_USE_YUV422I_DEFAULT_COLORFORMAT := true
 
 HARDWARE_OMX := true
 TARGET_USE_OMAP_COMPAT  := true
+TARGET_USE_OMX_RECOVERY := true
 BUILD_WITH_TI_AUDIO := 1
 BUILD_PV_VIDEO_ENCODERS := 1
 
@@ -139,4 +140,12 @@ TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := ./device/motorola/umts_sholes/relea
 
 # Boot animation
 TARGET_BOOTANIMATION_USE_RGB565 := true
+
+# Kernel
+TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.4.3
+TARGET_KERNEL_SOURCE := $(ANDROID_BUILD_TOP)/kernel
+TARGET_KERNEL_CONFIG   := mapphone_2ndboot_defconfig
+
+# Extra : external modules sources
+TARGET_KERNEL_MODULES_EXT := $(ANDROID_BUILD_TOP)/device/motorola/umts_sholes/prebuilt/lib/modules
 

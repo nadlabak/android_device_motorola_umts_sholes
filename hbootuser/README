@@ -1,0 +1,36 @@
+2nd-boot project
+https://github.com/nadlabak/2ndboot
+
+Compilation notes:
+hbootmod:
+- Compiled as a module for stock kernel
+- "make modules M=path_to_module ARCH=arm CROSS_COMPILE=cross_compiler_prefix"
+
+hboot:
+- Compiled as a embedded binary
+- output_directory is optional parameter
+- "make O=output_directory CROSS_COMPILE=cross_compiler_prefix"
+- NOTE: You can name the script with the values as "bmake", which is in .gitignore
+
+hbootuser:
+- Compiled as a normal Android binary
+
+Running 2nd-boot:
+- all files are considered to be in /system/etc/2nd-boot for the example
+- when inserting the module, emu_uart parameter is optional and specifies the baudrate
+
+SCRIPT:
+====================================================================================
+insmod /system/etc/2nd-boot/hbootmod.ko [emu_uart=115200]
+mknod /dev/hbootctrl c `cat /proc/devices | grep hboot | awk '{print $1}' ` 0
+/system/etc/2nd-boot/hbootuser /system/etc/2nd-boot/hboot.cfg 
+====================================================================================
+
+hboot.cfg
+====================================================================================
+0 file /system/etc/2nd-boot/hboot.bin
+1 file /system/etc/2nd-boot/zImage
+2 file /system/etc/2nd-boot/ramdisk
+3 file /system/etc/2nd-boot/devtree
+4 file /system/etc/2nd-boot/cmdline
+====================================================================================

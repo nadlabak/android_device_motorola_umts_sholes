@@ -9,8 +9,6 @@ then
 	echo "$SD_EXT_DIRECTORY not mounted.. skipping a2sd"
 	exit
 fi
-umount /system/vendor/app
-umount /system/vendor/lib
 for dir in app app-private dalvik-cache vendor/app vendor/lib;do
 	if [ "`egrep -q \"/data/${dir}\" /proc/mounts;echo $?`" != "0" ];
 	then	
@@ -46,5 +44,4 @@ for dir in app app-private dalvik-cache vendor/app vendor/lib;do
 		mount -o bind ${SD_EXT_DIRECTORY}/${dir}/ /data/${dir}
 	fi
 done
-mount -o bind ${SD_EXT_DIRECTORY}/vendor/app /system/vendor/app
-mount -o bind ${SD_EXT_DIRECTORY}/vendor/lib /system/vendor/lib
+
