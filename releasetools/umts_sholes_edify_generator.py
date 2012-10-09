@@ -211,8 +211,9 @@ class EdifyGenerator(object):
     fstab = self.info.get("fstab", None)
     if fstab:
       p = fstab[partition]
-      self.script.append('format("%s", "%s", "%s");' %
-                         (p.fs_type, common.PARTITION_TYPES[p.fs_type], p.device))
+      self.script.append('format("%s", "%s", "%s", "%s", "%s");' %
+                         (p.fs_type, common.PARTITION_TYPES[p.fs_type],
+                          p.device, p.length, p.mount_point))
     else:
       # older target-files without per-partition types
       partitionstr = self.info.get("partition_path", "") + partition.lstrip("/")
