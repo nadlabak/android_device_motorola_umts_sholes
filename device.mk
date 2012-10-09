@@ -79,8 +79,8 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/sbin/mksh:system/sbin/mksh \
     device/motorola/umts_sholes/prebuilt/bin/busybox_static:system/bin/busybox_static \
     device/motorola/umts_sholes/prebuilt/etc/hboot.cfg:system/etc/hboot.cfg \
-    device/motorola/umts_sholes/2ndboot/2ndboot.fb:system/etc/2ndboot/2ndboot.fb \
-    device/motorola/umts_sholes/2ndboot/boot:system/etc/2ndboot/boot \
+    device/motorola/umts_sholes/2ndboot/2ndboot.fb.gz:system/etc/2ndboot/2ndboot.fb.gz \
+    device/motorola/umts_sholes/2ndboot/hboot.bin:system/etc/2ndboot/hboot.bin \
     device/motorola/umts_sholes/2ndboot/cmdline:system/etc/2ndboot/cmdline \
     device/motorola/umts_sholes/2ndboot/devtree:system/etc/2ndboot/devtree \
     device/motorola/umts_sholes/rootfs/default.prop:root/default.prop \
