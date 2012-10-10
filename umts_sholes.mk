@@ -82,7 +82,6 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/2ndboot/cmdline:system/etc/2ndboot/cmdline \
     device/motorola/umts_sholes/2ndboot/devtree:system/etc/2ndboot/devtree \
     device/motorola/umts_sholes/2ndboot/hboot.bin:system/etc/2ndboot/hboot.bin \
-    device/motorola/umts_sholes/2ndboot/ramdisk:system/etc/2ndboot/ramdisk \
     device/motorola/umts_sholes/2ndboot/zImage:system/etc/2ndboot/zImage \
     device/motorola/umts_sholes/rootfs/default.prop:root/default.prop \
     device/motorola/umts_sholes/rootfs/init.mapphone_umts.rc:root/init.mapphone_umts.rc \
