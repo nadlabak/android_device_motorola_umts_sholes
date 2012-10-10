@@ -117,7 +117,7 @@ PRODUCT_PACKAGES += \
     hostapd.conf \
     libhostapdcli \
     Usb \
-    mot_boot_mode \
+    moto_boot_mode \
     charge_only_mode \
     usbd \
     hbootuser

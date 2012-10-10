@@ -260,7 +260,7 @@ mount rootfs rootfs / ro remount
     chown system graphics /dev/pvrsrvkm
 
 # DSS - disable tearing elimination
-    write /sys/devices/omapdss/display0/tear_elim 0	
+    write /sys/devices/omapdss/display0/tear_elim 0
 
 # Power Management Settings
     write /sys/devices/platform/ohci.0/usb2/2-3/power/level auto
@@ -288,7 +288,7 @@ mount rootfs rootfs / ro remount
 class_start pre-zygote_services
 
 on property:cm.mountsd.done=1
-    exec /system/bin/mot_boot_mode
+    exec /system/bin/moto_boot_mode
 
 # Set core max size (2G)
     setrlimit 4 2147483648 2147483648
