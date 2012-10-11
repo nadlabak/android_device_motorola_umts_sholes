@@ -627,6 +627,7 @@ service secclkd /system/bin/secclkd
 
 # Compcache - handle at boot
 service compcache /system/bin/handle_compcache
+    class post-zygote_services
     user root
     group root
     oneshot

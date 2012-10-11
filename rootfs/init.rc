@@ -381,7 +381,6 @@ on boot
 
     class_start core
     class_start main
-    class_start default
 
 on nonencrypted
     class_start late_start
