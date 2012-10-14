@@ -76,7 +76,7 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/bin/busybox_static:system/bin/busybox_static
 
 PRODUCT_COPY_FILES += \
-    device/motorola/umts_sholes/prebuilt/lib/modules/2ndboot.ko:system/lib/modules/2ndboot.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/hbootmod.ko:system/lib/modules/hbootmod.ko \
     device/motorola/umts_sholes/prebuilt/etc/hboot.cfg:system/etc/hboot.cfg \
     device/motorola/umts_sholes/2ndboot/2ndboot.fb.gz:system/etc/2ndboot/2ndboot.fb.gz \
     device/motorola/umts_sholes/2ndboot/cmdline:system/etc/2ndboot/cmdline \

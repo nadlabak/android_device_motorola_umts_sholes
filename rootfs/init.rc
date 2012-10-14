@@ -2,6 +2,9 @@ on early-init
 
     start ueventd
 
+# indicate start of init after 2ndboot
+    write /sys/class/leds/green/brightness 0
+
 on init
 
 sysclktz 0
