@@ -14,6 +14,9 @@ on early-init
 
     start ueventd
 
+# indicate start of init after 2ndboot
+    write /sys/class/leds/green/brightness 0
+
 # create mountpoints
     mkdir /mnt 0775 root system
 

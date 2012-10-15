@@ -91,7 +91,7 @@ PRODUCT_COPY_FILES += \
 
 # prebuilt kernel modules
 PRODUCT_COPY_FILES += \
-    device/motorola/umts_sholes/prebuilt/lib/modules/2ndboot.ko:system/lib/modules/2ndboot.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/hbootmod.ko:system/lib/modules/hbootmod.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/pvrsrvkm.ko:system/lib/modules/pvrsrvkm.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/omaplfb.ko:system/lib/modules/omaplfb.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/tiwlan_drv.ko:system/lib/modules/tiwlan_drv.ko \
