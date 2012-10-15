@@ -78,9 +78,10 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/bin/akmd2:system/bin/akmd2 \
     device/motorola/umts_sholes/prebuilt/sbin/mksh:system/sbin/mksh \
     device/motorola/umts_sholes/prebuilt/bin/busybox_static:system/bin/busybox_static \
-    device/motorola/umts_sholes/prebuilt/etc/hboot.cfg:system/etc/hboot.cfg \
+    device/motorola/umts_sholes/2ndboot/hboot.cfg:system/etc/2ndboot/hboot.cfg \
     device/motorola/umts_sholes/2ndboot/2ndboot.fb.gz:system/etc/2ndboot/2ndboot.fb.gz \
     device/motorola/umts_sholes/2ndboot/hboot.bin:system/etc/2ndboot/hboot.bin \
+    device/motorola/umts_sholes/2ndboot/hbootmod.ko:system/etc/2ndboot/hbootmod.ko \
     device/motorola/umts_sholes/2ndboot/cmdline:system/etc/2ndboot/cmdline \
     device/motorola/umts_sholes/2ndboot/devtree:system/etc/2ndboot/devtree \
     device/motorola/umts_sholes/rootfs/default.prop:root/default.prop \
@@ -91,7 +92,6 @@ PRODUCT_COPY_FILES += \
 
 # prebuilt kernel modules
 PRODUCT_COPY_FILES += \
-    device/motorola/umts_sholes/prebuilt/lib/modules/hbootmod.ko:system/lib/modules/hbootmod.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/pvrsrvkm.ko:system/lib/modules/pvrsrvkm.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/omaplfb.ko:system/lib/modules/omaplfb.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/tiwlan_drv.ko:system/lib/modules/tiwlan_drv.ko \
