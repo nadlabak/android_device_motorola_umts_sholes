@@ -146,7 +146,8 @@ PRODUCT_PACKAGES += \
     HwaSettings \
     make_ext4fs \
     fs_mgr \
-    hbootuser
+    hbootuser \
+    power.omap3
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
