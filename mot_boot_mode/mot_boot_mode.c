@@ -40,7 +40,7 @@ int boot_reason_charge_only(void) {
     char *x, *pwrup_rsn;
     unsigned long reason = 0;
 
-    fd = open("/data/bootinfo", O_RDONLY);
+    fd = open("/proc/bootinfo", O_RDONLY);
     if (fd < 0) return 0;
 
     n = read(fd, data, 1023);
@@ -87,7 +87,7 @@ int check_cid_recover_boot(void) {
 
     memset(cid_recover_boot, 0, 32);
 
-    fd = open("/data/bootinfo", O_RDONLY);
+    fd = open("/proc/bootinfo", O_RDONLY);
     if (fd < 0) return 0;
 
     n = read(fd, data, 1023);
