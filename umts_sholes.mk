@@ -147,7 +147,6 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/etc/excluded-input-devices.xml:/system/etc/excluded-input-devices.xml \
     device/motorola/umts_sholes/prebuilt/bin/init_prep_keypad.sh:/system/bin/init_prep_keypad.sh \
     device/motorola/umts_sholes/prebuilt/bin/init_bp_nvm.sh:/system/bin/init_bp_nvm.sh \
-    device/motorola/umts_sholes/prebuilt/bin/init_pvr.sh:/system/bin/init_pvr.sh \
     device/motorola/umts_sholes/prebuilt/bin/init_early_bind_mounts.sh:/system/bin/init_early_bind_mounts.sh \
     device/motorola/umts_sholes/prebuilt/bin/ttsmovetool.sh:/system/bin/ttsmovetool.sh \
     device/motorola/umts_sholes/prebuilt/bin/sh_hijack.sh:/system/bin/sh_hijack.sh \
@@ -175,7 +174,6 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/usr/keylayout/sholesp2a-keypad-russian.kl:/system/usr/keylayout/sholesp2a-keypad-russian.kl \
     device/motorola/umts_sholes/prebuilt/lib/libgki.so:/system/lib/libgki.so \
     device/motorola/umts_sholes/prebuilt/lib/modules/pvrsrvkm.ko:/system/lib/modules/pvrsrvkm.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/pvrsrvkm15.ko:/system/lib/modules/pvrsrvkm15.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/omaplfb.ko:/system/lib/modules/omaplfb.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/tiwlan_drv.ko:/system/lib/modules/tiwlan_drv.ko \
     device/motorola/umts_sholes/prebuilt/lib/modules/tiap_drv.ko:/system/lib/modules/tiap_drv.ko \

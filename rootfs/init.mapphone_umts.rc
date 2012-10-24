@@ -94,8 +94,9 @@ setprop ro.sys.atvc_allow_efem 0
     insmod /system/lib/modules/modem_pm_driver.ko
     insmod /system/lib/modules/sec.ko
 
-# Initialize SGX PVR gpu
-    exec /system/bin/init_pvr.sh
+# Install GPU kernel modules
+    insmod /system/lib/modules/pvrsrvkm.ko
+    insmod /system/lib/modules/omaplfb.ko
 
 on early-boot
 
@@ -253,6 +254,10 @@ mount rootfs rootfs / ro remount
 
 # Change ownership of vibrator
    chmod 0660 /sys/class/timed_output/vibrator/enable
+
+# Permissions for 3D
+    chmod 0666 /dev/pvrsrvkm
+    chown system graphics /dev/pvrsrvkm
 
 # DSS - disable tearing elimination
     write /sys/devices/omapdss/display0/tear_elim 0
@@ -555,6 +560,11 @@ on property:hw.dspbridge.needs_recovery=1
 
 service baseimage /system/bin/dspexec -v -T /system/lib/dsp/baseimage.dof
     class media_early_init
+    oneshot
+
+service pvrsrv /system/bin/pvrsrvinit
+    class post-zygote_services
+    user root
     oneshot
 
 service pppd /system/xbin/pppd silent ipparam dun plugin /system/lib/libpppd_plugin.so
