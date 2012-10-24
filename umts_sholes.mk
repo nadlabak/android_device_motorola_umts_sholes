@@ -79,7 +79,6 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/2ndboot/hbootmod.ko:system/etc/2ndboot/hbootmod.ko \
     device/motorola/umts_sholes/2ndboot/hboot.cfg:system/etc/2ndboot/hboot.cfg \
     device/motorola/umts_sholes/2ndboot/2ndboot.fb.gz:system/etc/2ndboot/2ndboot.fb.gz \
-    device/motorola/umts_sholes/2ndboot/cmdline:system/etc/2ndboot/cmdline \
     device/motorola/umts_sholes/2ndboot/devtree:system/etc/2ndboot/devtree \
     device/motorola/umts_sholes/2ndboot/hboot.bin:system/etc/2ndboot/hboot.bin \
     device/motorola/umts_sholes/2ndboot/zImage:system/etc/2ndboot/zImage \
