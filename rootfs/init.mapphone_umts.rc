@@ -98,6 +98,10 @@ setprop ro.sys.atvc_allow_efem 0
     insmod /system/lib/modules/xt_quota2.ko
     insmod /system/lib/modules/xt_owner2.ko
 
+# copy hostapd configuration
+    copy /system/etc/wifi/softap/hostapd.conf /data/misc/wifi/hostapd.conf
+    symlink /system/etc/wifi/softap/hostapd.conf /system/etc/wifi/hostapd.conf
+
 # Allow everybody to read the xt_qtaguid resource tracking misc dev.
 # This is needed by any process that uses socket tagging.
     chmod 0644 /dev/xt_qtaguid
@@ -160,9 +164,6 @@ on boot
     mkdir /data/comm_drv 0770 radio radio
     mkdir /data/gki 0770 radio radio
     mkdir /tmp/commdrv 0770 radio radio
-
-    # copy hostapd configuration
-    copy /system/etc/wifi/softap/hostapd.conf /data/misc/wifi/hostapd.conf
 
     # copy dnsmasq configuration
     copy /system/etc/wifi/dnsmasq.conf /data/misc/wifi/dns.conf
@@ -538,7 +539,7 @@ service wpa_supplicant /system/bin/wpa_supplicant \
     disabled
     oneshot
 
-service hostap_netd /system/bin/hostap -d /data/misc/wifi/hostapd.conf
+service hostapd_bin /system/bin/hostap_wrapper.sh
     class post-zygote_services
     group wifi system inet net_admin
     socket tiap0 dgram 660 wifi wifi
