@@ -1,9 +1,9 @@
 #!/system/bin/sh
 
  echo "5 1000000000 64" > /proc/overclock/mpu_opps
- echo "4 800000000 48" > /proc/overclock/mpu_opps
- echo "3 600000000 38" > /proc/overclock/mpu_opps
- echo "2 400000000 30" > /proc/overclock/mpu_opps
- echo "1 250000000 30" > /proc/overclock/mpu_opps
+ echo "4 800000000 59" > /proc/overclock/mpu_opps
+ echo "3 600000000 52" > /proc/overclock/mpu_opps
+ echo "2 400000000 40" > /proc/overclock/mpu_opps
+ echo "1 250000000 32" > /proc/overclock/mpu_opps
 
 
