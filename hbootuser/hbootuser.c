@@ -143,7 +143,8 @@ int handle_file(FILE *fp, int tag, int *buf) {
 	if ((tag == 0) || (filesize < 4*4096)) {
 		btype = B_TYPE_PLAIN;
 	} else {
-		btype = B_TYPE_SCATTERED;
+		btype = B_TYPE_PLAIN;
+		//btype = B_TYPE_SCATTERED;
 	}
 	if (tag == 0) {
 		battrs = 0;
