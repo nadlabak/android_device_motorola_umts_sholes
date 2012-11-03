@@ -8,7 +8,7 @@ rm /system/tts/lang_pico/*
 ln -s /cdrom/lang_pico/* /system/tts/lang_pico
 
 # move fonts to /sd-ext
-cp -rp /system/fonts /sddata/fonts
+cp -rp /system/fonts /sddata
 rm -rf /system/fonts/*
 
 # symlink kcm for keypad-ru_qwerty.kl
