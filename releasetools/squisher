@@ -74,10 +74,9 @@ $SED -i \
 # Include prebuilt boot.img
 cp $ANDROID_BUILD_TOP/vendor/motorola/umts_sholes/proprietary/boot.img $REPACK/ota/
 
-# Rootfs stuff
-mkdir -p $REPACK/ota/system/etc/rootfs/sbin
-cp $OUT/root/sbin/adbd $REPACK/ota/system/etc/rootfs/sbin/adbd
-cp $OUT/root/init $REPACK/ota/system/etc/rootfs/init
+# 2ndboot
+cp $OUT/ramdisk.img $REPACK/ota/system/etc/2ndboot/ramdisk
+cp $OUT/kernel $REPACK/ota/system/etc/2ndboot/kernel
 
 # Rename hostap to hostapd
 # mv $REPACK/ota/system/bin/hostap $REPACK/ota/system/bin/hostapd

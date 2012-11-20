@@ -63,6 +63,37 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/sysctl.conf:system/etc/sysctl.conf
 
+# 2ndboot + TLS register workaround
+# the stock kernel doesn't allow usage of TLS register, therefore
+# prebuilt binaries are needed before the new kernel with TLS register
+# usage enabled is booted
+#
+# /system/bin/busybox_static - statically compiled busybox
+# /system/sbin/mksh - statically compiled mksh (with sh-hijack),
+#         used to run sh_hijack.sh to invoke kernel restart via 2ndboot
+# /system/bin/akmd2 - proprietary binary daemon patched
+#         for compatibility with real TLS register usage
+PRODUCT_COPY_FILES += \
+    device/motorola/umts_sholes/prebuilt/bin/akmd2:system/bin/akmd2 \
+    device/motorola/umts_sholes/prebuilt/sbin/mksh:system/sbin/mksh \
+    device/motorola/umts_sholes/prebuilt/bin/busybox_static:system/bin/busybox_static \
+    device/motorola/umts_sholes/2ndboot/hboot.cfg:system/etc/2ndboot/hboot.cfg \
+    device/motorola/umts_sholes/2ndboot/2ndboot.fb.gz:system/etc/2ndboot/2ndboot.fb.gz \
+    device/motorola/umts_sholes/2ndboot/hboot.bin:system/etc/2ndboot/hboot.bin \
+    device/motorola/umts_sholes/2ndboot/hbootmod.ko:system/etc/2ndboot/hbootmod.ko \
+    device/motorola/umts_sholes/2ndboot/devtree:system/etc/2ndboot/devtree \
+    device/motorola/umts_sholes/rootfs/default.prop:root/default.prop \
+    device/motorola/umts_sholes/rootfs/init.mapphone_umts.rc:root/init.mapphone_umts.rc \
+    device/motorola/umts_sholes/rootfs/init.rc:root/init.rc \
+    device/motorola/umts_sholes/rootfs/ueventd.rc:root/ueventd.rc
+
+# prebuilt kernel modules
+PRODUCT_COPY_FILES += \
+    device/motorola/umts_sholes/prebuilt/lib/modules/pvrsrvkm.ko:system/lib/modules/pvrsrvkm.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/omaplfb.ko:system/lib/modules/omaplfb.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/tiwlan_drv.ko:system/lib/modules/tiwlan_drv.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/tiap_drv.ko:system/lib/modules/tiap_drv.ko
+
 # ICS sound
 PRODUCT_PACKAGES += \
 hcitool hciattach hcidump \
@@ -108,7 +139,8 @@ PRODUCT_PACKAGES += \
     FileManager \
     mot_boot_mode \
     charge_only_mode \
-    usbd
+    usbd \
+    hbootuser
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
@@ -130,11 +162,6 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/etc/powervr.ini:/system/etc/powervr.ini \
     device/motorola/umts_sholes/prebuilt/etc/gpsconfig.xml:/system/etc/gpsconfig.xml \
     device/motorola/umts_sholes/prebuilt/etc/excluded-input-devices.xml:/system/etc/excluded-input-devices.xml \
-    device/motorola/umts_sholes/prebuilt/etc/rootfs/default.prop:/system/etc/rootfs/default.prop \
-    device/motorola/umts_sholes/prebuilt/etc/rootfs/init.rc:/system/etc/rootfs/init.rc \
-    device/motorola/umts_sholes/prebuilt/etc/rootfs/init.mapphone_umts.rc:/system/etc/rootfs/init.mapphone_umts.rc \
-    device/motorola/umts_sholes/prebuilt/etc/rootfs/ueventd.rc:/system/etc/rootfs/ueventd.rc \
-    device/motorola/umts_sholes/prebuilt/bin/2nd-init:/system/bin/2nd-init \
     device/motorola/umts_sholes/prebuilt/bin/init_bp_nvm.sh:/system/bin/init_bp_nvm.sh \
     device/motorola/umts_sholes/prebuilt/bin/init_early_bind_mounts.sh:/system/bin/init_early_bind_mounts.sh \
     device/motorola/umts_sholes/prebuilt/bin/install_tool.sh:/system/bin/install_tool.sh \
@@ -158,43 +185,6 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/usr/idc/qtouch-touchscreen.idc:/system/usr/idc/qtouch-touchscreen.idc \
     device/motorola/umts_sholes/prebuilt/usr/idc/sholes-keypad.idc:/system/usr/idc/sholes-keypad.idc \
     device/motorola/umts_sholes/prebuilt/lib/libgki.so:/system/lib/libgki.so \
-    device/motorola/umts_sholes/prebuilt/lib/modules/symsearch.ko:/system/lib/modules/symsearch.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/pvr-off.ko:/system/lib/modules/pvr-off.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/pvrsrvkm.ko:/system/lib/modules/pvrsrvkm.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/omaplfb.ko:/system/lib/modules/omaplfb.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/mot_usb.ko:/system/lib/modules/mot_usb.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/tiwlan_drv.ko:/system/lib/modules/tiwlan_drv.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/tiap_drv.ko:/system/lib/modules/tiap_drv.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/dsifix.ko:/system/lib/modules/dsifix.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/slow-work.ko:/system/lib/modules/slow-work.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/iptable_raw.ko:/system/lib/modules/iptable_raw.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/xt_multiport.ko:/system/lib/modules/xt_multiport.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/xt_tcpmss.ko:/system/lib/modules/xt_tcpmss.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/xt_TCPMSS.ko:/system/lib/modules/xt_TCPMSS.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/ip6_tables.ko:/system/lib/modules/ip6_tables.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/ip6t_LOG.ko:/system/lib/modules/ip6t_LOG.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/ip6t_REJECT.ko:/system/lib/modules/ip6t_REJECT.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/ip6table_filter.ko:/system/lib/modules/ip6table_filter.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/ip6table_raw.ko:/system/lib/modules/ip6table_raw.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/xt_quota2.ko:/system/lib/modules/xt_quota2.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/xt_owner2.ko:/system/lib/modules/xt_owner2.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/overclock.ko:/system/lib/modules/overclock.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/cpufreq_interactive.ko:/system/lib/modules/cpufreq_interactive.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/cpufreq_smartass.ko:/system/lib/modules/cpufreq_smartass.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/cpufreq_conservative.ko:/system/lib/modules/cpufreq_conservative.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/cpufreq_stats.ko:/system/lib/modules/cpufreq_stats.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/jbd2.ko:/system/lib/modules/jbd2.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/ext4.ko:/system/lib/modules/ext4.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/tun.ko:/system/lib/modules/tun.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/cifs.ko:/system/lib/modules/cifs.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/nls_utf8.ko:/system/lib/modules/nls_utf8.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/lockd.ko:/system/lib/modules/lockd.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/auth_rpcgss.ko:/system/lib/modules/auth_rpcgss.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/rpcsec_gss_krb5.ko:/system/lib/modules/rpcsec_gss_krb5.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/sunrpc.ko:/system/lib/modules/sunrpc.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/nfs.ko:/system/lib/modules/nfs.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/qtouch_num.ko:/system/lib/modules/qtouch_num.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/dsprecovery.ko:/system/lib/modules/dsprecovery.ko \
     device/motorola/umts_sholes/prebuilt/vendor/app/.holder:/system/vendor/app/.holder \
     device/motorola/umts_sholes/prebuilt/vendor/lib/.holder:/system/vendor/lib/.holder
 
@@ -203,3 +193,4 @@ PRODUCT_LOCALES += hdpi
 
 PRODUCT_NAME := umts_sholes
 PRODUCT_DEVICE := umts_sholes
+

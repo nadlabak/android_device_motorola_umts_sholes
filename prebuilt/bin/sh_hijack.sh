@@ -1,16 +1,10 @@
 #!/system/bin/sh
-   /system/xbin/mount -o remount,rw rootfs /
-   /system/xbin/rmdir /config
-   /system/xbin/rm -f /sbin/charge_only_mode
-   /system/xbin/rm -f /init.mapphone_cdma.rc
-   /system/xbin/rm -f /init.goldfish.rc
-   /system/xbin/rm -f /init_prep_keypad.sh
-   /system/xbin/cp -fr /etc/rootfs/* /
-   /system/xbin/chmod 750 /sbin/*
-   /system/xbin/chmod 750 /init
-   /system/xbin/ln -s /init /sbin/ueventd
+    echo 32 > /sys/bus/platform/devices/omapfb/graphics/fb0/bits_per_pixel
+    echo 1 > /sys/bus/platform/devices/omapdss/display0/update_mode
+    /system/bin/busybox_static gunzip -c /etc/2ndboot/2ndboot.fb.gz > /dev/graphics/fb0
+    /system/bin/busybox_static insmod /etc/2ndboot/hbootmod.ko > /cache/2ndboot.log 2>&1
+    /system/bin/busybox_static mknod /dev/hbootctrl c 245 0 >> /cache/2ndboot.log 2>&1
+    echo 255 > /sys/class/leds/green/brightness
+    /system/bin/hbootuser /etc/2ndboot/hboot.cfg >> /cache/2ndboot.log 2>&1
+    /system/bin/busybox_static sleep 10
 
-#   echo "msc_adb" > /dev/usb_device_mode
-#   echo "usb_mode_msc_adb" > /tmp/usbd_current_state
-
-   exec /system/bin/2nd-init
