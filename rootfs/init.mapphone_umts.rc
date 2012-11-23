@@ -610,6 +610,13 @@ service secclkd /system/bin/secclkd
     group system radio
     oneshot
 
+# Compcache - handle at boot
+service compcache /system/bin/handle_compcache
+    class post-zygote_services
+    user root
+    group root
+    oneshot
+
 # bugreport is triggered by the KEY_LEFTSHIFT and KEY_DEL keycodes
 service bugreport /system/bin/dumpstate -d -v -o /sdcard/bugreports/bugreport
     disabled
