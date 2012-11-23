@@ -612,8 +612,11 @@ service bugreport /system/bin/dumpstate -d -v -o /sdcard/bugreports/bugreport
     oneshot
     keycodes 42 14
 
-# generate proximity 'far' event by camera button - workaround for broken proximity sensors
-service proximity /system/bin/sh -c "sendevent /dev/input/event5 3 25 2147483647 && sendevent /dev/input/event5 0 0 0"
+# short camera button press:
+# 1. generate proximity 'far' event - workaround for broken proximity sensors
+# 2. provoke light sensor read > ALS event - workaround for ALS interrupt
+#    not happening on light condition change anymore after some (random?) uptime
+service proximity_als /system/bin/sh -c "sendevent /dev/input/event5 3 25 2147483647 && sendevent /dev/input/event5 0 0 0 && cat /sys/class/leds/lcd-backlight/als > /sys/class/leds/lcd-backlight/als"
     disabled
     user root
     oneshot
