@@ -140,6 +140,7 @@ PRODUCT_PACKAGES += \
     mot_boot_mode \
     charge_only_mode \
     usbd \
+    HwaSettings \
     hbootuser
 
 # we have enough storage space to hold precise GC data
