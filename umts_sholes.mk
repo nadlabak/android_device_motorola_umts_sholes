@@ -81,11 +81,17 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/2ndboot/2ndboot.fb.gz:system/etc/2ndboot/2ndboot.fb.gz \
     device/motorola/umts_sholes/2ndboot/devtree:system/etc/2ndboot/devtree \
     device/motorola/umts_sholes/2ndboot/hboot.bin:system/etc/2ndboot/hboot.bin \
-    device/motorola/umts_sholes/2ndboot/zImage:system/etc/2ndboot/zImage \
     device/motorola/umts_sholes/rootfs/default.prop:root/default.prop \
     device/motorola/umts_sholes/rootfs/init.mapphone_umts.rc:root/init.mapphone_umts.rc \
     device/motorola/umts_sholes/rootfs/init.rc:root/init.rc \
     device/motorola/umts_sholes/rootfs/ueventd.rc:root/ueventd.rc \
+
+# prebuilt kernel modules
+PRODUCT_COPY_FILES += \
+    device/motorola/umts_sholes/prebuilt/lib/modules/pvrsrvkm.ko:system/lib/modules/pvrsrvkm.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/omaplfb.ko:system/lib/modules/omaplfb.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/tiwlan_drv.ko:system/lib/modules/tiwlan_drv.ko \
+    device/motorola/umts_sholes/prebuilt/lib/modules/tiap_drv.ko:system/lib/modules/tiap_drv.ko
 
 PRODUCT_PACKAGES += \
     MmParts \
@@ -172,26 +178,6 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/usr/keylayout/sholesp1b-keypad.kl:/system/usr/keylayout/sholesp1b-keypad.kl \
     device/motorola/umts_sholes/prebuilt/usr/keylayout/sholesp2a-keypad-russian.kl:/system/usr/keylayout/sholesp2a-keypad-russian.kl \
     device/motorola/umts_sholes/prebuilt/lib/libgki.so:/system/lib/libgki.so \
-    device/motorola/umts_sholes/prebuilt/lib/modules/pvrsrvkm.ko:/system/lib/modules/pvrsrvkm.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/omaplfb.ko:/system/lib/modules/omaplfb.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/tiwlan_drv.ko:/system/lib/modules/tiwlan_drv.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/tiap_drv.ko:/system/lib/modules/tiap_drv.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/cifs.ko:/system/lib/modules/cifs.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/lockd.ko:/system/lib/modules/lockd.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/sunrpc.ko:/system/lib/modules/sunrpc.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/nfs.ko:/system/lib/modules/nfs.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/zram.ko:/system/lib/modules/zram.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/lzo_compress.ko:/system/lib/modules/lzo_compress.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/lzo_decompress.ko:/system/lib/modules/lzo_decompress.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/sec.ko:/system/lib/modules/sec.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/modem_pm_driver.ko:/system/lib/modules/modem_pm_driver.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/netmux_linkdriver.ko:/system/lib/modules/netmux_linkdriver.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/netmux.ko:/system/lib/modules/netmux.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/cls_u32.ko:/system/lib/modules/cls_u32.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/output.ko:/system/lib/modules/output.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/sch_htb.ko:/system/lib/modules/sch_htb.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/pcbc.ko:/system/lib/modules/pcbc.ko \
-    device/motorola/umts_sholes/prebuilt/lib/modules/wl127x_test.ko:/system/lib/modules/wl127x_test.ko \
     device/motorola/umts_sholes/prebuilt/fonts/DroidSansFallbackFull.ttf:/system/fonts/DroidSansFallback.ttf
 
 $(call inherit-product, build/target/product/full_base.mk)
@@ -201,3 +187,4 @@ PRODUCT_LOCALES += hdpi
 
 PRODUCT_NAME := umts_sholes
 PRODUCT_DEVICE := umts_sholes
+

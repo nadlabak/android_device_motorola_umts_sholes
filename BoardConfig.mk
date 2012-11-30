@@ -30,7 +30,6 @@ USE_CAMERA_STUB := false
 
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RECOVERY := true
-TARGET_NO_KERNEL := true
 TARGET_NO_RADIOIMAGE := true
 
 TARGET_BOARD_PLATFORM := omap3
@@ -118,4 +117,9 @@ TARGET_CUSTOM_RELEASETOOL := ./device/motorola/umts_sholes/releasetools/squisher
 TARGET_PROVIDES_RELEASETOOLS := true
 TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := ./device/motorola/umts_sholes/releasetools/umts_sholes_img_from_target_files
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := ./device/motorola/umts_sholes/releasetools/umts_sholes_ota_from_target_files
+
+# Kernel
+TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.4.3
+TARGET_KERNEL_SOURCE := $(ANDROID_BUILD_TOP)/kernel
+TARGET_KERNEL_CONFIG := mapphone_2ndboot_defconfig
 
