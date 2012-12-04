@@ -282,7 +282,7 @@ mount rootfs rootfs / ro remount
 # google maps can freeze on launch when SD card read_ahead_kb is set too high
 # RAM is too precious on Milestone, so don't waste it on marginals
 # when the next line is commented out, the default of 128 kb is used
-    write /sys/block/mmcblk0/bdi/read_ahead_kb 256
+    write /sys/block/mmcblk0/bdi/read_ahead_kb 512
 
 # hwui config folder for process names black list
      mkdir /data/local/hwui.deny
