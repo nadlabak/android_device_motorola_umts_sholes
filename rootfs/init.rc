@@ -406,6 +406,9 @@ on property:persist.service.adb.enable=1
 on property:persist.service.adb.enable=0
     stop adbd
 
+on property:service.adb.root=1
+    restart adbd
+
 service servicemanager /system/bin/servicemanager
     class pre-zygote_services
     user system
