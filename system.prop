@@ -85,6 +85,9 @@ ro.usb.use_custom_service=1
 # enable 16bit transparency by default
 persist.sys.use_16bpp_alpha=1
 
+# Scrolling cache: 0-force enable, 1-default enable, 2-default disable, 3-force disable
+persist.sys.scrollingcache=2
+
 # DISABLED BY DEFAULT
 # when set to 1, Google Maps NetworkLocationService
 # (designed to be constantly running since gmaps 5.1.0)
