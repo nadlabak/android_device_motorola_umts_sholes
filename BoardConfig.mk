@@ -140,6 +140,3 @@ TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.4.3
 TARGET_KERNEL_SOURCE := $(ANDROID_BUILD_TOP)/kernel
 TARGET_KERNEL_CONFIG := mapphone_2ndboot_defconfig
 
-# adb has root
-ADDITIONAL_DEFAULT_PROPERTIES += ro.secure=0
-
