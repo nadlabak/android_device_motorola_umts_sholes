@@ -63,6 +63,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/sysctl.conf:system/etc/sysctl.conf
 
+PRODUCT_COPY_FILES += \
+    device/motorola/umts_sholes/prebuilt/bin/handle_bp_panic.sh:system/bin/handle_bp_panic.sh
+
 # 2ndboot + TLS register workaround
 # the stock kernel doesn't allow usage of TLS register, therefore
 # prebuilt binaries are needed before the new kernel with TLS register
