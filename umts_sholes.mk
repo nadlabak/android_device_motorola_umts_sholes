@@ -64,6 +64,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/sysctl.conf:system/etc/sysctl.conf
 
+PRODUCT_COPY_FILES += \
+    device/motorola/umts_sholes/prebuilt/bin/handle_bp_panic.sh:system/bin/handle_bp_panic.sh
+
 # TLS enable hack
 # /system/bin/akmd2 - proprietary binary daemon patched for compatibility
 #                     with real TLS register usage

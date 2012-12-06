@@ -42,5 +42,12 @@
     <string name="ui_status_bar_oneperc_battery_title">Batterie in 1% Schritten</string>
     <string name="ui_status_bar_oneperc_battery_summary">Zeigt den Ladezustand der Batterie in 1% Schritten. Kann Probleme mit Batterien und Ladegeräten von Fremdherstellern verursachen. (erfordert Neustart)</string>
 
-
+    <string name="modem_error">Modem-Problem</string>
+    <string name="touch_for_info">Berühren für Informationen</string>
+    <string name="reboot_timeout_msg">Wenn keine Option gewählt wird, wird das Gerät in %1$d Sekunden neu gestartet.</string>
+    <string name="modem_error_msg">Im Modem des Telefons wurde ein Problem festgestellt. Um es zu beheben, muss das Gerät neu gestartet werden.\nWas möchten Sie tun?</string>
+    <string name="reboot_btn">Neu starten</string>
+    <string name="snooze_btn">Später erinnern</string>
+    <string name="dismiss_btn">Nicht mehr erinnern</string>
+    <string name="device_rebooted_modem_error">Das Gerät wurde auf Grund eines Problems im Modem des Telefons neu gestartet.</string>
 </resources>

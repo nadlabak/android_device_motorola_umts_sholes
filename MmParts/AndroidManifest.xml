@@ -5,6 +5,10 @@
           android:versionCode="1"
           android:versionName="1.0" >
 
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.REBOOT" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:label="@string/app_name" >
         <activity
@@ -14,6 +18,20 @@
                 <action android:name="com.cyanogenmod.action.LAUNCH_DEVICE_SETTINGS" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".BpPanicNotifyActivity"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity android:name=".BpPanicRebootNoticeActivity"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <receiver android:name=".BpPanicReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".BpPanicHandlerService" />
     </application>
 
 </manifest>
