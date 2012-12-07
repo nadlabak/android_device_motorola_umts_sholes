@@ -139,7 +139,7 @@ PRODUCT_PACKAGES += \
     Usb \
     Torch \
     Toggle2G \
-    FileManager \
+    CMFileManager \
     mot_boot_mode \
     charge_only_mode \
     usbd \
