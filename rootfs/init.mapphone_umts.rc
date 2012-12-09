@@ -628,7 +628,7 @@ service bugreport /system/bin/dumpstate -d -v -o /sdcard/bugreports/bugreport
 # 1. generate proximity 'far' event - workaround for broken proximity sensors
 # 2. provoke light sensor read > ALS event - workaround for ALS interrupt
 #    not happening on light condition change anymore after some (random?) uptime
-service proximity_als /system/bin/sh -c "sendevent /dev/input/event5 3 25 2147483647 && sendevent /dev/input/event5 0 0 0 && cat /sys/class/leds/lcd-backlight/als > /sys/class/leds/lcd-backlight/als"
+service proximity_als /system/bin/sh -c "sendevent /dev/input/event5 3 25 2147483647 && sendevent /dev/input/event5 0 0 0 && cat /sys/class/leds/lcd-backlight/als > /dev/null"
     disabled
     user root
     oneshot
