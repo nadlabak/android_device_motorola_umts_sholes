@@ -11,6 +11,7 @@
             android:label="@string/app_name"
             android:name=".DeviceSettings">
             <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
                 <action android:name="com.cyanogenmod.action.LAUNCH_DEVICE_SETTINGS" />
             </intent-filter>
         </activity>
