@@ -1,0 +1,20 @@
+#!/system/bin/sh
+
+if ! [ -e /dev/block/mmcblk0p3 ]; then
+    exit
+fi
+if ! [ -e /data/property/persist.sys.swapsize ]; then
+    exit
+fi
+SWAPSIZE=`cat /data/property/persist.sys.swapsize`
+if ((SWAPSIZE == 0)); then
+    exit
+fi
+SWAPPARTSIZE=$((`cat /sys/block/mmcblk0/mmcblk0p3/size`/2))
+if ((SWAPSIZE > SWAPPARTSIZE)); then
+    SWAPSIZE=$SWAPPARTSIZE
+fi
+mkswap /dev/block/mmcblk0p3 $SWAPSIZE
+swapon /dev/block/mmcblk0p3
+echo 10 > /proc/sys/vm/swappiness
+log -p i -t swap "${SWAPSIZE} kB swap activated on mmcblk0p3";
