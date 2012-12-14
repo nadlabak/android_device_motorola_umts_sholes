@@ -7,11 +7,11 @@ if ! [ -e /data/property/persist.sys.swapsize ]; then
     exit
 fi
 SWAPSIZE=`cat /data/property/persist.sys.swapsize`
-if ((SWAPSIZE == 0)); then
+if [ $SWAPSIZE -eq 0 ]; then
     exit
 fi
 SWAPPARTSIZE=$((`cat /sys/block/mmcblk0/mmcblk0p3/size`/2))
-if ((SWAPSIZE > SWAPPARTSIZE)); then
+if [ $SWAPSIZE -qt $SWAPPARTSIZE ]; then
     SWAPSIZE=$SWAPPARTSIZE
 fi
 mkswap /dev/block/mmcblk0p3 $SWAPSIZE
