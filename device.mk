@@ -19,6 +19,9 @@ $(call inherit-product, device/common/gps/gps_eu_supl.mk)
 
 $(call inherit-product-if-exists, vendor/motorola/umts_sholes/device-vendor.mk)
 
+PRODUCT_AAPT_CONFIG := normal hdpi
+PRODUCT_AAPT_PREF_CONFIG := hdpi
+
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.com.android.wifi-watchlist=GoogleGuest \
 	ro.error.receiver.system.apps=com.google.android.feedback \
@@ -188,9 +191,6 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/lib/libgki.so:/system/lib/libgki.so \
     device/motorola/umts_sholes/prebuilt/vendor/app/.holder:/system/vendor/app/.holder \
     device/motorola/umts_sholes/prebuilt/vendor/lib/.holder:/system/vendor/lib/.holder
-
-# use high-density artwork where available
-PRODUCT_LOCALES += hdpi
 
 PRODUCT_NAME := umts_sholes
 PRODUCT_DEVICE := umts_sholes
