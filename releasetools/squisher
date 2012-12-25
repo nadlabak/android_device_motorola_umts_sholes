@@ -81,7 +81,6 @@ cp $OUT/kernel $REPACK/ota/system/etc/2ndboot/kernel
 # move the biggest apps to /data/vendor
 mkdir -p $REPACK/ota/data/vendor/app
 mv $REPACK/ota/system/app/LatinIME.apk $REPACK/ota/data/vendor/app/
-mv $REPACK/ota/system/app/Trebuchet.apk $REPACK/ota/data/vendor/app/
 
 # Rename hostap to hostapd
 # mv $REPACK/ota/system/bin/hostap $REPACK/ota/system/bin/hostapd
