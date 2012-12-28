@@ -137,11 +137,6 @@ public class DeviceSettings extends PreferenceActivity implements
                 .findPreference(PREF_STATUS_BAR_ONEPERC_BATTERY);
         String onepercBattery = SystemProperties.get(ONEPERC_BATT_PERSIST_PROP, ONEPERC_BATT_DEFAULT);
         mStatusBarOnepercBattery.setChecked("1".equals(onepercBattery));
-
-// temporarily remove not yet implemented preferences
-        PreferenceCategory categoryToRemove = (PreferenceCategory)prefSet.findPreference("pref_category_dock_settings");
-        prefSet.removePreference(categoryToRemove);
-
     }
 
     @Override
