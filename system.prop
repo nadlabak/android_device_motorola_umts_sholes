@@ -74,6 +74,8 @@ persist.sys.keylayout_alt=
 
 persist.sys.qtouch_num=2
 
+persist.sys.halleffect_input_off=0
+
 persist.sys.one_percent_batt=1
 
 ro.usb.use_custom_service=1

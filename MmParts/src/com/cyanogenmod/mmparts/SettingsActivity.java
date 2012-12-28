@@ -22,7 +22,7 @@ public class SettingsActivity extends PreferenceActivity implements
 
     private static final String DOCK_OBSERVER_OFF_PREF = "pref_dock_observer_off";
 
-    private static final String DOCK_OBSERVER_OFF_PERSIST_PROP = "persist.sys.dock_observer_off";
+    private static final String DOCK_OBSERVER_OFF_PERSIST_PROP = "persist.sys.halleffect_input_off";
 
     private static final String DOCK_OBSERVER_OFF_DEFAULT = "0";
 
