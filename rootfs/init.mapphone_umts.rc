@@ -329,10 +329,10 @@ on property:persist.sys.qtouch_num=4
 on property:persist.sys.qtouch_num=5
     write /proc/qtouch/num_touch 5
 
-on property:persist.sys.halleffect_input_off=1
+on property:persist.sys.hall_input_off=1
     exec /system/bin/rmmod bu52014hfv.ko
 
-on property:persist.sys.halleffect_input_off=0
+on property:persist.sys.hall_input_off=0
     insmod /system/lib/modules/bu52014hfv.ko
 
 # Power up to normal
