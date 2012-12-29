@@ -75,7 +75,7 @@ persist.sys.keypad_multipress_l=auto
 
 persist.sys.qtouch_num=2
 
-persist.sys.halleffect_input_off=0
+persist.sys.hall_input_off=0
 
 persist.sys.one_percent_batt=1
 
