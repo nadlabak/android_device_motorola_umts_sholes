@@ -323,10 +323,10 @@ on property:persist.sys.qtouch_num=5
     write /proc/qtouch/num_touch 5
 
 on property:persist.sys.hall_input_off=1
-    exec /system/bin/rmmod bu52014hfv.ko
+    write /sys/module/bu52014hfv/parameters/disable 1
 
 on property:persist.sys.hall_input_off=0
-    insmod /system/lib/modules/bu52014hfv.ko
+    write /sys/module/bu52014hfv/parameters/disable 0
 
 # Power up to normal
 on property:tcmd.suspend=0
