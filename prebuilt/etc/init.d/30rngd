@@ -1,0 +1,12 @@
+#!/system/bin/sh
+
+# Enable entropy feeding from the OMAP3 hardware random number generator
+#
+# Although it ( http://forum.xda-developers.com/showthread.php?t=1987032 ) seems
+# to be rather highly controversial subject (as discussed eg. here 
+# https://code.google.com/p/android/issues/detail?id=42265 ), quite big drops
+# of the available entropy in the pool can be occassionaly seen despite this patch:
+# https://patchwork.kernel.org/patch/1745611/ .
+# So let's take the advantage of the omap3 hw rng and use it to seed the pool.
+rngd -r /dev/hw_random
+

@@ -167,6 +167,7 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/etc/init.d/60autoboot_or:/system/etc/init.d/60autoboot_or \
     device/motorola/umts_sholes/prebuilt/etc/init.d/12swap:/system/etc/init.d/12swap \
     device/motorola/umts_sholes/prebuilt/etc/init.d/99cpufreq_stats:/system/etc/init.d/99cpufreq_stats \
+    device/motorola/umts_sholes/prebuilt/etc/init.d/30rngd:/system/etc/init.d/30rngd \
     device/motorola/umts_sholes/prebuilt/etc/location.cfg:/system/etc/location.cfg \
     device/motorola/umts_sholes/prebuilt/etc/powervr.ini:/system/etc/powervr.ini \
     device/motorola/umts_sholes/prebuilt/etc/gpsconfig.xml:/system/etc/gpsconfig.xml \
@@ -174,6 +175,7 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/bin/init_bp_nvm.sh:/system/bin/init_bp_nvm.sh \
     device/motorola/umts_sholes/prebuilt/bin/init_early_bind_mounts.sh:/system/bin/init_early_bind_mounts.sh \
     device/motorola/umts_sholes/prebuilt/bin/install_tool.sh:/system/bin/install_tool.sh \
+    device/motorola/umts_sholes/prebuilt/bin/rngd:/system/bin/rngd \
     device/motorola/umts_sholes/prebuilt/bin/sh_hijack.sh:/system/bin/sh_hijack.sh \
     device/motorola/umts_sholes/prebuilt/bin/tcmd:/system/bin/tcmd \
     device/motorola/umts_sholes/prebuilt/usr/keychars/sholes-keypad.kcm:/system/usr/keychars/sholes-keypad.kcm \
