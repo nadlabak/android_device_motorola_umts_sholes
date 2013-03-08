@@ -8,6 +8,7 @@
     <string name="qtouch_title">Touchscreen</string>
     <string name="debug_title">Debugging</string>
     <string name="battery_title">Battery</string>
+    <string name="libaudio_category_title">Beepless libaudio</string>
     <string name="baseband_title">Baseband</string>
 
     <string name="pref_dock_observer_off_title">Disable dock observer</string>
@@ -38,6 +39,9 @@
 
     <string name="ui_status_bar_oneperc_battery_title">1% battery steps</string>
     <string name="ui_status_bar_oneperc_battery_summary">Show battery percentage in 1% steps. May cause issues with third party batteries and AC adapters. (Requires reboot)</string>
+
+    <string name="libaudio_title">Experimental libaudio</string>
+    <string name="libaudio_summary">Necessary to allow call recording without beeps. Experimental feature that can cause BP panics on incoming calls for some users! (Requires reboot)</string>
 
     <string name="modem_error">Telephony problem</string>
     <string name="touch_for_info">Touch for information</string>
