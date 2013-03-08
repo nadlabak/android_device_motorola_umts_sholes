@@ -76,6 +76,13 @@
             android:defaultValue="true" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/libaudio_category_title"
+        android:key="pref_category_libaudio_settings">
+        <CheckBoxPreference android:key="pref_libaudio"
+            android:title="@string/libaudio_title"
+            android:summary="@string/libaudio_summary" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/dock_title"
         android:key="pref_category_dock_settings">
         <CheckBoxPreference android:key="pref_dock_observer_off"

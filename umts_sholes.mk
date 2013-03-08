@@ -158,6 +158,7 @@ PRODUCT_COPY_FILES += \
     device/motorola/umts_sholes/prebuilt/etc/excluded-input-devices.xml:/system/etc/excluded-input-devices.xml \
     device/motorola/umts_sholes/prebuilt/bin/init_prep_keypad.sh:/system/bin/init_prep_keypad.sh \
     device/motorola/umts_sholes/prebuilt/bin/init_bp_nvm.sh:/system/bin/init_bp_nvm.sh \
+    device/motorola/umts_sholes/prebuilt/bin/init_libaudio.sh:/system/bin/init_libaudio.sh \
     device/motorola/umts_sholes/prebuilt/bin/init_early_bind_mounts.sh:/system/bin/init_early_bind_mounts.sh \
     device/motorola/umts_sholes/prebuilt/bin/ttsmovetool.sh:/system/bin/ttsmovetool.sh \
     device/motorola/umts_sholes/prebuilt/bin/rngd:/system/bin/rngd \

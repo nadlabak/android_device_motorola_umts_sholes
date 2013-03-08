@@ -84,6 +84,12 @@ public class SettingsActivity extends PreferenceActivity implements
 
     private static final String ONEPERC_BATT_DEFAULT = "0";
 
+    private static final String PREF_LIBAUDIO = "pref_libaudio";
+
+    private static final String LIBAUDIO_PERSIST_PROP = "persist.sys.libaudio";
+
+    private static final String LIBAUDIO_DEFAULT = "ms";
+
     private CheckBoxPreference mDockObserverOffPref;
 
     private String mBasebandSum;
@@ -115,6 +121,8 @@ public class SettingsActivity extends PreferenceActivity implements
     private CheckBoxPreference mLoggerPref;
 
     private CheckBoxPreference mStatusBarOnepercBattery;
+
+    private CheckBoxPreference mLibaudioPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -182,6 +190,11 @@ public class SettingsActivity extends PreferenceActivity implements
                 .findPreference(PREF_STATUS_BAR_ONEPERC_BATTERY);
         String onepercBattery = SystemProperties.get(ONEPERC_BATT_PERSIST_PROP, ONEPERC_BATT_DEFAULT);
         mStatusBarOnepercBattery.setChecked("1".equals(onepercBattery));
+
+        mLibaudioPref = (CheckBoxPreference) prefSet
+                .findPreference(PREF_LIBAUDIO);
+        String libaudio = SystemProperties.get(LIBAUDIO_PERSIST_PROP, LIBAUDIO_DEFAULT);
+        mLibaudioPref.setChecked("dp".equals(libaudio));
     }
 
     @Override
@@ -212,6 +225,10 @@ public class SettingsActivity extends PreferenceActivity implements
         } else if (preference == mStatusBarOnepercBattery) {
             SystemProperties.set(ONEPERC_BATT_PERSIST_PROP,
                     mStatusBarOnepercBattery.isChecked() ? "1" : "0");
+            return true;
+        } else if (preference == mLibaudioPref) {
+            SystemProperties.set(LIBAUDIO_PERSIST_PROP,
+                    mLibaudioPref.isChecked() ? "dp" : "ms");
             return true;
         }
         return false;

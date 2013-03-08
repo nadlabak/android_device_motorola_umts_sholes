@@ -8,5 +8,5 @@
 # of the available entropy in the pool can be occassionaly seen despite this patch:
 # https://patchwork.kernel.org/patch/1745611/ .
 # So let's take the advantage of the omap3 hw rng and use it to seed the pool.
-rngd -r /dev/hw_random
+rngd -r /dev/hw_random -t 5
 

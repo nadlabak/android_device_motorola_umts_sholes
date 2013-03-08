@@ -184,6 +184,9 @@ on boot
     chmod 0770 /cache/logger
     exec /system/bin/sh /system/bin/init_early_bind_mounts.sh
 
+    # symlink the selected libaudio files
+    exec /system/bin/sh /system/bin/init_libaudio.sh
+
     # symlink the selected bp_nvm files
     exec /system/bin/sh /system/bin/init_bp_nvm.sh
 
