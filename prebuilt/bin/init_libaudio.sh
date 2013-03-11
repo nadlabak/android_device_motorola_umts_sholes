@@ -7,6 +7,6 @@ if [ -e $LAPROP ]
 then
     LAVARIANT=`cat $LAPROP`
 fi
-ln -sf /system/lib/libaudio_${LAVARIANT}.so /system/lib/libaudio.so
-ln -sf /system/bin/ap_gain_${LAVARIANT}.bin /system/bin/ap_gain.bin
+busybox ln -sf /system/lib/libaudio_${LAVARIANT}.so /system/lib/libaudio.so
+busybox ln -sf /system/bin/ap_gain_${LAVARIANT}.bin /system/bin/ap_gain.bin
 mount -o remount,ro /system
