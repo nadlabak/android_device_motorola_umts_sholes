@@ -1,9 +1,13 @@
 #!/system/bin/sh
 
- echo "5 1000000000 64" > /proc/overclock/mpu_opps
- echo "4 800000000 59" > /proc/overclock/mpu_opps
- echo "3 600000000 52" > /proc/overclock/mpu_opps
- echo "2 400000000 40" > /proc/overclock/mpu_opps
- echo "1 250000000 32" > /proc/overclock/mpu_opps
+# Note: this script is now made inactive in favor of the kernel
+# originated boot time overclock that is able to take the advantage
+# of the smartreflex vsel calibration during boot
 
+# An overclock proc interface usage example for a reference:
+# echo "5 1000000000 64" > /proc/overclock/mpu_opps
+# echo "4 800000000 59" > /proc/overclock/mpu_opps
+# echo "3 600000000 52" > /proc/overclock/mpu_opps
+# echo "2 400000000 40" > /proc/overclock/mpu_opps
+# echo "1 250000000 32" > /proc/overclock/mpu_opps
 
