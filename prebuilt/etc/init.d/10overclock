@@ -1,13 +1,29 @@
 #!/system/bin/sh
 
-# Note: this script is now made inactive in favor of the kernel
-# originated boot time overclock that is able to take the advantage
-# of the smartreflex vsel calibration during boot
+# Uncomment the next line to increase the top frequency from 800MHz to 1GHz:
+# echo "6 1000000000 66" > /proc/overclock/mpu_opps
 
-# An overclock proc interface usage example for a reference:
-# echo "5 1000000000 64" > /proc/overclock/mpu_opps
-# echo "4 800000000 59" > /proc/overclock/mpu_opps
-# echo "3 600000000 52" > /proc/overclock/mpu_opps
-# echo "2 400000000 40" > /proc/overclock/mpu_opps
-# echo "1 250000000 32" > /proc/overclock/mpu_opps
+# This is the default kernel table (OMAP3440 turbo mode):
+# [opp_id] [frequency(Hz)] [vsel(nominal)]
+#  6        800000000       66
+#  5        720000000       62
+#  4        550000000       56
+#  3        500000000       50
+#  2        250000000       39
+#  1        125000000       32
+#
+# Please note that the effective vsel (voltage select) value will be determined
+# by smartreflex, so there is no need to try to enter as low vaule as you percieve
+# as still stable. Smartreflex will find the optimal values for your particular
+# device automatically.
+# (You can check the effective sr_adjust_vsel by 'cat /proc/overclock/mpu_opps')
+# Also note that the 125000000 rate is left unused by default, for a reason.
+
+# An example of the whole table rewrite:
+# echo "6 900000000 66" > /proc/overclock/mpu_opps
+# echo "5 800000000 66" > /proc/overclock/mpu_opps
+# echo "4 720000000 62" > /proc/overclock/mpu_opps
+# echo "3 600000000 62" > /proc/overclock/mpu_opps
+# echo "2 500000000 50" > /proc/overclock/mpu_opps
+# echo "1 250000000 39" > /proc/overclock/mpu_opps
 
